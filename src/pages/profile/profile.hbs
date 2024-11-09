@@ -1,0 +1,22 @@
+<div class="container">
+    <div class="sider">
+        <button class="button-back"/>
+    </div>
+    <section>
+        <img src="{{avatar}}" alt="Avatar" class="avatar">
+        <h1>Иван</h1>
+        <form class="profile-form" inert >
+            {{> Input label="Почта" name="email" type="email"  placeholder="pochta@yandex.ru"}}
+            {{> Input label="Логин" name="login" placeholder="ivanivanov"}}
+            {{> Input label="Имя" name="first_name" placeholder="Иван"}}
+            {{> Input label="Фамилия" name="second_name" placeholder="Иванов"}}
+            {{> Input label="Имя в чате" name="second_name" placeholder="Иван"}}
+            {{> Input label="Телефон" name="phone" type="tel" placeholder="+7(909)9673030" }}
+        </form>
+        <div>
+            {{> Button label="Изменить данные" type="link"}}
+            {{> Button label="Изменить пароль" type="link"}}
+            {{> Button label="Выйти" type="danger" }}
+        </div>
+    </section>
+</div>

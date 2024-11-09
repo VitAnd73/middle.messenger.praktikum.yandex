@@ -5,3 +5,8 @@
   --text-color: #1e1e1e;
   --text-secondary-color: #999;
 }
+
+html, body {
+  padding: 0!important;
+  margin: 0!important;
+}
