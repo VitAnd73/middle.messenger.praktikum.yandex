@@ -34,6 +34,10 @@
   outline: none;
 }
 
+.input__element::placeholder {
+  text-align: right;
+}
+
 .input__text-error {
   transform: translateY(-7px);
   color: var(--error-color);

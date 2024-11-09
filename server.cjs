@@ -3,10 +3,13 @@ const path = require('path');
 
 const app = express();
 const PORT = 3000;
+
+const cur__dirname = path.resolve(path.dirname(''));
+
 app.use(express.static('./dist'));
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(___dirname, './dist/index.html'));
+    res.sendFile(path.join(cur__dirname, './dist/index.html'));
     res.status(200);
 });
 

@@ -3,7 +3,7 @@
     justify-content: center;
 }
 
-.login-form {
+.register-form {
     display: flex;
     flex-direction: column;
     padding: 50px 30px 30px;
@@ -12,6 +12,6 @@
     border-radius: 12px;
 }
 
-.login-form .title {
+.register-form .title {
     margin: auto;
 }

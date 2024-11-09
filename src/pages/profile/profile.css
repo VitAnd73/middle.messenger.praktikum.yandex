@@ -1,0 +1,58 @@
+.container {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    align-items: center;
+}
+
+.sider {
+    height: 100%;
+    background-color: var(--second-color);
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+section
+{
+    flex-grow: 1;
+    margin: 50px;
+    width: 433px;
+}
+
+.button-back {
+    background-color: var(--main-color);
+    height: 28px;
+    width: 28px;
+    border-radius: 50%;
+    border: none;
+    margin: auto;
+}
+.button-back::before {
+    content: "\2190";
+    font-size: 15px;
+    color: white;
+}
+
+section > h1 {
+    text-align: center;
+}
+
+section > div > .button__link {
+    font-size: 13px;
+    padding: 10px;
+    text-align: left;
+}
+section > div > .button__danger {
+    color: red;
+    font-size: 13px;
+    padding: 10px;
+    text-align: left;
+}
+
+.avatar {
+    height: 130px;
+    width: 130px;
+    border-radius: 50%;
+    display:block;
+    margin:auto;
+}

@@ -1,9 +1,18 @@
 <div class="input" >
     <label class="input__container">
-    <input
-        class="input__element"
-        placeholder=""
-    />
+        <input
+            class="input__element"
+
+            {{#if placeholder}}
+                placeholder={{placeholder}}
+            {{/if}}
+            {{#unless placeholder}}
+                placeholder=''
+            {{/unless}}
+
+            type={{type}}
+            name={{name}}
+        />
         <div class="input__label">{{label}}</div>
     </label>
 </div>
