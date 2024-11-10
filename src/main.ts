@@ -32,13 +32,11 @@ Object.entries(Components).forEach(([ name, template ]) => {
   Handlebars.registerPartial(name, template);
 });
 
-function navigate(page: string) {
-  //@ts-ignore
+function navigate(page:  keyof typeof pages) {
   const [ source, context ] = pages[page];
   const container = document.getElementById('app')!;
 
   const temlpatingFunction = Handlebars.compile(source);
-  console.log('html', temlpatingFunction(context))
   container.innerHTML = temlpatingFunction(context);
 }
 
@@ -46,10 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const {pathname} = window.location;
   if (pathname.length>1) {
     const navTo = pathname.substring(1);
-    console.log(`current pathname = ${pathname}`);
     if (navTo in pages) {
-      console.log(`navigate to navTo = ${navTo}`);
-      navigate(navTo);
+      navigate(navTo as keyof typeof pages);
     }
     else {
       navigate(defaultPage);
@@ -66,8 +62,7 @@ document.addEventListener('click', e => {
   if (page) {
     const {origin} = window.location;
     navigate(page);
-    // window.history.pushState({}, '', `${origin}/${page}`);
-    window.history.pushState({}, '', `/${page}`);
+    window.history.pushState({}, '', `${origin}/${page}`);
     window.history.replaceState({}, appTitle, `${origin}/${page}`);
     e.preventDefault();
     e.stopImmediatePropagation();
