@@ -43,7 +43,7 @@ section > div > .button__link {
     text-align: left;
 }
 section > div > .button__danger {
-    color: red;
+    color: var(--error-color);;
     font-size: 13px;
     padding: 10px;
     text-align: left;

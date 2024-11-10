@@ -24,11 +24,18 @@ Netlify: https://ymf-sprint1.netlify.app
 
 ### На сверстанные макеты:
 
-Макет со списком основных страниц: https://ymf-sprint1.netlify.app
+Макет со списком основных страниц: https://ymf-sprint1.netlify.app  
+
 Макеты отдельных страниц:
-Авторизация: https://ymf-sprint1.netlify.app/login
-Регистрация: https://ymf-sprint1.netlify.app/register
-Профиль: https://ymf-sprint1.netlify.app/profile
-500: https://ymf-sprint1.netlify.app/500
-404: https://ymf-sprint1.netlify.app/404
-Чат: https://ymf-sprint1.netlify.app/chats
+
+Авторизация: https://ymf-sprint1.netlify.app/login  
+
+Регистрация: https://ymf-sprint1.netlify.app/register  
+
+Профиль: https://ymf-sprint1.netlify.app/profile  
+
+500: https://ymf-sprint1.netlify.app/500  
+
+404: https://ymf-sprint1.netlify.app/404  
+
+Чат: https://ymf-sprint1.netlify.app/chats  

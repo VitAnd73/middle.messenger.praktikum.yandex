@@ -4,15 +4,15 @@
             class="input__element"
 
             {{#if placeholder}}
-                placeholder={{placeholder}}
+                placeholder="{{placeholder}}""
             {{/if}}
             {{#unless placeholder}}
-                placeholder=''
+                placeholder=""
             {{/unless}}
 
-            type={{type}}
-            name={{name}}
+            type="{{type}}"
+            name="{{name}}""
         />
-        <div class="input__label">{{label}}</div>
+        <span class="input__label">{{label}}</span>
     </label>
 </div>
