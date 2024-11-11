@@ -1,11 +1,9 @@
-<main>
-    <div class="container">
-        <form class="login-form">
-            <h1>Вход</h1>
-            {{> Input label="Логин" name="login"}}
-            {{> Input label="Пароль" name="password" type="password"}}
-            {{> Button label="Вход" type="primary"}}
-            {{> Button label="Нет аккаунта?" type="link" }}
-        </form>
-    </div>
+<main class="main__login">
+    <form class="login-form">
+        <h1 class="login__title">Вход</h1>
+        {{> Input label="Логин" name="login"}}
+        {{> Input label="Пароль" name="password" type="password"}}
+        {{> Button label="Вход" type="primary"}}
+        {{> Button label="Нет аккаунта?" type="link" }}
+    </form>
 </main>

@@ -34,8 +34,14 @@ Netlify: https://ymf-sprint1.netlify.app
 
 Профиль: https://ymf-sprint1.netlify.app/profile  
 
+Новый аватар: https://ymf-sprint1.netlify.app/profile-new-avatar  
+
+Изменить данные: https://ymf-sprint1.netlify.app/profile-change-data  
+
+Изменить пароль: https://ymf-sprint1.netlify.app/profile-change-pwd  
+
+Чат: https://ymf-sprint1.netlify.app/chats  
+
 500: https://ymf-sprint1.netlify.app/500  
 
 404: https://ymf-sprint1.netlify.app/404  
-
-Чат: https://ymf-sprint1.netlify.app/chats  

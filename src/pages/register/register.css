@@ -1,9 +1,5 @@
-.container {
-    display: flex;
-    justify-content: center;
-}
-
 .register-form {
+    margin: auto;
     display: flex;
     flex-direction: column;
     padding: 50px 30px 30px;
@@ -12,6 +8,11 @@
     border-radius: 12px;
 }
 
-.register-form h1 {
+.register-form .register__title {
+    margin: auto;
+}
+
+.register-form .button__primary {
+    width: 320px;
     margin: auto;
 }

@@ -9,6 +9,32 @@ const defaultPage = 'nav';
 
 
 const pages = {
+  'login': [ Pages.LoginPage ],
+  'register': [ Pages.RegisterPage ],
+  'profile': [ Pages.ProfilePage, {
+    avatar: avatarSample,
+    changingAvatar: false,
+    changingData: false,
+    changingPwd: false,
+  } ],
+  'profile-new-avatar': [ Pages.ProfilePage, {
+    avatar: avatarSample,
+    changingAvatar: true,
+    changingData: false,
+    changingPwd: false,
+  } ],
+  'profile-change-data': [ Pages.ProfilePage, {
+    avatar: avatarSample,
+    changingAvatar: false,
+    changingData: true,
+    changingPwd: false,
+  } ],
+  'profile-change-pwd': [ Pages.ProfilePage, {
+    avatar: avatarSample,
+    changingAvatar: false,
+    changingData: false,
+    changingPwd: true,
+  } ],
   'chats': [ Pages.ChatsPage],
   '500': [ Pages.InfoPage, {
     title: '500',
@@ -20,13 +46,25 @@ const pages = {
     text: 'Не туда попали',
     buttonLabel: 'Назад к чатам',
   }],
-  'login': [ Pages.LoginPage ],
-  'register': [ Pages.RegisterPage ],
-  'profile': [ Pages.ProfilePage, {
-    avatar: avatarSample,
-  } ],
-  'nav': [ Pages.NavigatePage ]
+
+
+  'nav': [ Pages.NavigatePage ],
 };
+
+Handlebars.registerHelper({
+  eq: (v1, v2) => v1 === v2,
+  ne: (v1, v2) => v1 !== v2,
+  lt: (v1, v2) => v1 < v2,
+  gt: (v1, v2) => v1 > v2,
+  lte: (v1, v2) => v1 <= v2,
+  gte: (v1, v2) => v1 >= v2,
+  and() {
+      return Array.prototype.every.call(arguments, Boolean);
+  },
+  or() {
+      return Array.prototype.slice.call(arguments, 0, -1).some(Boolean);
+  }
+});
 
 Object.entries(Components).forEach(([ name, template ]) => {
   Handlebars.registerPartial(name, template);
@@ -56,12 +94,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-document.addEventListener('click', e => {
-  //@ts-ignore
-  const page = e.target.getAttribute('page');
+document.addEventListener('click', (e : MouseEvent) => {
+  const page = (e.target as HTMLInputElement).getAttribute('page');
   if (page) {
     const {origin} = window.location;
-    navigate(page);
+    navigate(page as keyof typeof pages);
     window.history.pushState({}, '', `${origin}/${page}`);
     window.history.replaceState({}, appTitle, `${origin}/${page}`);
     e.preventDefault();

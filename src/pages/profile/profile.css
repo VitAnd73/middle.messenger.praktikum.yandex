@@ -17,6 +17,7 @@ section
     flex-grow: 1;
     margin: 50px;
     width: 433px;
+    margin: 0 auto 50px auto;
 }
 
 .button-back {
@@ -33,7 +34,13 @@ section
     color: white;
 }
 
-section > h1 {
+
+.button__primary {
+    width: 320px;
+    margin: auto;
+}
+
+section > .profile__title {
     text-align: center;
 }
 
@@ -49,10 +56,48 @@ section > div > .button__danger {
     text-align: left;
 }
 
+
+
 .avatar {
     height: 130px;
     width: 130px;
     border-radius: 50%;
     display:block;
+    margin: 50px auto;
+}
+
+.avatar__container {
+    position: relative;
+    width: 50%;
+    margin: 0 auto 50px auto;
+}
+.avatar__overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 130px;
+    width: 130px;
+    opacity: 0;
+    transition: .5s ease;
+    border-radius: 50%;
+    background-color: #008CBA;
     margin:auto;
+}
+
+.avatar__container:hover .avatar__overlay {
+    opacity: 1;
+}
+
+.avatar__text {
+    color: white;
+    font-size: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    text-align: center;
 }

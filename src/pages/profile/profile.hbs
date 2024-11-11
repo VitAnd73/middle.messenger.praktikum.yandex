@@ -1,22 +1,52 @@
-<div class="container">
-    <div class="sider">
-        <button class="button-back"/>
-    </div>
-    <section>
-        <img src="{{avatar}}" alt="Avatar" class="avatar">
-        <h1>Иван</h1>
-        <form class="profile-form" inert >
-            {{> Input label="Почта" name="email" type="email"  placeholder="pochta@yandex.ru"}}
-            {{> Input label="Логин" name="login" placeholder="ivanivanov"}}
-            {{> Input label="Имя" name="first_name" placeholder="Иван"}}
-            {{> Input label="Фамилия" name="second_name" placeholder="Иванов"}}
-            {{> Input label="Имя в чате" name="second_name" placeholder="Иван"}}
-            {{> Input label="Телефон" name="phone" type="tel" placeholder="+7(909)9673030" }}
-        </form>
-        <div>
-            {{> Button label="Изменить данные" type="link"}}
-            {{> Button label="Изменить пароль" type="link"}}
-            {{> Button label="Выйти" type="danger" }}
+<main>
+    <div class="container">
+        <div class="sider">
+            <button class="button-back"/>
         </div>
-    </section>
-</div>
+        <section>
+            <div class="avatar__container">
+                <img src="{{avatar}}" alt="Avatar" class="avatar">
+                {{#if changingAvatar}}
+                    <div class="avatar__overlay">
+                        <div class="avatar__text">Поменять аватар</div>
+                    </div>
+                {{/if}}
+            </div>
+            {{#unless changingData}}
+                {{#unless changingPwd}}
+                    <h1 class="profile__title">Иван</h1>
+                {{/unless}}
+            {{/unless}}
+            <form class="profile-form" inert >
+                {{#unless changingPwd}}
+                    {{> Input label="Почта" name="email" type="email"  placeholder="pochta@yandex.ru"}}
+                    {{> Input label="Логин" name="login" placeholder="ivanivanov"}}
+                    {{> Input label="Имя" name="first_name" placeholder="Иван"}}
+                    {{> Input label="Фамилия" name="second_name" placeholder="Иванов"}}
+                    {{> Input label="Имя в чате" name="display_name" placeholder="Иван"}}
+                    {{> Input label="Телефон" name="phone" type="tel" placeholder="+7(909)9673030" }}
+                {{/unless}}
+                {{#if changingPwd}}
+                    {{> Input label="Старый пароль" name="oldPassword" type="password"}}
+                    {{> Input label="Новый пароль" name="newPassword" type="password"}}
+                    {{> Input label="Пароль (ещё раз)" name="repeatPassword" type="password"}}
+                {{/if}}
+                {{#if (or changingPwd changingData)}}
+                    <div>
+                        {{> Button label="Сохранить" type="primary"}}
+                    </div>
+                {{/if}}
+            </form>
+            {{#unless changingData}}
+                {{#unless changingPwd}}
+                    <div>
+                        {{> Button label="Изменить данные" type="link"}}
+                        {{> Button label="Изменить пароль" type="link"}}
+                        {{> Button label="Выйти" type="danger" }}
+                    </div>
+                {{/unless}}
+            {{/unless}}
+        </section>
+    </div>
+</main>
+
