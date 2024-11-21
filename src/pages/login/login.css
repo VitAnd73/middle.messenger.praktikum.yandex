@@ -1,0 +1,28 @@
+.main__login {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-form {
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 50px 30px 30px;
+    width: 340px;
+    box-shadow: 0 0 6px 0 #00000024;
+    border-radius: 12px;
+}
+
+.login-form .login__title {
+    margin: auto;
+}
+
+.login-form .button__primary {
+    width: 320px;
+    margin: auto;
+}

@@ -1,0 +1,20 @@
+<main>
+    <div class="input" >
+        <label class="input__container">
+            <input
+                class="input__element"
+
+                {{#if placeholder}}
+                    placeholder="{{placeholder}}"
+                {{/if}}
+                {{#unless placeholder}}
+                    placeholder=""
+                {{/unless}}
+
+                type="{{type}}"
+                name="{{name}}"
+            />
+            <span class="input__label">{{label}}</span>
+        </label>
+    </div>
+</main>
