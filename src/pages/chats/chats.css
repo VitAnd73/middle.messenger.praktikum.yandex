@@ -14,8 +14,7 @@
 
 }
 
-section__chat
-{
+.section__chat {
     flex-grow: 1;
     margin: 50px;
 }

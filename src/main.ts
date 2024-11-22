@@ -58,11 +58,11 @@ Handlebars.registerHelper({
   gt: (v1, v2) => v1 > v2,
   lte: (v1, v2) => v1 <= v2,
   gte: (v1, v2) => v1 >= v2,
-  and() {
-      return Array.prototype.every.call(arguments, Boolean);
+  and(...args: unknown[]) {
+      return Array.prototype.every.call(args, Boolean);
   },
-  or() {
-      return Array.prototype.slice.call(arguments, 0, -1).some(Boolean);
+  or(...args: unknown[]) {
+      return Array.prototype.slice.call(args, 0, -1).some(Boolean);
   }
 });
 
@@ -76,6 +76,23 @@ function navigate(page:  keyof typeof pages) {
 
   const temlpatingFunction = Handlebars.compile(source);
   container.innerHTML = temlpatingFunction(context);
+}
+
+function navigateToPath() {
+  const {pathname} = window.location;
+  console.log(`pathname = ${pathname}`);
+  if (pathname.length > 1) {
+    const navTo = pathname.substring(1);
+    if (navTo in pages) {
+      navigate(navTo as keyof typeof pages);
+    }
+    else {
+      navigate(defaultPage);
+    }
+  }
+  else {
+    navigate(defaultPage);
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -93,6 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
     navigate(defaultPage);
   }
 });
+window.addEventListener('popstate', () => navigateToPath());
 
 document.addEventListener('click', (e : MouseEvent) => {
   const page = (e.target as HTMLInputElement).getAttribute('page');
