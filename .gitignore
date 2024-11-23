@@ -25,4 +25,6 @@ dist-ssr
 
 .unotes
 .unotes/
+
 package-lock.json
+yarn.lock
