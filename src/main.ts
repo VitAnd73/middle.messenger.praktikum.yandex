@@ -1,6 +1,8 @@
 import * as Components from './components';
 import * as Pages from './pages';
 
+import renderDOM, { render } from './core/renderDom';
+
 import Handlebars from 'handlebars';
 import avatarSample from './assets/imgs/img_avatar.png';
 
@@ -10,42 +12,42 @@ const defaultPage = 'nav';
 
 const pages = {
   'login': [ Pages.LoginPage ],
-  'register': [ Pages.RegisterPage ],
-  'profile': [ Pages.ProfilePage, {
-    avatar: avatarSample,
-    changingAvatar: false,
-    changingData: false,
-    changingPwd: false,
-  } ],
-  'profile-new-avatar': [ Pages.ProfilePage, {
-    avatar: avatarSample,
-    changingAvatar: true,
-    changingData: false,
-    changingPwd: false,
-  } ],
-  'profile-change-data': [ Pages.ProfilePage, {
-    avatar: avatarSample,
-    changingAvatar: false,
-    changingData: true,
-    changingPwd: false,
-  } ],
-  'profile-change-pwd': [ Pages.ProfilePage, {
-    avatar: avatarSample,
-    changingAvatar: false,
-    changingData: false,
-    changingPwd: true,
-  } ],
-  'chats': [ Pages.ChatsPage],
-  '500': [ Pages.InfoPage, {
-    title: '500',
-    text: 'Мы уже фиксим',
-    buttonLabel: 'Назад к чатам',
-  }],
-  '404': [ Pages.InfoPage, {
-    title: '404',
-    text: 'Не туда попали',
-    buttonLabel: 'Назад к чатам',
-  }],
+  // 'register': [ Pages.RegisterPage ],
+  // 'profile': [ Pages.ProfilePage, {
+  //   avatar: avatarSample,
+  //   changingAvatar: false,
+  //   changingData: false,
+  //   changingPwd: false,
+  // } ],
+  // 'profile-new-avatar': [ Pages.ProfilePage, {
+  //   avatar: avatarSample,
+  //   changingAvatar: true,
+  //   changingData: false,
+  //   changingPwd: false,
+  // } ],
+  // 'profile-change-data': [ Pages.ProfilePage, {
+  //   avatar: avatarSample,
+  //   changingAvatar: false,
+  //   changingData: true,
+  //   changingPwd: false,
+  // } ],
+  // 'profile-change-pwd': [ Pages.ProfilePage, {
+  //   avatar: avatarSample,
+  //   changingAvatar: false,
+  //   changingData: false,
+  //   changingPwd: true,
+  // } ],
+  // 'chats': [ Pages.ChatsPage],
+  // '500': [ Pages.InfoPage, {
+  //   title: '500',
+  //   text: 'Мы уже фиксим',
+  //   buttonLabel: 'Назад к чатам',
+  // }],
+  // '404': [ Pages.InfoPage, {
+  //   title: '404',
+  //   text: 'Не туда попали',
+  //   buttonLabel: 'Назад к чатам',
+  // }],
 
 
   'nav': [ Pages.NavigatePage ],
@@ -67,13 +69,19 @@ Handlebars.registerHelper({
 });
 
 Object.entries(Components).forEach(([ name, template ]) => {
+  if (typeof template === "function") {
+    return;
+  }
   Handlebars.registerPartial(name, template);
 });
 
 function navigate(page:  keyof typeof pages) {
   const [ source, context ] = pages[page];
   const container = document.getElementById('app')!;
-
+  if (typeof source === "function") {
+    render('#app', new source());
+    return;
+  }
   const temlpatingFunction = Handlebars.compile(source);
   container.innerHTML = temlpatingFunction(context);
 }

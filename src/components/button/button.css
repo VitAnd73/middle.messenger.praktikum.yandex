@@ -13,6 +13,7 @@
   background-color: var(--main-color);
   color: #ffffff;
   font-size: 13px;
+  margin: 100px;
 }
 
 .button__link {
