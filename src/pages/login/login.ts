@@ -1,5 +1,14 @@
 import Block, { PropsWithChildrenType } from "../../core/block";
-import { Button, Input } from "../../components";
+
+import { Button } from "../../components";
+import { InputField } from "../../components/input";
+
+const loginValidator = (login: string, loginValidationErrorMessage: string = "Some error is happened.") => {
+  return login.length > 3 ? "" : loginValidationErrorMessage;
+}
+// const pwdValidator = (pwd: string, pwdValidationErrorMessage: string = "Some error is happened.") => {
+//   return pwd.length > 3 ? "" : pwdValidationErrorMessage;
+// }
 
 export default class LoginPage extends Block {
   constructor(props?: PropsWithChildrenType<Block>) {
@@ -14,37 +23,34 @@ export default class LoginPage extends Block {
         password: "",
       },
       className: "main__login",
-      InputLogin: new Input({
+      LoginInputField: new InputField({
         label: "Login",
-        attrs: {
-            class: "input__element",
-        },
-        // onChange: (e: InputEvent) => {
-          events: {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            change: (e: any) => {
-              const value = (e.target as HTMLInputElement).value;
-              console.log(`value=${value}`);
-              const error = value.length === "error" ? "Some error is happened." : "";
-              (this.children.InputLogin as Block).setProps({
-                error,
-              });
-              if (!error) {
-                return;
-              }
-              this.setProps({
-                formState: {
-                  ...(this.props.formState as object),
-                  login: value,
-                },
-              });
-            },
-          }
+        // attrs: {
+        //     class: "input__element",
+        // },
+        events: {
+          change: (e: InputEvent) => {
+            const value = (e.target as HTMLInputElement).value;
+            console.log(`value=${value}`);
+            const error = loginValidator(value);
+            (this.children.LoginInputField as Block).setProps({
+              error,
+            });
+            if (!error) {
+              return;
+            }
+            this.setProps({
+              formState: {
+                ...(this.props.formState as object),
+                login: value,
+              },
+            });
+          },
+        }
       }),
-      InputPassword: new Input({
+      PasswordInputField: new InputField({
         label: "Password",
         attrs: {
-          class: "input__element",
           type: "password",
           name: "password"
         }
@@ -57,7 +63,10 @@ export default class LoginPage extends Block {
       SignUpButton: new Button({
         className: "button button__primary",
         label: "Sign up",
-        onClick: () => console.log(this.props.formState),
+        onClick: (e: MouseEvent) => {
+          console.log(this.props.formState);
+          e.preventDefault();
+        }
       }),
     });
   }
@@ -65,8 +74,8 @@ export default class LoginPage extends Block {
     return `
       <form class="login-form">
         <h1 class="login__title">Вход</h1>
-        {{{ InputLogin }}}
-        {{{ InputPassword }}}
+        {{{ LoginInputField }}}
+        {{{ PasswordInputField }}}
         {{{ SignInButton }}}
         {{{ SignUpButton }}}
       </form>

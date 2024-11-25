@@ -1,10 +1,8 @@
 import * as Components from './components';
 import * as Pages from './pages';
 
-import renderDOM, { render } from './core/renderDom';
-
 import Handlebars from 'handlebars';
-import avatarSample from './assets/imgs/img_avatar.png';
+import { render } from './core/renderDom';
 
 const appTitle = 'Great chat app';
 const defaultPage = 'nav';

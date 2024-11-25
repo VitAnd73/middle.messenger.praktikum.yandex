@@ -137,7 +137,7 @@ export default class Block {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  componentDidUpdate(oldProps : PropsType, newProps : PropsType) {
+  componentDidUpdate(_oldProps : PropsType, _newProps : PropsType) {
     // compare props to determin if rerendering is required
     return true;
   }
