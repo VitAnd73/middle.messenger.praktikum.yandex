@@ -5,10 +5,10 @@ import { nanoid } from "nanoid";
 // type PropsType = string;
 type PropsType = Record<string | symbol, string | object >;
 // type PropsType = NamedNodeMap;
-type ChildrenType<T> = {[key: string] : T  | T[] };
-export type PropsWithChildrenType<T> = {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type, @typescript-eslint/no-explicit-any
-  [key : string]: string | PropsType | T | T[] | any
+type ChildrenType = {[key: string] : Block  | Block[] };
+export type PropsWithChildrenType = {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type, @typescript-eslint/no-explicit-any, @typescript-eslint/ban-types
+  [key : string | symbol]: string | Block  | Block[] | Function | object | PropsWithChildrenType
 };
 
 // type PropsType1 = {
@@ -36,7 +36,7 @@ export default class Block {
   _id = nanoid(6);
 
   eventBus: () => EventBus<string, Record<string, unknown[]>>;
-  children : ChildrenType<Block>;
+  children : ChildrenType;
   props: PropsType;
 
   /** JSDoc
@@ -45,9 +45,9 @@ export default class Block {
    *
    * @returns {void}
    */
-  // constructor(tagName = "div", propsWithChildren = {} as PropsWithChildrenType<Block>) {
+  // constructor(tagName = "div", propsWithChildren = {} as PropsWithChildrenType) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  constructor(tagName = "div", propsWithChildren = {} as PropsWithChildrenType<Block>) {
+  constructor(tagName = "div", propsWithChildren = {} as PropsWithChildrenType) {
     const eventBus = new EventBus();
     this.eventBus = () => eventBus;
 
@@ -92,8 +92,8 @@ export default class Block {
     this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
   }
 
-  _getChildrenAndProps(propsAndChildren : PropsWithChildrenType<Block>) {
-    const children = {} as ChildrenType<Block>;
+  _getChildrenAndProps(propsAndChildren : PropsWithChildrenType) {
+    const children = {} as ChildrenType;
     const props = {} as PropsType;
 
     Object.entries(propsAndChildren).forEach(([key, value]) => {

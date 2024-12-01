@@ -1,7 +1,7 @@
 import Block, { PropsWithChildrenType } from "../../core/block";
 
 export default class Button extends Block {
-    constructor(props: PropsWithChildrenType<Block>) {
+    constructor(props: PropsWithChildrenType) {
         super("button", {
             ...props,
             events: {

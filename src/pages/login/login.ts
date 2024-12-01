@@ -11,7 +11,7 @@ const loginValidator = (login: string, loginValidationErrorMessage: string = "So
 // }
 
 export default class LoginPage extends Block {
-  constructor(props?: PropsWithChildrenType<Block>) {
+  constructor(props?: PropsWithChildrenType) {
     super("main", {
       ...props,
       formState: {
@@ -25,34 +25,45 @@ export default class LoginPage extends Block {
       className: "main__login",
       LoginInputField: new InputField({
         label: "Login",
-        // attrs: {
-        //     class: "input__element",
-        // },
-        events: {
-          change: (e: InputEvent) => {
-            const value = (e.target as HTMLInputElement).value;
-            console.log(`value=${value}`);
-            const error = loginValidator(value);
-            (this.children.LoginInputField as Block).setProps({
-              error,
-            });
-            if (!error) {
-              return;
-            }
-            this.setProps({
-              formState: {
-                ...(this.props.formState as object),
-                login: value,
-              },
-            });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        error: (props?.errors as any)?.login ?? "",
+        inputProps: {
+          className: "input__element",
+          attrs: {
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              name: "login",
+              placeholder: ""
           },
+          events: {
+            blur: (e: InputEvent) => {
+              const value = (e.target as HTMLInputElement).value;
+              const error = loginValidator(value);
+              console.log(`value=${value}`);
+              this.setProps({
+                ...this.props,
+                formState: {
+                  ...(this.props.formState as object),
+                  login: value,
+                },
+                errors: {
+                  login: error,
+                  password: "",
+                }
+              });
+            }
+          }
         }
       }),
       PasswordInputField: new InputField({
         label: "Password",
-        attrs: {
-          type: "password",
-          name: "password"
+        inputProps: {
+          className: "input__element",
+          attrs: {
+            type: "password",
+            name: "password",
+            value: "",
+            placeholder: ""
+          }
         }
       }),
       SignInButton: new Button({
