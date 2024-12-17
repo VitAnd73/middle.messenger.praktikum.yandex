@@ -26,7 +26,8 @@ export default class LoginPage extends Block {
       LoginInputField: new InputField({
         label: "Login",
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        error: (props?.errors as any)?.login ?? "",
+        // error: (props?.errors as any)?.login ?? "",
+        // error: "выаыва",
         inputProps: {
           className: "input__element",
           attrs: {
@@ -38,7 +39,7 @@ export default class LoginPage extends Block {
             blur: (e: InputEvent) => {
               const value = (e.target as HTMLInputElement).value;
               const error = loginValidator(value);
-              console.log(`value=${value}`);
+              // console.log(`value=${value}`);
               this.setProps({
                 ...this.props,
                 formState: {
@@ -75,7 +76,7 @@ export default class LoginPage extends Block {
         className: "button button__primary",
         label: "Sign up",
         onClick: (e: MouseEvent) => {
-          console.log(this.props.formState);
+          // console.log(this.props.formState);
           e.preventDefault();
         }
       }),

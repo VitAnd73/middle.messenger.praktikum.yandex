@@ -18,7 +18,9 @@
     "noImplicitAny": true,
     "sourceMap": true,
     "strictNullChecks": true,
-    "strictPropertyInitialization": false
+    "strictPropertyInitialization": false,
+    "esModuleInterop": true,
+    "allowJs": true
   },
   "include": ["src"]
 }

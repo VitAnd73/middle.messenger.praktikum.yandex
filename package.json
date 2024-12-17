@@ -7,24 +7,31 @@
     "node": ">=16"
   },
   "scripts": {
+    "compile": "tsc",
     "dev": "vite",
     "lint": "npx eslint --fix && npx tsc --noEmit && npx stylelint --fix '**/*.{css,scss,sass,styl,less,pcss}'",
     "build": "tsc && vite build",
     "start": "vite build && node server.cjs",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "jest"
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",
+    "@jest/globals": "^29.7.0",
+    "@types/jest": "^29.5.14",
     "@typescript-eslint/eslint-plugin": "^8.15.0",
     "@typescript-eslint/parser": "^8.15.0",
     "autoprefixer": "^10.4.20",
     "eslint": "^8.56.0",
     "eslint-config-google": "^0.14.0",
     "globals": "^15.12.0",
+    "jest": "^29.7.0",
     "postcss": "^8.4.47",
     "postcss-preset-env": "^10.0.9",
     "stylelint": "^16.10.0",
     "stylelint-config-standard": "^36.0.1",
+    "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2",
     "tsconf-checker": "^1.0.6",
     "typescript": "~5.6.2",
     "typescript-eslint": "^7.18.0",
@@ -32,8 +39,11 @@
     "vite-plugin-handlebars": "^2.0.0"
   },
   "dependencies": {
+    "-": "^0.0.1",
     "express": "^4.21.1",
     "handlebars": "^4.7.8",
+    "jest-environment-jsdom": "^29.7.0",
+    "jest-transform-stub": "^2.0.0",
     "nanoid": "^5.0.8",
     "postcss-extend": "^1.0.5"
   }
