@@ -1,38 +1,47 @@
 import Block, { PropsWithChildrenType } from "../../core/block";
+import Input, {InputProps} from "./input";
 
-import Input from "./input";
+import { IValidator } from "../../core/utils/validation";
 
-type InputProps = {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    attrs?: object;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    events?: {
-        change?: (e: InputEvent) => void;
-        blur?: (e: InputEvent) => void;
-    };
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-} & PropsWithChildrenType;
-
-type InputFieldProps = {
+type InputFieldProps<T> = {
     label: string;
-    error?: string;
     inputProps: InputProps;
+    inputValidator?: IValidator<T>
 } & PropsWithChildrenType;
 
-
-export default class InputField extends Block {
-    constructor(props: InputFieldProps) {
+export default class InputField<T> extends Block {
+    constructor(props: InputFieldProps<T>) {
         console.log(`InputField props=${JSON.stringify(props)}`);
         super("div", {
             ...props,
             className: "input",
-            Input: new Input({...props.inputProps
-                // className: "input__element",
-                // attrs: {
-                //     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                //     value: (props?.inputProps.attrs as any)?.value,
-                //     placeholder: "",
-                // }
+            Input: new Input({...props.inputProps,
+                events: {
+                    blur: (e: InputEvent) => {
+                        const inputElement = e.target as HTMLInputElement;
+                        const value = inputElement.value;
+                        const validator = props?.inputValidator as IValidator<string>;
+                        const noErr = validator?.regexp ?
+                            typeof validator?.regexp === "function" ? validator?.regexp(value) : validator.regexp.test(value) :
+                            true;
+                        const cur_error =  noErr ? "" : props.inputValidator?.errMessage;
+                        if (cur_error) {
+                            inputElement.classList.add("input__error");
+                        }
+                        else {
+                            inputElement.classList.remove("input__error");
+                        }
+                        console.log(`value=${value}`);
+                        this.setProps({
+                            ...this.props,
+                            error: cur_error
+                        });
+                        const curBlur = props.inputProps?.events?.blur;
+                        if (curBlur){
+                            curBlur(e);
+                        }
+                    }
+                }
             }),
         });
     }
@@ -40,9 +49,9 @@ export default class InputField extends Block {
         return `
             <label class="input__container">
                 {{{Input}}}
-                <span class="input__label">{{label}}</span>
+                <span class="input__label {{#if error}} input__error {{/if}}">{{label}}</span>
             </label>
-            <div class="input__error ">{{#if error}}{{error}}{{/if}}</div>
+            {{#if error}}<div class="input__error ">{{error}}</div>{{/if}}
         `
     }
 }

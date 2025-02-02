@@ -9,8 +9,18 @@ const defaultPage = 'nav';
 
 
 const pages = {
-  'login': [ Pages.LoginPage ],
-  // 'register': [ Pages.RegisterPage ],
+  'login': new Pages.LoginPage({
+      loginValidator: {
+        regexp: new RegExp("^(?=.{3,20})\\d*[a-zA-Z][a-zA-Z\\d_-]*$"),
+        errMessage: "от 3 до 20 символов, латиница, может содержать цифры, но не состоять из них, без пробелов, без спецсимволов (допустимы дефис и нижнее подчёркивание)!"
+    },
+      passwordValidator: {
+        regexp: new RegExp("^(?=.*\\d+.*$)(?=.*[A-Z]+.*$).{8,40}$"),
+        errMessage: "от 8 до 40 символов, обязательно хотя бы одна заглавная буква и цифра"
+    }
+  }),
+
+  // 'register': new Pages.RegisterPage(),
   // 'profile': [ Pages.ProfilePage, {
   //   avatar: avatarSample,
   //   changingAvatar: false,
@@ -47,8 +57,7 @@ const pages = {
   //   buttonLabel: 'Назад к чатам',
   // }],
 
-
-  'nav': [ Pages.NavigatePage ],
+  'nav': new Pages.NavigatePage(),
 };
 
 Handlebars.registerHelper({
@@ -74,14 +83,7 @@ Object.entries(Components).forEach(([ name, template ]) => {
 });
 
 function navigate(page:  keyof typeof pages) {
-  const [ source, context ] = pages[page];
-  const container = document.getElementById('app')!;
-  if (typeof source === "function") {
-    render('#app', new source());
-    return;
-  }
-  const temlpatingFunction = Handlebars.compile(source);
-  container.innerHTML = temlpatingFunction(context);
+  render('#app', pages[page]);
 }
 
 function navigateToPath() {

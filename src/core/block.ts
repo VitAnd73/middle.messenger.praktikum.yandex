@@ -3,12 +3,12 @@ import Handlebars from "handlebars";
 import { nanoid } from "nanoid";
 
 // type PropsType = string;
-type PropsType = Record<string | symbol, string | object >;
+type PropsType = Record<string | symbol, string | object | undefined >;
 // type PropsType = NamedNodeMap;
 type ChildrenType = {[key: string] : Block  | Block[] };
 export type PropsWithChildrenType = {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type, @typescript-eslint/no-explicit-any, @typescript-eslint/ban-types
-  [key : string | symbol]: string | Block  | Block[] | Function | object | PropsWithChildrenType
+  [key : string | symbol]: string | Block  | Block[] | Function | object | undefined | PropsWithChildrenType
 };
 
 // type PropsType1 = {
