@@ -5,10 +5,23 @@
 import Button from './button';
 
 describe("This is a simple button test", () => {
-    test("Check the button", () => {
-        const b = new Button({});
-        const r = b.render();
-        console.log(`button test is set, r=${r}`);
-        expect(r).toEqual('df');
+    const b = new Button({
+        label: "labelTest",
+        onClick: () => {
+            alert(`button clicked`);
+        }
+    });
+
+    const r = b.render();
+    const element = b.getContent();
+
+    test("Check the button click", () => {
+        window.alert = jest.fn();
+        element.click();
+        expect(window.alert).toHaveBeenCalledWith('button clicked');
+    });
+    test("Check the button label", () => {
+        console.log(`button label, r=${r}`);
+        expect(r).toContain('label');
     });
 });
