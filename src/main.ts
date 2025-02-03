@@ -2,6 +2,7 @@ import * as Components from './components';
 import * as Pages from './pages';
 
 import Handlebars from 'handlebars';
+import { Validator } from './core/utils/validation';
 import { render } from './core/renderDom';
 
 const appTitle = 'Great chat app';
@@ -10,14 +11,8 @@ const defaultPage = 'nav';
 
 const pages = {
   'login': new Pages.LoginPage({
-      loginValidator: {
-        regexp: new RegExp("^(?=.{3,20})\\d*[a-zA-Z][a-zA-Z\\d_-]*$"),
-        errMessage: "от 3 до 20 символов, латиница, может содержать цифры, но не состоять из них, без пробелов, без спецсимволов (допустимы дефис и нижнее подчёркивание)!"
-    },
-      passwordValidator: {
-        regexp: new RegExp("^(?=.*\\d+.*$)(?=.*[A-Z]+.*$).{8,40}$"),
-        errMessage: "от 8 до 40 символов, обязательно хотя бы одна заглавная буква и цифра"
-    }
+      loginValidator: new Validator(new RegExp("^(?=.{3,20})\\d*[a-zA-Z][a-zA-Z\\d_-]*$"), "от 3 до 20 символов, латиница, может содержать цифры, но не состоять из них, без пробелов, без спецсимволов (допустимы дефис и нижнее подчёркивание)!" ),
+      passwordValidator: new Validator(new RegExp("^(?=.*\\d+.*$)(?=.*[A-Z]+.*$).{8,40}$"), "от 8 до 40 символов, обязательно хотя бы одна заглавная буква и цифра")
   }),
 
   // 'register': new Pages.RegisterPage(),

@@ -1,17 +1,16 @@
 import Block, { PropsWithChildrenType } from "../../core/block";
 
 import { Button } from "../../components";
-import { IValidator } from "../../core/utils/validation";
 import { InputField } from "../../components/input";
+import { Validator } from "../../core/utils/validation";
 
 export type LoginPageParams = {
-  loginValidator: IValidator<string>;
-  passwordValidator: IValidator<string>;
+  loginValidator: Validator<string>;
+  passwordValidator: Validator<string>;
 };
 
 export default class LoginPage extends Block {
   constructor(props?: LoginPageParams & PropsWithChildrenType) {
-    console.log(`curProps = ${props?.err}`);
     super("main", {
       ...props,
       formState: {
@@ -38,8 +37,8 @@ export default class LoginPage extends Block {
           events: {
             blur: (e: InputEvent) => {
               const value = (e.target as HTMLInputElement).value;
-              const noError = typeof props?.loginValidator.regexp === "function" ? props?.loginValidator.regexp(value) : props?.loginValidator.regexp.test(value);
-              console.log(`value=${value}, error=${noError ? "no err" : props?.loginValidator.errMessage}`);
+              const error = props?.loginValidator.validate(value);
+              console.log(`value=${value}, error=${error}`);
               this.setProps({
                 ...this.props,
                 formState: {
@@ -47,8 +46,8 @@ export default class LoginPage extends Block {
                   login: value,
                 },
                 errors: {
-                  login: noError,
-                  password: "",
+                  ...(this.props.errors as object),
+                  login: error,
                 }
               });
             }
@@ -71,8 +70,8 @@ export default class LoginPage extends Block {
           events: {
             blur: (e: InputEvent) => {
               const value = (e.target as HTMLInputElement).value;
-              const noError = typeof props?.passwordValidator.regexp === "function" ? props?.passwordValidator.regexp(value) : props?.passwordValidator.regexp.test(value);
-              console.log(`value=${value}, error=${noError ? "no err" : props?.loginValidator.errMessage}`);
+              const error = props?.passwordValidator.validate(value);
+              console.log(`value=${value}, error=${error}`);
               this.setProps({
                 ...this.props,
                 formState: {
@@ -80,8 +79,8 @@ export default class LoginPage extends Block {
                   password: value,
                 },
                 errors: {
-                  login: "",
-                  password: noError,
+                  ...(this.props.errors as object),
+                  password: error,
                 }
               });
             }
@@ -91,13 +90,29 @@ export default class LoginPage extends Block {
       SignInButton: new Button({
         className: "button button__primary",
         label: "Sign in",
-        color: "primary"
+        color: "primary",
+        onClick: (e: MouseEvent) => {
+          console.log(`SignInButton formState = ${JSON.stringify(this.props?.formState)}`);
+          console.log(`SignInButton errors = ${ JSON.stringify({
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            loginError: props?.loginValidator.validate( (this.props?.formState as any).login),
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            passwordError: props?.passwordValidator.validate( (this.props?.formState as any).password)
+          })}`);
+          e.preventDefault();
+        }
       }),
       SignUpButton: new Button({
         className: "button button__primary",
         label: "Sign up",
         onClick: (e: MouseEvent) => {
-          console.log(this.props.formState);
+          console.log(`SignUpButton formState = ${JSON.stringify(this.props?.formState)}`);
+          console.log(`SignUpButton errors = ${ JSON.stringify({
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            loginError: props?.loginValidator.validate( (this.props?.formState as any).login),
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            passwordError: props?.passwordValidator.validate( (this.props?.formState as any).password)
+          })}`);
           e.preventDefault();
         }
       }),

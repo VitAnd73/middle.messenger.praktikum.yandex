@@ -11,7 +11,6 @@ type InputFieldProps<T> = {
 
 export default class InputField<T> extends Block {
     constructor(props: InputFieldProps<T>) {
-        console.log(`InputField props=${JSON.stringify(props)}`);
         super("div", {
             ...props,
             className: "input",
@@ -28,7 +27,6 @@ export default class InputField<T> extends Block {
                         else {
                             inputElement.classList.remove("input__error");
                         }
-                        console.log(`value=${value}`);
                         this.setProps({
                             ...this.props,
                             error: cur_error
