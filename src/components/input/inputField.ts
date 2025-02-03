@@ -1,12 +1,12 @@
 import Block, { PropsWithChildrenType } from "../../core/block";
 import Input, {InputProps} from "./input";
 
-import { IValidator } from "../../core/utils/validation";
+import { Validator } from "../../core/utils/validation";
 
 type InputFieldProps<T> = {
     label: string;
     inputProps: InputProps;
-    inputValidator?: IValidator<T>
+    inputValidator?: Validator<T>
 } & PropsWithChildrenType;
 
 export default class InputField<T> extends Block {
@@ -19,12 +19,9 @@ export default class InputField<T> extends Block {
                 events: {
                     blur: (e: InputEvent) => {
                         const inputElement = e.target as HTMLInputElement;
-                        const value = inputElement.value;
-                        const validator = props?.inputValidator as IValidator<string>;
-                        const noErr = validator?.regexp ?
-                            typeof validator?.regexp === "function" ? validator?.regexp(value) : validator.regexp.test(value) :
-                            true;
-                        const cur_error =  noErr ? "" : props.inputValidator?.errMessage;
+                        const value = inputElement.value as T;
+                        const validator = props?.inputValidator;
+                        const cur_error = validator?.validate(value);
                         if (cur_error) {
                             inputElement.classList.add("input__error");
                         }
