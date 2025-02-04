@@ -47,7 +47,7 @@ const ifs1 = new InputField({
     events: {
       blur: (e: InputEvent) => {
         const value = (e.target as HTMLInputElement).value;
-        console.log(`value=${value}`);
+        console.log(`ifs1 value=${value}`);
       }
     }
   }
@@ -66,7 +66,7 @@ const ifs2 = new InputField({
     events: {
       blur: (e: InputEvent) => {
         const value = (e.target as HTMLInputElement).value;
-        console.log(`value=${value}`);
+        console.log(`ifs2 value=${value}`);
       }
     }
   }

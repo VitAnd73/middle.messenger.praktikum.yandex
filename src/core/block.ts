@@ -178,7 +178,7 @@ export default class Block {
     Object.entries(this.children).forEach(([key, child]) => {
       if (Array.isArray(child)) {
         propsAndStubs[key] = child.map(
-          (component) => `<div data-id="${component._id}></div>`,
+          (component) => `<div data-id="${component._id}"></div>`,
         );
       } else {
         propsAndStubs[key] = `<div data-id="${child._id}"></div>`;
