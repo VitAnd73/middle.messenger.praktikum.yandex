@@ -33,6 +33,45 @@ const big_data = [
   }
 ];
 
+const ifs1 = new InputField({
+  label: "Password",
+  error: "",
+  inputProps: {
+    className: "input__element",
+    attrs: {
+      type: "password",
+      name: "password",
+      value: "",
+      placeholder: ""
+    },
+    events: {
+      blur: (e: InputEvent) => {
+        const value = (e.target as HTMLInputElement).value;
+        console.log(`value=${value}`);
+      }
+    }
+  }
+})
+const ifs2 = new InputField({
+  label: "Password",
+  error: "",
+  inputProps: {
+    className: "input__element",
+    attrs: {
+      type: "password",
+      name: "password",
+      value: "",
+      placeholder: ""
+    },
+    events: {
+      blur: (e: InputEvent) => {
+        const value = (e.target as HTMLInputElement).value;
+        console.log(`value=${value}`);
+      }
+    }
+  }
+})
+
 export default class LoginPage extends Block {
   constructor(props?: LoginPageParams & PropsWithChildrenType) {
     super("main", {
@@ -132,7 +171,8 @@ export default class LoginPage extends Block {
         }
       }),
 
-      big_data: big_data
+      big_data: [ifs1, ifs2]
+      // big_data: big_data
     });
   }
   public render(): string {
@@ -144,18 +184,7 @@ export default class LoginPage extends Block {
         {{{ SignInButton }}}
         {{{ SignUpButton }}}
         <br/>
-        {{#each big_data}}
-          <p>
-            {{name}}
-            <br/>
-            <ul>
-                {{#details}}
-                    <li>{{username}}</li>
-                    <li>{{email}}</li>
-                {{/details}}
-            </ul>
-          </p>
-        {{/each}}
+        {{big_data}}
       </form>
     `;
   }
