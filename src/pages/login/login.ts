@@ -14,25 +14,6 @@ type LoginState = {
   password: string;
 }
 
-const big_data = [
-  {
-      name: "users1",
-      details: [
-          {username: "alan1", firstName: "Alan", lastName: "Johnson", email: "alan@test.com" },
-          {username: "allison1", firstName: "Allison", lastName: "House", email: "allison@test.com" },
-          {username: "ryan1", firstName: "Ryan", lastName: "Carson", email: "ryan@test.com" }
-        ]
-  },
-  {
-      name: "users2",
-      details: [
-          {username: "alan2", firstName: "Alan", lastName: "Johnson", email: "alan@test.com" },
-          {username: "allison2", firstName: "Allison", lastName: "House", email: "allison@test.com" },
-          {username: "ryan2", firstName: "Ryan", lastName: "Carson", email: "ryan@test.com" }
-        ]
-  }
-];
-
 const ifs1 = new InputField({
   label: "Password",
   error: "",
