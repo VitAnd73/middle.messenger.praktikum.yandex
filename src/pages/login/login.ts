@@ -9,6 +9,30 @@ export type LoginPageParams = {
   passwordValidator: Validator<string>;
 };
 
+type LoginState = {
+  login: string;
+  password: string;
+}
+
+const big_data = [
+  {
+      name: "users1",
+      details: [
+          {username: "alan1", firstName: "Alan", lastName: "Johnson", email: "alan@test.com" },
+          {username: "allison1", firstName: "Allison", lastName: "House", email: "allison@test.com" },
+          {username: "ryan1", firstName: "Ryan", lastName: "Carson", email: "ryan@test.com" }
+        ]
+  },
+  {
+      name: "users2",
+      details: [
+          {username: "alan2", firstName: "Alan", lastName: "Johnson", email: "alan@test.com" },
+          {username: "allison2", firstName: "Allison", lastName: "House", email: "allison@test.com" },
+          {username: "ryan2", firstName: "Ryan", lastName: "Carson", email: "ryan@test.com" }
+        ]
+  }
+];
+
 export default class LoginPage extends Block {
   constructor(props?: LoginPageParams & PropsWithChildrenType) {
     super("main", {
@@ -24,13 +48,11 @@ export default class LoginPage extends Block {
       className: "main__login",
       LoginInputField: new InputField({
         label: "Login",
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        error: (props?.errors as any)?.login ?? "",
+        error: (props?.errors as LoginState)?.login ?? "",
         inputValidator: props?.loginValidator,
         inputProps: {
           className: "input__element",
           attrs: {
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               name: "login",
               placeholder: ""
           },
@@ -38,7 +60,6 @@ export default class LoginPage extends Block {
             blur: (e: InputEvent) => {
               const value = (e.target as HTMLInputElement).value;
               const error = props?.loginValidator.validate(value);
-              console.log(`value=${value}, error=${error}`);
               this.setProps({
                 ...this.props,
                 formState: {
@@ -56,8 +77,7 @@ export default class LoginPage extends Block {
       }),
       PasswordInputField: new InputField({
         label: "Password",
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        error: (props?.errors as any)?.password ?? "",
+        error: (props?.errors as LoginState)?.password ?? "",
         inputValidator: props?.passwordValidator,
         inputProps: {
           className: "input__element",
@@ -71,7 +91,6 @@ export default class LoginPage extends Block {
             blur: (e: InputEvent) => {
               const value = (e.target as HTMLInputElement).value;
               const error = props?.passwordValidator.validate(value);
-              console.log(`value=${value}, error=${error}`);
               this.setProps({
                 ...this.props,
                 formState: {
@@ -94,10 +113,8 @@ export default class LoginPage extends Block {
         onClick: (e: MouseEvent) => {
           console.log(`SignInButton formState = ${JSON.stringify(this.props?.formState)}`);
           console.log(`SignInButton errors = ${ JSON.stringify({
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            loginError: props?.loginValidator.validate( (this.props?.formState as any).login),
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            passwordError: props?.passwordValidator.validate( (this.props?.formState as any).password)
+            loginError: props?.loginValidator.validate( (this.props?.formState as LoginState).login),
+            passwordError: props?.passwordValidator.validate( (this.props?.formState as LoginState).password)
           })}`);
           e.preventDefault();
         }
@@ -108,14 +125,14 @@ export default class LoginPage extends Block {
         onClick: (e: MouseEvent) => {
           console.log(`SignUpButton formState = ${JSON.stringify(this.props?.formState)}`);
           console.log(`SignUpButton errors = ${ JSON.stringify({
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            loginError: props?.loginValidator.validate( (this.props?.formState as any).login),
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            passwordError: props?.passwordValidator.validate( (this.props?.formState as any).password)
+            loginError: props?.loginValidator.validate( (this.props?.formState as LoginState).login),
+            passwordError: props?.passwordValidator.validate( (this.props?.formState as LoginState).password)
           })}`);
           e.preventDefault();
         }
       }),
+
+      big_data: big_data
     });
   }
   public render(): string {
@@ -126,6 +143,19 @@ export default class LoginPage extends Block {
         {{{ PasswordInputField }}}
         {{{ SignInButton }}}
         {{{ SignUpButton }}}
+        <br/>
+        {{#each big_data}}
+          <p>
+            {{name}}
+            <br/>
+            <ul>
+                {{#details}}
+                    <li>{{username}}</li>
+                    <li>{{email}}</li>
+                {{/details}}
+            </ul>
+          </p>
+        {{/each}}
       </form>
     `;
   }
