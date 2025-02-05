@@ -4,7 +4,7 @@ import { Button } from "../../components";
 import { InputField } from "../../components/input";
 import { Validator } from "../../core/utils/validation";
 
-export type LoginPageParams = {
+type LoginPageParams = {
   loginValidator: Validator<string>;
   passwordValidator: Validator<string>;
 };
@@ -13,45 +13,6 @@ type LoginState = {
   login: string;
   password: string;
 }
-
-const ifs1 = new InputField({
-  label: "Password",
-  error: "",
-  inputProps: {
-    className: "input__element",
-    attrs: {
-      type: "password",
-      name: "password",
-      value: "",
-      placeholder: ""
-    },
-    events: {
-      blur: (e: InputEvent) => {
-        const value = (e.target as HTMLInputElement).value;
-        console.log(`ifs1 value=${value}`);
-      }
-    }
-  }
-})
-const ifs2 = new InputField({
-  label: "Password",
-  error: "",
-  inputProps: {
-    className: "input__element",
-    attrs: {
-      type: "password",
-      name: "password",
-      value: "",
-      placeholder: ""
-    },
-    events: {
-      blur: (e: InputEvent) => {
-        const value = (e.target as HTMLInputElement).value;
-        console.log(`ifs2 value=${value}`);
-      }
-    }
-  }
-})
 
 export default class LoginPage extends Block {
   constructor(props?: LoginPageParams & PropsWithChildrenType) {
@@ -140,7 +101,7 @@ export default class LoginPage extends Block {
         }
       }),
       SignUpButton: new Button({
-        className: "button button__primary",
+        className: "button",
         label: "Sign up",
         onClick: (e: MouseEvent) => {
           console.log(`SignUpButton formState = ${JSON.stringify(this.props?.formState)}`);
@@ -151,9 +112,6 @@ export default class LoginPage extends Block {
           e.preventDefault();
         }
       }),
-
-      big_data: [ifs1, ifs2]
-      // big_data: big_data
     });
   }
   public render(): string {
@@ -164,8 +122,6 @@ export default class LoginPage extends Block {
         {{{ PasswordInputField }}}
         {{{ SignInButton }}}
         {{{ SignUpButton }}}
-        <br/>
-        {{big_data}}
       </form>
     `;
   }

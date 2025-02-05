@@ -2,20 +2,12 @@ import EventBus from "./eventBus";
 import Handlebars from "handlebars";
 import { nanoid } from "nanoid";
 
-// type PropsType = string;
 type PropsType = Record<string | symbol, string | object | undefined >;
-// type PropsType = NamedNodeMap;
 type ChildrenType = {[key: string] : Block  | Block[] };
 export type PropsWithChildrenType = {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type, @typescript-eslint/no-explicit-any, @typescript-eslint/ban-types
   [key : string | symbol]: string | Block  | Block[] | Function | object | undefined | PropsWithChildrenType
 };
-
-// type PropsType1 = {
-//   events?: any,
-//   className?: string,
-//   attrs?: object
-// }
 
 type MetaType = {
   tagName: string,
@@ -39,14 +31,6 @@ export default class Block {
   children : ChildrenType;
   props: PropsType;
 
-  /** JSDoc
-   * @param {string} tagName
-   * @param {Object} props
-   *
-   * @returns {void}
-   */
-  // constructor(tagName = "div", propsWithChildren = {} as PropsWithChildrenType) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(tagName = "div", propsWithChildren = {} as PropsWithChildrenType) {
     const eventBus = new EventBus();
     this.eventBus = () => eventBus;
@@ -244,9 +228,6 @@ export default class Block {
       set(target, prop, value) {
         const oldTarget = { ...target };
         target[prop] = value;
-
-        // Запускаем обновление компоненты
-        // Плохой cloneDeep, в следующей итерации нужно заставлять добавлять cloneDeep им самим
         emitBind(Block.EVENTS.FLOW_CDU, oldTarget, target);
         return true;
       },
@@ -257,7 +238,6 @@ export default class Block {
   }
 
   _createDocumentElement(tagName: string) {
-    // Можно сделать метод, который через фрагменты в цикле создаёт сразу несколько блоков
     return document.createElement(tagName);
   }
 
