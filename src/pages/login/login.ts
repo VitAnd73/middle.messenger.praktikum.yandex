@@ -1,127 +1,108 @@
 import Block, { PropsWithChildrenType } from "../../core/block";
+import { loginValidator, passwordValidator } from "../../core/utils/validators";
 
 import { Button } from "../../components";
 import { InputField } from "../../components/input";
-import { Validator } from "../../core/utils/validation";
 
-type LoginPageParams = {
-  loginValidator: Validator<string>;
-  passwordValidator: Validator<string>;
-};
-
-type LoginState = {
-  login: string;
-  password: string;
+const loginStateInitial = {
+  login: "",
+  password: ""
 }
 
+type LoginState = typeof loginStateInitial;
+
+const fields = [
+  {
+    name: 'login',
+    label: 'Login',
+    validator: loginValidator,
+    placeholder: "",
+
+  },
+  {
+    name: 'password',
+    type: "password",
+    label: 'Password',
+    validator: passwordValidator,
+    placeholder: "",
+  },
+];
+
+const buttons = [
+  {
+    className: "button button__primary",
+    label: "Sign in",
+    color: "primary"
+  },
+  {
+    className: "button",
+    label: "Sign up",
+  },
+
+]
+
 export default class LoginPage extends Block {
-  constructor(props?: LoginPageParams & PropsWithChildrenType) {
+  constructor(props?: PropsWithChildrenType) {
     super("main", {
       ...props,
-      formState: {
-        login: "",
-        password: "",
-      },
-      errors: {
-        login: "",
-        password: "",
-      },
+      formState: loginStateInitial,
+      errors: loginStateInitial,
       className: "main__login",
-      LoginInputField: new InputField({
-        label: "Login",
-        error: (props?.errors as LoginState)?.login ?? "",
-        inputValidator: props?.loginValidator,
+
+      InputFields: fields.map(inputField => new InputField({
+        label: inputField.label,
+        error: (props?.errors && (props?.errors as LoginState)[inputField.name as keyof LoginState]) ?? "",
+        inputValidator: inputField.validator,
         inputProps: {
           className: "input__element",
           attrs: {
-              name: "login",
-              placeholder: ""
+            name: inputField.name,
+            type: inputField.type,
+            placeholder: inputField.placeholder
           },
           events: {
             blur: (e: InputEvent) => {
               const value = (e.target as HTMLInputElement).value;
-              const error = props && props['loginValidator'].validate(value);
+              const error = inputField.validator.validate(value);
               this.setProps({
                 ...this.props,
                 formState: {
                   ...(this.props.formState as object),
-                  ['login']: value,
+                  [inputField.name]: value,
                 },
                 errors: {
                   ...(this.props.errors as object),
-                  ['login']: error,
+                  [inputField.name]: error,
                 }
               });
             }
           }
         }
-      }),
-      PasswordInputField: new InputField({
-        label: "Password",
-        error: (props?.errors as LoginState)?.password ?? "",
-        inputValidator: props?.passwordValidator,
-        inputProps: {
-          className: "input__element",
-          attrs: {
-            type: "password",
-            name: "password",
-            value: "",
-            placeholder: ""
-          },
-          events: {
-            blur: (e: InputEvent) => {
-              const value = (e.target as HTMLInputElement).value;
-              const error = props?.passwordValidator.validate(value);
-              this.setProps({
-                ...this.props,
-                formState: {
-                  ...(this.props.formState as object),
-                  password: value,
-                },
-                errors: {
-                  ...(this.props.errors as object),
-                  password: error,
-                }
-              });
-            }
-          }
-        }
-      }),
-      SignInButton: new Button({
-        className: "button button__primary",
-        label: "Sign in",
-        color: "primary",
+      })),
+
+      Buttons: buttons.map(button =>new Button({
+        className: button.className,
+        label: button.label,
+        color: button.color,
         onClick: (e: MouseEvent) => {
-          console.log(`SignInButton formState = ${JSON.stringify(this.props?.formState)}`);
-          console.log(`SignInButton errors = ${ JSON.stringify({
-            loginError: props?.loginValidator.validate( (this.props?.formState as LoginState).login),
-            passwordError: props?.passwordValidator.validate( (this.props?.formState as LoginState).password)
-          })}`);
+          console.log(`Entered login form: ${JSON.stringify(this.props?.formState)}`);
+          const errs = fields.reduce( (a, v) => ({...a, [v.name] : v.validator.validate( (this.props?.formState as LoginState)[v.name as keyof LoginState])}), {});
+          console.log(`${button.label} clicked - errors = ${ JSON.stringify(errs)}`);
           e.preventDefault();
         }
-      }),
-      SignUpButton: new Button({
-        className: "button",
-        label: "Sign up",
-        onClick: (e: MouseEvent) => {
-          console.log(`SignUpButton formState = ${JSON.stringify(this.props?.formState)}`);
-          console.log(`SignUpButton errors = ${ JSON.stringify({
-            loginError: props?.loginValidator.validate( (this.props?.formState as LoginState).login),
-            passwordError: props?.passwordValidator.validate( (this.props?.formState as LoginState).password)
-          })}`);
-          e.preventDefault();
-        }
-      }),
+      })),
     });
   }
   public render(): string {
     return `
       <form class="login-form">
         <h1 class="login__title">Вход</h1>
-        {{{ LoginInputField }}}
-        {{{ PasswordInputField }}}
-        {{{ SignInButton }}}
-        {{{ SignUpButton }}}
+        {{#each InputFields}}
+          {{{this}}}
+        {{/each}}
+        {{#each Buttons}}
+          {{{this}}}
+        {{/each}}
       </form>
     `;
   }

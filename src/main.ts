@@ -1,8 +1,6 @@
 import * as Components from './components';
 import * as Pages from './pages';
 
-import { loginValidator, passwordValidator } from './core/utils/validation';
-
 import Handlebars from 'handlebars';
 import { render } from './core/renderDom';
 
@@ -14,11 +12,7 @@ const defaultPage = 'nav';
 
 
 const pages = {
-  'login': new Pages.LoginPage({
-      loginValidator,
-      passwordValidator
-  }),
-
+  'login': new Pages.LoginPage(),
   'register': new Pages.RegisterPage(),
   // 'profile': [ Pages.ProfilePage, {
   //   avatar: avatarSample,
