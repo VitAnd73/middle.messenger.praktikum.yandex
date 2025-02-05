@@ -40,16 +40,16 @@ export default class LoginPage extends Block {
           events: {
             blur: (e: InputEvent) => {
               const value = (e.target as HTMLInputElement).value;
-              const error = props?.loginValidator.validate(value);
+              const error = props && props['loginValidator'].validate(value);
               this.setProps({
                 ...this.props,
                 formState: {
                   ...(this.props.formState as object),
-                  login: value,
+                  ['login']: value,
                 },
                 errors: {
                   ...(this.props.errors as object),
-                  login: error,
+                  ['login']: error,
                 }
               });
             }
