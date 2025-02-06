@@ -17,7 +17,6 @@ const fields = [
     label: 'Login',
     validator: loginValidator,
     placeholder: "",
-
   },
   {
     name: 'password',
@@ -59,7 +58,6 @@ export default class LoginPage extends Block {
             name: inputField.name,
             type: inputField.type,
             placeholder: inputField.placeholder,
-            ...(inputField.name==="password" ? {disabled: true} : {}),
           },
           events: {
             blur: (e: InputEvent) => {

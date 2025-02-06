@@ -2,24 +2,19 @@ import * as Components from './components';
 import * as Pages from './pages';
 
 import Handlebars from 'handlebars';
+import avatarSample from './assets/imgs/img_avatar.png';
 import { render } from './core/renderDom';
-
-// import avatarSample from './assets/imgs/img_avatar.png';
-
 
 const appTitle = 'Great chat app';
 const defaultPage = 'nav';
 
-
 const pages = {
   'login': new Pages.LoginPage(),
   'register': new Pages.RegisterPage(),
-  // 'profile': [ Pages.ProfilePage, {
-  //   avatar: avatarSample,
-  //   changingAvatar: false,
-  //   changingData: false,
-  //   changingPwd: false,
-  // } ],
+  'profile': new Pages.ProfilePage({
+    avatar: avatarSample,
+    status: 'display'
+  } ),
   // 'profile-new-avatar': [ Pages.ProfilePage, {
   //   avatar: avatarSample,
   //   changingAvatar: true,
@@ -39,16 +34,16 @@ const pages = {
   //   changingPwd: true,
   // } ],
   // 'chats': [ Pages.ChatsPage],
-  // '500': [ Pages.InfoPage, {
-  //   title: '500',
-  //   text: 'Мы уже фиксим',
-  //   buttonLabel: 'Назад к чатам',
-  // }],
-  // '404': [ Pages.InfoPage, {
-  //   title: '404',
-  //   text: 'Не туда попали',
-  //   buttonLabel: 'Назад к чатам',
-  // }],
+  '500': new Pages.InfoPage({
+    title: '500',
+    text: 'Мы уже фиксим',
+    buttonLabel: 'Назад к чатам',
+  }),
+  '404': new Pages.InfoPage({
+    title: '404',
+    text: 'Не туда попали',
+    buttonLabel: 'Назад к чатам',
+  }),
 
   'nav': new Pages.NavigatePage(),
 };
