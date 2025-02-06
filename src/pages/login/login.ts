@@ -58,7 +58,8 @@ export default class LoginPage extends Block {
           attrs: {
             name: inputField.name,
             type: inputField.type,
-            placeholder: inputField.placeholder
+            placeholder: inputField.placeholder,
+            ...(inputField.name==="password" ? {disabled: true} : {}),
           },
           events: {
             blur: (e: InputEvent) => {
