@@ -12,8 +12,10 @@ const pages = {
   'login': new Pages.LoginPage(),
   'register': new Pages.RegisterPage(),
   'profile': new Pages.ProfilePage({
-    avatar: avatarSample,
-    status: 'display'
+    status: 'display',
+    formState: {
+      avatar: avatarSample,
+    }
   } ),
   // 'profile-new-avatar': [ Pages.ProfilePage, {
   //   avatar: avatarSample,

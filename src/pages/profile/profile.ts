@@ -1,19 +1,22 @@
 import Block, { PropsWithChildrenType } from "../../core/block";
 
-// type ProfileFormStatus = "display" | "changing-avatar" | "changing-data" | "changing-pwd";
+import { Button } from "../../components";
 
-// const profileFormInitialDisplay = {
-//   avatar: undefined,
-//   status: 'display' as ProfileFormStatus,
-//   email: "",
-//   login: "",
-//   first_name: "",
-//   second_name: "",
-//   display_name: "",
-//   phone: "",
-// }
+const profileFormStatuses =  ["display", "changing-avatar", "changing-data", "changing-pwd"] as const;
+type StatusTuple = typeof profileFormStatuses;
+type ProfileFormStatus = StatusTuple[number];
 
-// const profileFormInitialChanngingPwd = {
+const profileFormInitialDisplay = {
+  avatar: "",
+  email: "",
+  login: "",
+  first_name: "",
+  second_name: "",
+  display_name: "",
+  phone: "",
+}
+
+// const profileFormInitialChangingPwd = {
 //   oldPassword: "",
 //   newPassword: "",
 //   repeatPassword: "",
@@ -28,68 +31,50 @@ import Block, { PropsWithChildrenType } from "../../core/block";
 //   status: 'changing-data' as ProfileFormStatus,
 // }
 
+type ProfilePageFormState = {
+  status: ProfileFormStatus,
+  formState: Partial<typeof profileFormInitialDisplay>;
+}
+
 export default class ProfilePage extends Block {
-  constructor(props?: PropsWithChildrenType) {
+  constructor(props?: ProfilePageFormState & PropsWithChildrenType) {
     super("main", {
       ...props,
-      // formState: loginStateInitial,
-      // errors: loginStateInitial,
-      // className: "main__login",
+      Button: new Button({
+        className: "button button__primary",
+        label: props?.status,
+        onClick: (e: MouseEvent) => {
+          console.log(`ProfilePage clicked with props?.status=${this.props?.status}`);
+          const ind = Math.floor(Math.random() * profileFormStatuses.length);
+          const newStatus = profileFormStatuses[ind];
+          console.log(`ProfilePage changing status to =${newStatus}`);
+          this.setProps({
+            ...this.props,
+            status: newStatus,
+            label: newStatus
+          });
 
-      // InputFields: fields.map(inputField => new InputField({
-      //   label: inputField.label,
-      //   error: (props?.errors && (props?.errors as LoginState)[inputField.name as keyof LoginState]) ?? "",
-      //   inputValidator: inputField.validator,
-      //   inputProps: {
-      //     className: "input__element",
-      //     attrs: {
-      //       name: inputField.name,
-      //       type: inputField.type,
-      //       placeholder: inputField.placeholder,
-      //     },
-      //     events: {
-      //       blur: (e: InputEvent) => {
-      //         const value = (e.target as HTMLInputElement).value;
-      //         const error = inputField.validator.validate(value);
-      //         this.setProps({
-      //           ...this.props,
-      //           formState: {
-      //             ...(this.props.formState as object),
-      //             [inputField.name]: value,
-      //           },
-      //           errors: {
-      //             ...(this.props.errors as object),
-      //             [inputField.name]: error,
-      //           }
-      //         });
-      //       }
-      //     }
-      //   }
-      // })),
-
-      // Buttons: buttons.map(button =>new Button({
-      //   className: button.className,
-      //   label: button.label,
-      //   color: button.color,
-      //   onClick: (e: MouseEvent) => {
-      //     console.log(`Entered login form: ${JSON.stringify(this.props?.formState)}`);
-      //     const errs = fields.reduce( (a, v) => ({...a, [v.name] : v.validator.validate( (this.props?.formState as LoginState)[v.name as keyof LoginState])}), {});
-      //     console.log(`${button.label} clicked - errors = ${ JSON.stringify(errs)}`);
-      //     e.preventDefault();
-      //   }
-      // })),
+          e.preventDefault();
+        }
+      }),
     });
   }
   public render(): string {
+    // TBC
+    console.log(`Профиль render`);
+    const {Button} = this.children;
+    if (!Array.isArray(Button)) {
+      Button.setProps({
+        ...this.props,
+        label: this.props.status
+      });
+    }
+
     return `
       <form class="login-form">
-        <h1 class="login__title">Вход</h1>
-        {{#each InputFields}}
-          {{{this}}}
-        {{/each}}
-        {{#each Buttons}}
-          {{{this}}}
-        {{/each}}
+        <h1 class="login__title">Профиль - ${this.props?.status}</h1>
+        {{{ Button }}}
+        {{{status}}}
       </form>
     `;
   }
