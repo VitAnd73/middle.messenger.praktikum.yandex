@@ -78,7 +78,6 @@ function navigate(page:  keyof typeof pages) {
 
 function navigateToPath() {
   const {pathname} = window.location;
-  console.log(`pathname = ${pathname}`);
   if (pathname.length > 1) {
     const navTo = pathname.substring(1);
     if (navTo in pages) {

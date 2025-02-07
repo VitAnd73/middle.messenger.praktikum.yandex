@@ -14,6 +14,10 @@ type MetaType = {
   props: PropsType
 }
 
+type EventsCollection = {
+  [key: string] : EventListenerOrEventListenerObject;
+}
+
 // Нельзя создавать экземпляр данного класса
 export default class Block {
   static EVENTS = {
@@ -143,7 +147,7 @@ export default class Block {
 
     Object.keys(events).forEach((eventName) => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      this._element.addEventListener(eventName, (events as any)[eventName]);
+      this._element.addEventListener(eventName, (events as EventsCollection)[eventName]);
     });
   }
 
@@ -152,7 +156,7 @@ export default class Block {
 
     Object.keys(events).forEach((eventName) => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      this._element.removeEventListener(eventName, (events as any)[eventName]);
+      this._element.removeEventListener(eventName, (events as EventsCollection)[eventName]);
     });
   }
 
@@ -199,7 +203,7 @@ export default class Block {
     this._removeEvents();
     const block = this._compile();
 
-    if (this._element.children.length === 0) {
+    if (this._element.childNodes.length === 0) {
       this._element.appendChild(block);
     } else {
       this._element.replaceChildren(block);

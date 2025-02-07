@@ -130,7 +130,6 @@ export default class RegisterPage extends Block  {
           }
         })),
       });
-        console.log(`curProps = ${props?.errMessage}`);
     }
 
     public render(): string {

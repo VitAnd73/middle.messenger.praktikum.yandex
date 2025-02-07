@@ -47,12 +47,17 @@ export default class ProfilePage extends Block {
           console.log(`ProfilePage clicked with props?.status=${this.props?.status}`);
           const ind = Math.floor(Math.random() * profileFormStatuses.length);
           const newStatus = profileFormStatuses[ind];
-          console.log(`ProfilePage changing status to =${newStatus}`);
           this.setProps({
             ...this.props,
             status: newStatus,
             label: newStatus
           });
+
+          const thisButton = this.children.Button as Button;
+          thisButton.setProps({
+            ...thisButton.props,
+            label: newStatus
+          })
 
           e.preventDefault();
         }
@@ -62,17 +67,17 @@ export default class ProfilePage extends Block {
   public render(): string {
     // TBC
     console.log(`Профиль render`);
-    const {Button} = this.children;
-    if (!Array.isArray(Button)) {
-      Button.setProps({
-        ...this.props,
-        label: this.props.status
-      });
-    }
+    // const {Button} = this.children;
+    // if (!Array.isArray(Button)) {
+    //   Button.setProps({
+    //     ...this.props,
+    //     label: this.props.status
+    //   });
+    // }
 
     return `
-      <form class="login-form">
-        <h1 class="login__title">Профиль - ${this.props?.status}</h1>
+      <form class="profile-form">
+        <h1 class="profile__title">Профиль - ${this.props?.status}</h1>
         {{{ Button }}}
         {{{status}}}
       </form>
