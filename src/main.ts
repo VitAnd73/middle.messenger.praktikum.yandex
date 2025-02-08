@@ -8,33 +8,36 @@ import { render } from './core/renderDom';
 const appTitle = 'Great chat app';
 const defaultPage = 'nav';
 
+const profileStub = {
+  email: "ivanov@gmail.com",
+  login: "ivanov",
+  first_name: "Ivan",
+  second_name: "Ivanov",
+  phone: "89999998888",
+}
+
 const pages = {
   'login': new Pages.LoginPage(),
   'register': new Pages.RegisterPage(),
   'profile': new Pages.ProfilePage({
+    avatar: avatarSample,
     status: 'display',
-    formState: {
-      avatar: avatarSample,
-    }
-  } ),
-  // 'profile-new-avatar': [ Pages.ProfilePage, {
-  //   avatar: avatarSample,
-  //   changingAvatar: true,
-  //   changingData: false,
-  //   changingPwd: false,
-  // } ],
-  // 'profile-change-data': [ Pages.ProfilePage, {
-  //   avatar: avatarSample,
-  //   changingAvatar: false,
-  //   changingData: true,
-  //   changingPwd: false,
-  // } ],
-  // 'profile-change-pwd': [ Pages.ProfilePage, {
-  //   avatar: avatarSample,
-  //   changingAvatar: false,
-  //   changingData: false,
-  //   changingPwd: true,
-  // } ],
+    formState: profileStub
+  }),
+  'profile-new-avatar': new Pages.ProfilePage ({
+    avatar: avatarSample,
+    status: 'changing-avatar',
+    formState: profileStub,
+  }),
+  'profile-change-data': new Pages.ProfilePage ({
+    avatar: avatarSample,
+    status: 'changing-data',
+    formState: profileStub,
+  }),
+  'profile-change-pwd': new Pages.ProfilePage ({
+    avatar: avatarSample,
+    status: 'changing-pwd',
+  }),
   // 'chats': [ Pages.ChatsPage],
   '500': new Pages.InfoPage({
     title: '500',

@@ -16,7 +16,7 @@ const registerStateInitial = {
 
 type RegisterState = typeof registerStateInitial;
 
-const fields = [
+export const fieldsProfile = [
   {
     name: 'email',
     type: 'email',
@@ -50,7 +50,10 @@ const fields = [
     type: 'tel',
     validator: phoneValidator,
     placeholder: "",
-  },
+  }
+];
+
+export const fieldsPassword = [
   {
     name: 'password',
     type: "password",
@@ -65,7 +68,9 @@ const fields = [
     validator: passwordValidator,
     placeholder: "",
   },
-];
+]
+
+const fields = fieldsProfile.concat(fieldsPassword);
 
 const buttons = [
   {

@@ -146,7 +146,6 @@ export default class Block {
     const { events = {} } = this.props;
 
     Object.keys(events).forEach((eventName) => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       this._element.addEventListener(eventName, (events as EventsCollection)[eventName]);
     });
   }
@@ -155,7 +154,6 @@ export default class Block {
     const { events = {} } = this.props;
 
     Object.keys(events).forEach((eventName) => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       this._element.removeEventListener(eventName, (events as EventsCollection)[eventName]);
     });
   }
