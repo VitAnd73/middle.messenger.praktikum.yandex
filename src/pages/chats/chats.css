@@ -47,10 +47,17 @@
 }
 
 .chat__item {
-    /* list-style-type: none; */
+    display: flex;
 }
 
-.chat__item__avatar {
+.item__img {
+    height: 124px;
+}
+.item__container {
+    height: 124px;
+}
+
+.item__avatar {
     height: 23px;
     width: 23px;
     border-radius: 50%;
@@ -59,11 +66,98 @@
 
 .chat {
     margin-left: 260px; /* Same as the width of the sidenav */
-    font-size: 28px; /* Increased text to enable scrolling */
     padding: 0px 10px;
 }
 
-@media screen and (max-height: 450px) {
-    .sidenav {padding-top: 15px;}
-    .sidenav a {font-size: 18px;}
+.parent {
+    display: flex;
+    justify-content: center;
+    width: 260px;
+}
+.child {
+    display: flex;  
+    justify-content: center;
+    align-items: center;
+}
+
+.grand-child {
+    align-items: left;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    justify-content: top;
+    text-align: top;
+}
+
+.one {
+}
+
+.two {
+    inline-size: 150px;
+    overflow-wrap: break-word;
+    overflow: hidden;
+    max-height: 83px;
+    padding-left: 10px;
+}
+
+.three {
+    padding-left: 10px;
+    width: 45px;
+}
+
+.grand-child-child {
+    width: 80%;
+}
+
+.two > p {
+    text-align: left;
+    max-height: 4px;
+}
+
+.grand-child-child > p {
+    text-align: right;
+    max-height: 4px;
+    margin: 10px;
+
+}
+
+.count {
+    margin-top: 10px;
+}
+
+.numberCircle {
+    display: flex;
+    width: 3ch; /* Set this to slightly wider than the longest string */
+    align-items: center;  
+    justify-content: center;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    background: blue;
+}
+
+.dots {
+    width: 100%;
+    text-align: right;
+}
+.dots:after {
+    content: '\2807';
+    font-size: 14px;
+}
+
+.chat > .header {
+    display: flex;
+}
+.header__avatar {
+    width: 40px;
+}
+
+
+.avatar_img {
+    height: 23px;
+    width: 23px;
+    border-radius: 50%;
+}
+
+.header__author {
+    width: 45px;
 }

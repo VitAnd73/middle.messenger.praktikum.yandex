@@ -52,17 +52,88 @@ export default class ChatsPage extends Block {
           </label>
           {{#if error}}<div class="input__error ">{{error}}</div>{{/if}}
         </div>
+
         <hr class="divider">
-        <div class="chat__item">
-          <img src="src/assets/imgs/img_avatar.png" alt="Avatar" class="chat__item__avatar">
-          Ivasadfkjasd
+        <div class="parent">
+          <div class="child">
+            <div class="grand-child one">
+              <img src="src/assets/imgs/img_avatar.png" alt="Avatar" class="item__avatar">
+            </div>
+            <div class="grand-child two">
+              <p><b>Ivan</b></p>
+              <p>ASdfjkashdajksaasdasdasddaasdh</p>
+            </div>
+            <div class="grand-child three">
+              <div class="grand-child-child">
+                19:43
+              </div>
+              <div class="grand-child-child count">
+                <div class="numberCircle">30</div>
+              </div>
+            </div>
+          </div>
         </div>
+
         <hr class="divider">
-        
+        <div class="parent">
+          <div class="child">
+            <div class="grand-child one">
+              <img src="src/assets/imgs/img_avatar.png" alt="Avatar" class="item__avatar">
+            </div>
+            <div class="grand-child two">
+              <p><b>Ivan</b></p>
+              <p>ASdfjkashdajksaasdasdasddaasdh</p>
+            </div>
+            <div class="grand-child three">
+              <div class="grand-child-child">
+                19:43
+              </div>
+              <div class="grand-child-child count">
+                <div class="numberCircle">30</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr class="divider">
+        <div class="parent">
+          <div class="child">
+            <div class="grand-child one">
+              <img src="src/assets/imgs/img_avatar.png" alt="Avatar" class="item__avatar">
+            </div>
+            <div class="grand-child two">
+              <p><b>Ivan</b></p>
+              <p>ASdfjkashdajksaasdasdasddaasdh</p>
+            </div>
+            <div class="grand-child three">
+              <div class="grand-child-child">
+                19:43
+              </div>
+              <div class="grand-child-child count">
+                <div class="numberCircle">30</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
       </div>
 
       <div class="chat">
-        <h2>Sidebar</h2>
+        <div class="header">
+          <div class="header__avatar">
+            <img src="src/assets/imgs/img_avatar.png" alt="Avatar" class="avatar_img">
+          </div>
+          <div class="header__author">
+            <b>Ivan</b>
+          </div>
+          <div class="dots"> </div>
+        </div>
+        
+        <hr class="divider">
+        
         <p>This sidebar is of full height (100%) and always shown.</p>
         <p>Scroll down the page to see the result.</p>
         <p>Some text to enable scrolling.. Lorem ipsum dolor sit amet, illum definitiones no quo, maluisset concludaturque et eum, altera fabulas ut quo. Atqui causae gloriatur ius te, id agam omnis evertitur eum. Affert laboramus repudiandae nec et. Inciderint efficiantur his ad. Eum no molestiae voluptatibus.</p>
