@@ -8,7 +8,7 @@ import { render } from './core/renderDom';
 const appTitle = 'Great chat app';
 const defaultPage = 'nav';
 
-const profileStub = {
+const profileMock = {
   email: "ivanov@gmail.com",
   login: "ivanov",
   first_name: "Ivan",
@@ -22,23 +22,25 @@ const pages = {
   'profile': new Pages.ProfilePage({
     avatar: avatarSample,
     status: 'display',
-    formState: profileStub
+    formState: profileMock
   }),
   'profile-new-avatar': new Pages.ProfilePage ({
     avatar: avatarSample,
     status: 'changing-avatar',
-    formState: profileStub,
+    formState: profileMock,
   }),
   'profile-change-data': new Pages.ProfilePage ({
     avatar: avatarSample,
     status: 'changing-data',
-    formState: profileStub,
+    formState: profileMock,
   }),
   'profile-change-pwd': new Pages.ProfilePage ({
     avatar: avatarSample,
     status: 'changing-pwd',
   }),
-  // 'chats': [ Pages.ChatsPage],
+
+  'chats': new Pages.ChatsPage(),
+  
   '500': new Pages.InfoPage({
     title: '500',
     text: 'Мы уже фиксим',
