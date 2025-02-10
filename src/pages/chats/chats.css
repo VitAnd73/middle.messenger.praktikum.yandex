@@ -7,6 +7,8 @@
     left: 0;
     overflow-x: hidden;
     padding-top: 20px;
+    border-right: 0.05rem solid grey;
+
 }
 
 .sidenav > div {
@@ -40,12 +42,6 @@
     line-height: 28px;
 }
 
-.divider {
-    margin-left: 15px;
-    margin-right: 10px;
-
-}
-
 .chat__item {
     display: flex;
 }
@@ -74,6 +70,12 @@
     justify-content: center;
     width: 260px;
 }
+.parent__selected {
+    display: flex;
+    justify-content: center;
+    width: 260px;
+    background: #bce8f9;
+}
 .child {
     display: flex;  
     justify-content: center;
@@ -101,11 +103,17 @@
 }
 
 .three {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
     padding-left: 10px;
+    padding-right: 15px;
     width: 45px;
 }
 
 .grand-child-child {
+    text-align: midlle;
     width: 80%;
 }
 
@@ -121,8 +129,16 @@
 
 }
 
+.nav_divider {
+    margin-left: 15px;
+    margin-right: 10px;
+
+}
+
 .count {
     margin-top: 10px;
+    text-align: right;
+
 }
 
 .numberCircle {
@@ -139,20 +155,37 @@
 .dots {
     width: 100%;
     text-align: right;
+    font-size: 1.5em;
 }
 .dots:after {
-    content: '\2807';
-    font-size: 14px;
+    content: "\22EE";
+    /* box model */
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    /* decoration */
+    color: #638ae7;
+    background-color: #faf4f4;
+    border-radius: 50%;
+    /* center align */
+    line-height: 1;
+    text-align: center;
 }
 
-.chat > .header {
+.chat__header {
     display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
     margin-top: 15px;
+    margin-bottom: 15px;
+    padding: 15px;
+    border-bottom: 0.05rem solid grey;
 }
+
 .header__avatar {
     width: 40px;
 }
-
 
 .avatar_img {
     height: 23px;
@@ -164,10 +197,60 @@
     width: 45px;
 }
 
-.message_date {
-    text-align: center;
+.messages__container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
-.message_counterparty {
-    background: red;
+.message__time {
+    text-align: right;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.message__date {
+    text-align: center;
+    align-self: center;
+}
+
+.message__user .message__time {
+    color: blue;
+}
+
+.message__counterparty__text {
+    border-radius: 0px 10px 10px 10px;
+    background: #e6dbdb;
+    margin: 10px 0px 10px 0px;
+    padding: 10px;
+    max-width: 370px;
+}
+.message__counterparty__img {
+    border-radius: 10px 10px 10px 10px;
+    margin: 10px 0px 10px 0px;
+    padding: 10px;
+    max-width: 370px;
+    border: 0.05rem solid grey;
+}
+
+.message_img {
+    width: 100%;
+    max-width: 600px;
+}
+
+.message__user {
+    background: #bce8f9;
+    padding: 10px;
+    border-radius: 10px 10px 0px 10px;
+    margin: 10px 0px 10px 0px;
+    align-self: end;
+    max-width: 370px;
+}
+
+.reading_status {
+    display: inline;
+    width: 10px;
+    height: 10px;
+    vertical-align: center;
+    color: blue;
 }
