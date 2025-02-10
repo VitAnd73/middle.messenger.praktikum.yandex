@@ -133,6 +133,7 @@
     aspect-ratio: 1 / 1;
     border-radius: 50%;
     background: blue;
+    color: white;
 }
 
 .dots {
@@ -146,6 +147,7 @@
 
 .chat > .header {
     display: flex;
+    margin-top: 15px;
 }
 .header__avatar {
     width: 40px;
@@ -160,4 +162,12 @@
 
 .header__author {
     width: 45px;
+}
+
+.message_date {
+    text-align: center;
+}
+
+.message_counterparty {
+    background: red;
 }

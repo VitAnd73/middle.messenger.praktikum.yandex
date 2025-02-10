@@ -118,7 +118,7 @@ export default class ChatsPage extends Block {
 
 
 
-
+        <hr class="divider">
       </div>
 
       <div class="chat">
@@ -129,12 +129,23 @@ export default class ChatsPage extends Block {
           <div class="header__author">
             <b>Ivan</b>
           </div>
-          <div class="dots"> </div>
+          <div class="dots"></div>
         </div>
-        
         <hr class="divider">
-        
-        <p>This sidebar is of full height (100%) and always shown.</p>
+
+
+        <div class ="message_date">19 января</div>
+
+
+        <div class="message_counterparty">
+          message from the counterparty
+        </div>
+        <div class="message_user">
+          message from the userx
+        </div>
+
+
+
         <p>Scroll down the page to see the result.</p>
         <p>Some text to enable scrolling.. Lorem ipsum dolor sit amet, illum definitiones no quo, maluisset concludaturque et eum, altera fabulas ut quo. Atqui causae gloriatur ius te, id agam omnis evertitur eum. Affert laboramus repudiandae nec et. Inciderint efficiantur his ad. Eum no molestiae voluptatibus.</p>
         <p>Some text to enable scrolling.. Lorem ipsum dolor sit amet, illum definitiones no quo, maluisset concludaturque et eum, altera fabulas ut quo. Atqui causae gloriatur ius te, id agam omnis evertitur eum. Affert laboramus repudiandae nec et. Inciderint efficiantur his ad. Eum no molestiae voluptatibus.</p>
