@@ -2,6 +2,8 @@
 
 Пример приложения для чатов, предоставляющих возможность общения (в виде сообщений) с другими пользователями.
 
+В отдельном файле "src\core\HTTPTransport.ts" добавлен класс для работы с запросами с реализацией методов GET, POST, PUT, DELETE и работой с query string в GET-запросе и с body для других методов.
+
 ## Дизайн
 
 Макеты находятся по ссылке https://www.figma.com/design/DfjFcaFsHurkWNMo5GgGYh/Chat\_app?node-id=0-1&node-type=canvas
