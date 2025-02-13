@@ -6,7 +6,6 @@
 }
 
 .sider {
-    height: 100%;
     background-color: var(--second-color);
     height: 100%;
     display: flex;
@@ -16,9 +15,8 @@
 section
 {
     flex-grow: 1;
-    margin: 50px;
     width: 433px;
-    margin: 0 auto 50px auto;
+    margin: 0 auto 50px;
 }
 
 .button-back {
@@ -29,6 +27,7 @@ section
     border: none;
     margin: auto;
 }
+
 .button-back::before {
     content: "\2190";
     font-size: 15px;
@@ -50,6 +49,7 @@ section > div > .button__link {
     padding: 10px;
     text-align: left;
 }
+
 section > div > .button__danger {
     color: var(--error-color);;
     font-size: 13px;
@@ -70,14 +70,12 @@ section > div > .button__danger {
 .avatar__container {
     position: relative;
     width: 50%;
-    margin: 0 auto 50px auto;
+    margin: 0 auto 50px;
 }
+
 .avatar__overlay {
     position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    inset: 0;
     height: 130px;
     width: 130px;
     opacity: 0;
@@ -97,8 +95,41 @@ section > div > .button__danger {
     position: absolute;
     top: 50%;
     left: 50%;
-    -webkit-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
     text-align: center;
 }
+
+.modal {
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: black; /* Fallback color */
+}
+
+.modal-content {
+    border-radius: 25px;
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid;
+    border-color: black;
+    width: 20%; /* Could be more or less, depending on screen size */
+}
+
+.modal__title {
+    text-align: center
+}
+
+.button__link.avatar_upload {
+    margin: 15% auto; /* 15% from the top and centered */
+}
+
+.button__primary.avatar_upload {
+    width: 75%;
+    margin: 15% auto; /* 15% from the top and centered */
+}
+

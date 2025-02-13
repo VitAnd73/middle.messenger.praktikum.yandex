@@ -1,0 +1,28 @@
+import Block, { PropsWithChildrenType } from "../../core/block";
+
+export default class NavigatePage extends Block {
+  constructor(props?: PropsWithChildrenType) {
+    super("main", {
+      ...props,
+    });
+  }
+  public render(): string {
+    return `
+      <main>
+        <nav>
+            <ul>
+                <li><a href="#" page="login">Авторизация</a></li>
+                <li><a href="#" page="register">Регистрация</a></li>
+                <li><a href="#" page="profile">Профиль</a></li>
+                <li><a href="#" page="profile-new-avatar">Новый аватар</a></li>
+                <li><a href="#" page="profile-change-data">Изменить данные</a></li>
+                <li><a href="#" page="profile-change-pwd">Изменить пароль</a></li>
+                <li><a href="#" page="chats">Чат</a></li>
+                <li><a href="#" page="500">500</a></li>
+                <li><a href="#" page="404">404</a></li>
+            </ul>
+        </nav>
+    </main>
+    `;
+  }
+}

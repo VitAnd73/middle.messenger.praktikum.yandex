@@ -1,0 +1,12 @@
+{
+  "extends": "stylelint-config-standard",
+  "rules": {
+    "color-hex-length": "long",
+    "no-empty-source": null,
+    "selector-class-pattern": null
+  },
+  "ignoreFiles": [
+    "build/*",
+    "coverage/**/*.css"
+  ]
+}
