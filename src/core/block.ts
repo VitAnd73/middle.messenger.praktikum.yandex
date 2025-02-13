@@ -6,7 +6,7 @@ type PropsType = Record<string | symbol, string | object | undefined >;
 type ChildrenType = {[key: string] : Block  | Block[] };
 export type PropsWithChildrenType = {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type, @typescript-eslint/no-explicit-any, @typescript-eslint/ban-types
-  [key : string | symbol]: string | Block  | Block[] | Function | object | undefined | PropsWithChildrenType
+  [key : string | symbol]: string | number | boolean | Block  | Block[] | Function | object | undefined | PropsWithChildrenType
 };
 
 type MetaType = {

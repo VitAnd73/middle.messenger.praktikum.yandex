@@ -1,139 +1,6 @@
-.sidenav {
-    height: 100%;
-    width: 260px;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    overflow-x: hidden;
-    padding-top: 20px;
-    border-right: 0.05rem solid grey;
-
-}
-
-.sidenav > div {
-    padding: 6px 8px 6px 16px;
-    text-decoration: none;
-    font-size: 15px;
-    color: #818181;
-    display: block;
-}
-
-.profile {
-    text-align: right;
-    margin-right: 15px;
-}
-
-.input__search {
-    padding-left: 25px;
-    background: url("src/assets/imgs/img_search_icon.png") no-repeat left;
-    background-size: 20px;
-    border: 0;
-    border-radius: 7px;
-    background-color : #d1d1d1;
-    line-height: 28px;
-}
-
-.chat__item {
-    display: flex;
-}
-
-.item__img {
-    height: 124px;
-}
-
-.item__container {
-    height: 124px;
-}
-
-.item__avatar {
-    height: 23px;
-    width: 23px;
-    border-radius: 50%;
-}
-
-
-.chat__container {
-    display: flex;
-    flex-direction: column;
-    margin-left: 260px;
-    padding: 0 10px;
-    min-height: 100vh;
-}
-
-.parent {
-    display: flex;
-    justify-content: center;
-    width: 260px;
-}
-
-.parent__selected {
-    display: flex;
-    justify-content: center;
-    width: 260px;
-    background: #bce8f9;
-}
-
-.child {
-    display: flex;  
-    justify-content: center;
-    align-items: center;
-}
-
-.grand-child {
-    align-items: left;
-    display: flex;
-    flex-direction: column;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    justify-content: top;
-    text-align: top;
-}
-
-.two {
-    inline-size: 150px;
-    overflow-wrap: break-word;
-    overflow: hidden;
-    max-height: 83px;
-    padding-left: 10px;
-}
-
-.three {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding-left: 10px;
-    padding-right: 15px;
-    width: 45px;
-}
-
-.grand-child-child {
-    text-align: midlle;
-    width: 80%;
-}
-
-.two > p {
-    text-align: left;
-    max-height: 4px;
-}
-
-.grand-child-child > p {
-    text-align: right;
-    max-height: 4px;
-    margin: 10px;
-
-}
-
-.nav_divider {
-    margin-left: 15px;
-    margin-right: 10px;
-
-}
-
 .count {
     margin-top: 10px;
     text-align: right;
-
 }
 
 .numberCircle {
@@ -194,7 +61,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    height: calc(100vh - 250px);
+    height: calc(100vh - 150px);
     overflow-y: auto;
 }
 
@@ -276,28 +143,6 @@
     background-color : #d1d1d1;
     line-height: 28px;
 }
-
-.popup {
-    display: flex;
-    flex-direction: column;
-    align-items: left;
-    position: fixed;
-    top: calc(100vh - 170px);
-    padding: 10px;
-    left: 270px;
-    width: 170px;
-    border: 3px solid #f1f1f1;
-    border-radius: 17px;
-    z-index: 9;
-    background-color: white;
-}
-
-.popup__item__icon,
-.popup__item__text {
-    vertical-align: middle;
-    display: inline-block;
-}
-
 
 .button_container {
     width: 100%;
