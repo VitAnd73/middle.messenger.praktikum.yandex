@@ -14,11 +14,9 @@ export default class ChatList extends Block {
         return `
             <div class="profile">Профиль ></div>
             <div class="search__container">
-            <label class="input__container">
-                <input type="text" class="input__search" value placeholder="Поиск" name="search">
-                <span class="input__label {{#if error}} input__error {{/if}}">{{label}}</span>
-            </label>
-            {{#if error}}<div class="input__error ">{{error}}</div>{{/if}}
+                <label class="input__container">
+                    <input type="text" class="input__search" value placeholder="Поиск" name="search">
+                </label>
             </div>
 
             <hr class="nav_divider">

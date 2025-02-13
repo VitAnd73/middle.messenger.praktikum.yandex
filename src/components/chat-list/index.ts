@@ -1,3 +1,3 @@
-import './chat-list.css'
+import './chatList.css'
 
-export { default as ChatList } from './chat-list';
+export { default as ChatList } from './chatList';

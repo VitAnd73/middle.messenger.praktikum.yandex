@@ -32,7 +32,6 @@ const fieldsPassword = [
     validator: passwordValidator,
     placeholder: "",
   },
-
 ];
 
 const profileFormInitialDisplay = {

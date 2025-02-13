@@ -3,10 +3,7 @@ import Block, { PropsWithChildrenType } from "../../core/block";
 export default class ChatList extends Block {
     constructor(props: PropsWithChildrenType) {
         super("div", {
-            ...props,
-            events: {
-                click: props.onClick,
-            },
+            ...props
         });
     }
     public render(): string {
