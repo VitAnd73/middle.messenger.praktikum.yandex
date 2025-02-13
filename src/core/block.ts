@@ -2,7 +2,7 @@ import EventBus from "./eventBus";
 import Handlebars from "handlebars";
 import { nanoid } from "nanoid";
 
-type PropsType = Record<string | symbol, string | object | undefined >;
+type PropsType = Record<string | symbol, string | number | boolean | object | undefined >;
 type ChildrenType = {[key: string] : Block  | Block[] };
 export type PropsWithChildrenType = {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type, @typescript-eslint/no-explicit-any, @typescript-eslint/ban-types
