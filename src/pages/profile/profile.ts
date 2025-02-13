@@ -136,7 +136,6 @@ export default class ProfilePage extends Block {
           className: "button button__link",
           label: "Изменить данные",
           onClick: (e: MouseEvent) => {
-            console.log(`ProfilePage clicked with props?.status=${this.props?.status}`);
             this.setProps({
               ...this.props,
               status: "changing-data",
@@ -148,7 +147,6 @@ export default class ProfilePage extends Block {
           className: "button button__link",
           label: "Изменить пароль",
           onClick: (e: MouseEvent) => {
-            console.log(`ProfilePage clicked with props?.status=${this.props?.status}`);
             this.setProps({
               ...this.props,
               status: "changing-pwd",
@@ -182,7 +180,6 @@ export default class ProfilePage extends Block {
         className: "button button__primary avatar_upload",
         label: "Поменять",
         onClick: (e: MouseEvent) => {
-          console.log(`Changing profile`);
           this.setProps({
             ...this.props,
             status: "display"
@@ -208,7 +205,6 @@ export default class ProfilePage extends Block {
             ...this.props,
             status: "changing-avatar",
           });
-          console.log(`ProfilePage clicked with changing-avatar props?.status=${this.props?.status}`);
           e.preventDefault();
         },
       })

@@ -1,8 +1,10 @@
 import Block, { PropsWithChildrenType } from "../../core/block";
+import { Button, Input } from "../../components";
 
 import { ButtonAttach } from "../../components/button-attach";
 import { ChatList } from "../../components/chat-list";
 import { PopupAttach } from "../../components/popup-attach";
+import { messageValidator } from "../../core/utils/validators";
 
 const authorSelfId = -1 //for the own messages
 const noRespondentSelectedIndex = -1; //for no selected respondents
@@ -45,17 +47,26 @@ const messageListInitial = [
 // type RespondentType = typeof respondentListInitial[number];
 // type MessageType = typeof messageListInitial[number];
 
-const chatsPageStateProps = {
-  respondentList: respondentListInitial,
+const chatStateInitial = {
   selectedRespondentId: noRespondentSelectedIndex, //means to resps are selected
-  messageList: messageListInitial,
   isPopupOpen: false, //for status of the popup
+  searchStr: "",
+  messageStr: "",
+  messageErr: "",
 }
 
-type ChatPageStateType = typeof chatsPageStateProps;
+type ChatStateType = typeof chatStateInitial;
+
+const chatPageStateProps = {
+  respondentList: respondentListInitial,
+  messageList: messageListInitial,
+  chatState: {...chatStateInitial},
+}
+
+type ChatPageStateType = typeof chatPageStateProps;
 
 export default class ChatsPage extends Block {
-  constructor(props?: ChatPageStateType & PropsWithChildrenType) {
+  constructor(props: ChatPageStateType & PropsWithChildrenType = chatPageStateProps) {
     super("main", {
       ...props,
       ChatList: new ChatList({
@@ -68,9 +79,47 @@ export default class ChatsPage extends Block {
         onClick: () => {
           this.setProps({
             ...this.props,
-            isPopupOpen: !this.props.isPopupOpen,
+            chatState: {
+              ...(this.props.chatState as object),
+              isPopupOpen: !((this.props.chatState as ChatStateType).isPopupOpen),
+            }
           });
         },
+      }),
+      InputMessage: new Input({
+        className: "input__message",
+        placeholder: "Сообщение_sss",
+        name: "message",
+        events: {
+            blur: (e: InputEvent) => {
+                const inputElement = e.target as HTMLInputElement;
+                const value = inputElement.value;
+                const cur_error = messageValidator?.validate(value);
+                if (cur_error) {
+                    inputElement.classList.add("input__error");
+                }
+                else {
+                    inputElement.classList.remove("input__error");
+                }
+                this.setProps({
+                    ...this.props,
+                    chatState: {
+                      ...(this.props.chatState as object),
+                      messageStr: value,
+                      messageErr: cur_error,
+                    }
+                });
+            }
+        }
+      }),
+      ButtonSend: new Button({
+        className: "button-send",
+        onClick: () => {
+          console.log(`Current state: ${JSON.stringify({
+            message: (this.props.chatState as ChatStateType).messageStr,
+            err: (this.props.chatState as ChatStateType).messageErr,
+          })}`);
+        }
       }),
     });
   }
@@ -116,14 +165,14 @@ export default class ChatsPage extends Block {
           </div>
 
         </div>
-        ${this.props.isPopupOpen ? '{{{PopupAttach}}}' : ''}
+        ${(this.props.chatState as ChatStateType).isPopupOpen ? '{{{PopupAttach}}}' : ''}
         <div class="chat__footer">
           {{{ButtonAttach}}}
           <div>
-            <input type="text" class="input__message" value placeholder="Сообщение" name="message">
+            {{{InputMessage}}}
           </div>
           <div class="button_container">
-            <button class="button-send"/>
+            {{{ButtonSend}}}
           </div>
         </div>
 

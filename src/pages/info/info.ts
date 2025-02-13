@@ -19,7 +19,6 @@ export default class InfoPage extends Block {
                 label: props.buttonLabel,
 
                 onClick: (e: MouseEvent) => {
-                    console.log(`InfoPage clicked`);
                     window.location.href = '/';
                     e.preventDefault();
                 }
