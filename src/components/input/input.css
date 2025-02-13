@@ -56,6 +56,6 @@
   display: block;
 }
 
-.input__error .input__element {
+.input__error {
   color: var(--error-color);
 }
