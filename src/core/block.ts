@@ -19,7 +19,7 @@ type EventsCollection = {
 }
 
 // Нельзя создавать экземпляр данного класса
-export default class Block {
+export default abstract class Block {
   static EVENTS = {
     INIT: "init",
     FLOW_CDM: "flow:component-did-mount",
