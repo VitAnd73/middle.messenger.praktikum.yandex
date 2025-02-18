@@ -1,7 +1,9 @@
 import * as Components from './components';
 import * as Pages from './pages';
 
+import { AppState } from './types';
 import Handlebars from 'handlebars';
+import { Store } from './core/store';
 import avatarSample from './assets/imgs/img_avatar.png';
 import { render } from './core/renderDom';
 
@@ -81,6 +83,8 @@ function navigate(page:  keyof typeof pages) {
   render('#app', pages[page]);
 }
 
+
+
 function navigateToPath() {
   const {pathname} = window.location;
   if (pathname.length > 1) {
@@ -113,6 +117,24 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 window.addEventListener('popstate', () => navigateToPath());
+
+
+declare global {
+  interface Window {
+    store: Store<AppState>;
+  }
+
+  type Nullable<T> = T | null;
+
+}
+
+const initState: AppState = {
+  error: null,
+  user: null,
+  isOpenDialogChat: false,
+  chats: []
+}
+window.store = new Store<AppState>(initState);
 
 document.addEventListener('click', (e : MouseEvent) => {
   const page = (e.target as HTMLInputElement).getAttribute('page');

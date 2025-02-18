@@ -1,3 +1,5 @@
+import constants from "../constants";
+
 const METHODS = {
   GET: 'GET',
   POST: 'POST',
@@ -26,20 +28,28 @@ function queryStringify(data : object) {
   }, '?');
 }
 
+type HTTPMethod = <R=unknown>(url: string, options?: RequestOptions, timeout?: number) => Promise<R>
+
 export default  class HTTPTransport {
-  get = (url : string, options : RequestOptions = {}) => {
-    return this.request(url, {...options, method: METHODS.GET}, options.timeout);
+  private apiUrl: string = ''
+  constructor(apiPath: string) {
+      this.apiUrl = `${constants.HOST}${apiPath}`;
+  }
+
+  get : HTTPMethod = (url, options = {}) => {
+    return this.request(`${this.apiUrl}${url}`, {...options, method: METHODS.GET}, options.timeout);
   };
-  post = (url : string, options : RequestOptions = {}) => {
-    return this.request(url, {...options, method: METHODS.POST}, options.timeout);
+  post : HTTPMethod = (url, options = {}) => {
+    return this.request(`${this.apiUrl}${url}`, {...options, method: METHODS.POST}, options.timeout);
   };
-  put = (url : string, options : RequestOptions = {}) => {
-    return this.request(url, {...options, method: METHODS.PUT}, options.timeout);
+  put : HTTPMethod = (url, options = {}) => {
+    return this.request(`${this.apiUrl}${url}`, {...options, method: METHODS.PUT}, options.timeout);
   };
-  delete = (url : string, options : RequestOptions = {}) => {
-    return this.request(url, {...options, method: METHODS.DELETE}, options.timeout);
+  delete : HTTPMethod = (url, options = {}) => {
+    return this.request(`${this.apiUrl}${url}`, {...options, method: METHODS.DELETE}, options.timeout);
   };
-  request = (url : string, options : RequestOptions = {}, timeout = 5000) => {
+
+  request : HTTPMethod = (url, options = {}, timeout = 5000) => {
     const {headers = {}, method, data} = options;
     return new Promise(function(resolve, reject) {
       if (!method) {
@@ -58,7 +68,7 @@ export default  class HTTPTransport {
         xhr.setRequestHeader(key, headers[key]);
       });
       xhr.onload = function() {
-        resolve(xhr);
+        resolve(xhr.response);
       };
       xhr.onabort = reject;
       xhr.onerror = reject;
