@@ -1,47 +1,65 @@
-// // import Block from "./block";
+import Block, { PropsWithChildrenType } from "./block";
 
-// function isEqual(lhs: string, rhs: string) {
-//   return lhs === rhs;
-// }
+function isEqual(lhs: string, rhs: string) {
+    return lhs === rhs;
+}
 
-// export default class Route {
-//     constructor(pathname, view, props) {
-//         this._pathname = pathname;
-//         this._blockClass = view;
-//         this._block = null;
-//         this._props = props;
-//     }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Class<T> = new (...args: any[]) => T;
 
-//     navigate(pathname) {
-//         if (this.match(pathname)) {
-//             this._pathname = pathname;
-//             this.render();
-//         }
-//     }
+export default class Route {
+    _pathname: string;
+    _blockClass: Class<Block>;
+    _block: null | Block;
+    _props: PropsWithChildrenType;
+    constructor(pathname : string, view : Class<Block>, props: PropsWithChildrenType) {
+        this._pathname = pathname;
+        this._blockClass = view;
+        this._block = null;
+        this._props = props;
+    }
 
-//     leave() {
-//         if (this._block) {
-//             this._block.hide();
-//         }
-//     }
+    navigate(pathname: string) {
+        if (this.match(pathname)) {
+            this._pathname = pathname;
+            this.render();
+        }
+    }
 
-//     match(pathname) {
-//         return isEqual(pathname, this._pathname);
-//     }
+    leave() {
+        if (this._block) {
+            this._block?.hide();
+        }
+    }
 
-//     render() {
-//         if (!this._block) {
-//             this._block = new this._blockClass();
-//             render(this._props.rootQuery, this._block);
-//             return;
-//         }
+    match(pathname: string) {
+        return isEqual(pathname, this._pathname);
+    }
 
-//         this._block.show();
-//     }
-// }
+    _renderDom(query: string, block: Block) {
+        const root = document.querySelector(query);
+        root!.innerHTML = "";
+        root!.append(block.getContent());
+    }
+
+    render() {
+        if (!this._block) {
+            this._block = new this._blockClass({});
+        }
+
+        // this._block.show();
+        this._renderDom((this._props.rootQuery as string), this._block);
+        this._block.componentDidMount();
+    }
+}
 
 
 // export class Router {
+//   static __instance: any;
+//   routes: never[];
+//   history: History;
+//   _currentRoute: null;
+//   _rootQuery: any;
 //   constructor(rootQuery) {
 //       if (Router.__instance) {
 //           return Router.__instance;
