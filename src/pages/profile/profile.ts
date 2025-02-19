@@ -4,7 +4,7 @@ import { AvatarImg } from "../../components/avatar-image";
 import { Button } from "../../components";
 import { InputField } from "../../components/input";
 import { fieldsProfile } from "../register/register";
-import { passwordValidator } from "../../core/utils/validators";
+import { passwordValidator } from "../../utils/validators";
 
 const profileFormStatuses =  ["display", "changing-avatar", "changing-data", "changing-pwd"] as const;
 type StatusTuple = typeof profileFormStatuses;

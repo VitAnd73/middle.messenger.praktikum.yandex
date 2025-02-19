@@ -1,6 +1,6 @@
 import { APIError, CreateUser, LoginRequestData, SignUpResponse, UserDTO } from "./types";
 
-import HTTPTransport from "../core/HTTPTransport";
+import HTTPTransport from "../core/httpTransport";
 
 const authApi = new HTTPTransport('/auth');
 

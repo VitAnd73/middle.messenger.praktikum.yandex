@@ -1,7 +1,7 @@
 import Block, { PropsWithChildrenType } from "../../core/block";
 import Input, {InputProps} from "./input";
 
-import Validator from "../../core/utils/validator";
+import Validator from "../../utils/validator";
 
 type InputFieldProps<T> = {
     label: string;

@@ -1,9 +1,9 @@
 import { CreateUser, LoginRequestData, UserDTO } from "../api/types";
 
 import AuthApi from "../api/auth";
-import { apiHasError } from '../core/utils/apiHasError'
+import { apiHasError } from '../utils/apiHasError'
 import { navigate } from "../core/navigate";
-import { transformUser } from "../core/utils/apiTransformers";
+import { transformUser } from "../utils/apiTransformers";
 
 const authApi = new AuthApi();
 

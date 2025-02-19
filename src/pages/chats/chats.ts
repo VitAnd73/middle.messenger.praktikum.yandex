@@ -4,7 +4,7 @@ import { Button, Input } from "../../components";
 import { ButtonAttach } from "../../components/button-attach";
 import { ChatList } from "../../components/chat-list";
 import { PopupAttach } from "../../components/popup-attach";
-import { messageValidator } from "../../core/utils/validators";
+import { messageValidator } from "../../utils/validators";
 
 const authorSelfId = -1 //for the own messages
 const noRespondentSelectedIndex = -1; //for no selected respondents

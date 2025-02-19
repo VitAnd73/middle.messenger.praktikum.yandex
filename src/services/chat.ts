@@ -1,6 +1,6 @@
 import ChatApi from "../api/chat";
-import { apiHasError } from "../core/utils/apiHasError";
-import { transformChats } from "../core/utils/apiTransformers";
+import { apiHasError } from "../utils/apiHasError";
+import { transformChats } from "../utils/apiTransformers";
 
 const chatApi = new ChatApi();
 

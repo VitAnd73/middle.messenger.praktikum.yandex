@@ -1,5 +1,5 @@
 import Block, { PropsWithChildrenType } from "../../core/block";
-import { loginValidator, passwordValidator } from "../../core/utils/validators";
+import { loginValidator, passwordValidator } from "../../utils/validators";
 
 import { Button } from "../../components";
 import { InputField } from "../../components/input";

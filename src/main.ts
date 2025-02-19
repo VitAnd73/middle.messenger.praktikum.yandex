@@ -3,7 +3,8 @@ import * as Pages from './pages';
 
 import { AppState } from './types';
 import Handlebars from 'handlebars';
-import { Store } from './core/store';
+import { Router } from './core/routing/router';
+import { Store } from './core/store/store';
 import avatarSample from './assets/imgs/img_avatar.png';
 import { render } from './core/renderDom';
 
@@ -122,19 +123,19 @@ window.addEventListener('popstate', () => navigateToPath());
 declare global {
   interface Window {
     store: Store<AppState>;
+    router: Router
   }
-
-  type Nullable<T> = T | null;
-
 }
 
-const initState: AppState = {
-  error: null,
-  user: null,
-  isOpenDialogChat: false,
-  chats: []
-}
-window.store = new Store<AppState>(initState);
+// TODO connect store
+// const initState: AppState = {
+//   error: null,
+//   user: null,
+//   isOpenDialogChat: false,
+//   chats: []
+// }
+// window.store = new Store<AppState>(initState);
+// window.router = new Router('#app');
 
 document.addEventListener('click', (e : MouseEvent) => {
   const page = (e.target as HTMLInputElement).getAttribute('page');

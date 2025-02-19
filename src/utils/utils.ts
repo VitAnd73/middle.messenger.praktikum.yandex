@@ -5,6 +5,10 @@ export default function trim(str: string, chars: string = " ") : string {
     return str.replace(regex, "");
 }
 
+export function isEqualStrs(lhs: string, rhs: string) {
+    return lhs === rhs;
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Indexed<T = any> = {
     [k in (string | symbol)]: T;
@@ -65,7 +69,7 @@ function isArrayOrObject(value: unknown): value is [] | PlainObject {
     return isPlainObject(value) || isArray(value);
 }
 
-export function isEqual(lhs: PlainObject, rhs: PlainObject) {
+export function isEqualPlainObjects(lhs: PlainObject, rhs: PlainObject) {
     if (Object.keys(lhs).length !== Object.keys(rhs).length) {
         return false;
     }
@@ -73,7 +77,7 @@ export function isEqual(lhs: PlainObject, rhs: PlainObject) {
     for (const [key, value] of Object.entries(lhs)) {
         const rightValue = rhs[key];
         if (isArrayOrObject(value) && isArrayOrObject(rightValue)) {
-            if (isEqual(value, rightValue)) {
+            if (isEqualPlainObjects(value, rightValue)) {
                 continue;
             }
             return false;

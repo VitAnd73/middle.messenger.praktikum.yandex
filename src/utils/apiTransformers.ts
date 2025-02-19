@@ -1,7 +1,7 @@
-import { Chat, User } from "../../types";
-import { ChatDTO, UserDTO } from "../../api/types";
+import { Chat, User } from "../types";
+import { ChatDTO, UserDTO } from "../api/types";
 
-import constants from "../../constants";
+import constants from "../constants";
 
 const buildPathToResource = (resource: string | null) => {
     if(!resource) {

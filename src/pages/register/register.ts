@@ -1,5 +1,5 @@
 import { Block, PropsWithChildrenType } from "../../core";
-import { emailValidator, first_nameValidator, loginValidator, passwordValidator, phoneValidator, second_nameValidator } from "../../core/utils/validators";
+import { emailValidator, first_nameValidator, loginValidator, passwordValidator, phoneValidator, second_nameValidator } from "../../utils/validators";
 
 import { Button } from "../../components";
 import InputField from "../../components/input/inputField";
