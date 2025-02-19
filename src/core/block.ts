@@ -2,11 +2,11 @@ import EventBus from "./eventBus";
 import Handlebars from "handlebars";
 import { nanoid } from "nanoid";
 
-type PropsType = Record<string | symbol, string | number | boolean | object | undefined >;
+type PropsType = Record<string | symbol, string | number | boolean | object | null | undefined >;
 type ChildrenType = {[key: string] : Block  | Block[] };
 export type PropsWithChildrenType = {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type, @typescript-eslint/no-explicit-any, @typescript-eslint/ban-types
-  [key : string | symbol]: string | number | boolean | Block  | Block[] | Function | object | undefined | PropsWithChildrenType
+  [key : string | symbol]: string | number | boolean | Block  | Block[] | Function | object | null | undefined | PropsWithChildrenType
 };
 
 type MetaType = {
@@ -68,7 +68,7 @@ export default abstract class Block {
       this._element.classList.add(...classes);
     }
 
-    if (typeof props.attrs === "object") {
+    if (props.attrs && typeof props.attrs === "object") {
       Object.entries(props.attrs).forEach(([attrName, attrValue]) => {
         this._element.setAttribute(attrName, attrValue as string);
       });
@@ -110,7 +110,9 @@ export default abstract class Block {
     this.componentDidMount();
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    console.log(`componentDidMount`);
+  }
 
   dispatchComponentDidMount() {
     this.eventBus().emit(Block.EVENTS.FLOW_CDM);
@@ -145,17 +147,20 @@ export default abstract class Block {
   _addEvents() {
     const { events = {} } = this.props;
 
-    Object.keys(events).forEach((eventName) => {
-      this._element.addEventListener(eventName, (events as EventsCollection)[eventName]);
-    });
+    if (events) {
+        Object.keys(events).forEach((eventName) => {
+        this._element.addEventListener(eventName, (events as EventsCollection)[eventName]);
+      });
+    }
   }
 
   _removeEvents() {
     const { events = {} } = this.props;
-
-    Object.keys(events).forEach((eventName) => {
-      this._element.removeEventListener(eventName, (events as EventsCollection)[eventName]);
-    });
+    if (events) {
+      Object.keys(events).forEach((eventName) => {
+        this._element.removeEventListener(eventName, (events as EventsCollection)[eventName]);
+      });
+    }
   }
 
   _compile() {
@@ -248,6 +253,12 @@ export default abstract class Block {
   }
 
   hide() {
+    console.log(`hide`);
     this.getContent().style.display = "none";
+  }
+
+  destructor() {
+    // This function is called when the object is destroyed
+    console.log(`destructor is called`);
   }
 }

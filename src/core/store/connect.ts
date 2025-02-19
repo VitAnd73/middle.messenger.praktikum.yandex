@@ -2,8 +2,8 @@ import { AppState } from "../../types";
 import Block from "../block";
 import { Class } from "../../types";
 import { StoreEvents } from "./store";
+import { isEqualPlainObjects } from "../../utils/utils";
 
-// TODO - TBC
 export function connect(mapStateToProps: (state: AppState) => Partial<AppState>) {
     return function<P extends object>(Component: Class<Block>) {
         return class extends Component{
@@ -20,10 +20,10 @@ export function connect(mapStateToProps: (state: AppState) => Partial<AppState>)
                     // при обновлении получаем новое состояние
                     const newState = mapStateToProps(store.getState());
 
-                    // // если что-то из используемых данных поменялось, обновляем компонент
-                    // if (!isEqual(state, newState)) {
-                    // this.setProps({...newState});
-                    // }
+                    // если что-то из используемых данных поменялось, обновляем компонент
+                    if (!isEqualPlainObjects(state, newState)) {
+                    this.setProps({...newState});
+                    }
 
                     // не забываем сохранить новое состояние
                     state = newState;
@@ -34,10 +34,11 @@ export function connect(mapStateToProps: (state: AppState) => Partial<AppState>)
             }
 
 
-            // componentWillUnmount() {
-            //     super.componentWillUnmount();
-            //     window.store.off(StoreEvents.Updated, this.onChangeStoreCallback);
-            // }
+            componentWillUnmount() {
+                // TODO - check unmounting
+                // super.componentWillUnmount();
+                window.store.off(StoreEvents.Updated, this.onChangeStoreCallback);
+            }
         }
     }
 }

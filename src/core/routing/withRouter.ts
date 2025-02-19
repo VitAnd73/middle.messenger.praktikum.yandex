@@ -1,6 +1,6 @@
-import Block, { PropsWithChildrenType } from "./block";
+import Block, { PropsWithChildrenType } from "../block";
 
-import { Class } from "../types";
+import { Class } from "../../types";
 
 export function withRouter(WrappedBlock: Class<Block>) {
     return class extends WrappedBlock {
