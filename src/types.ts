@@ -6,6 +6,7 @@ export type AppState = {
     error: string | null,
     user: User | null,
     isOpenDialogChat: boolean,
+    selectedChat: null,
     chats: Chat[]
 }
 

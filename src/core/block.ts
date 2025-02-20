@@ -24,6 +24,7 @@ export default abstract class Block {
     INIT: "init",
     FLOW_CDM: "flow:component-did-mount",
     FLOW_CDU: "flow:component-did-update",
+    FLOW_CWU: 'flow:component-will-unmount',
     FLOW_RENDER: "flow:render",
   };
 
@@ -57,6 +58,7 @@ export default abstract class Block {
     eventBus.on(Block.EVENTS.INIT, this.init.bind(this));
     eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
     eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
+    eventBus.on(Block.EVENTS.FLOW_CWU, this._componentWillUnmount.bind(this));
     eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
   }
 
@@ -131,6 +133,26 @@ export default abstract class Block {
     // compare props to determin if rerendering is required
     return true;
   }
+
+  // stuff for mount / unmount DOM operations
+  _checkInDom() {
+    const elementInDOM = document.body.contains(this._element);
+
+    if (elementInDOM) {
+      setTimeout(() => this._checkInDom(), 1000);
+      return;
+    }
+
+    this.eventBus().emit(Block.EVENTS.FLOW_CWU, this.props);
+  }
+
+  _componentWillUnmount() {
+    this.componentWillUnmount();
+  }
+
+  componentWillUnmount() {}
+
+
 
   setProps = (nextProps : PropsType) => {
     if (!nextProps) {
@@ -255,10 +277,5 @@ export default abstract class Block {
   hide() {
     console.log(`hide`);
     this.getContent().style.display = "none";
-  }
-
-  destructor() {
-    // This function is called when the object is destroyed
-    console.log(`destructor is called`);
   }
 }

@@ -80,11 +80,11 @@ Object.entries(Components).forEach(([ name, template ]) => {
   Handlebars.registerPartial(name, template);
 });
 
+
+// #region old navigation
 function navigate(page:  keyof typeof pages) {
   render('#app', pages[page]);
 }
-
-
 
 function navigateToPath() {
   const {pathname} = window.location;
@@ -119,24 +119,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 window.addEventListener('popstate', () => navigateToPath());
 
-
-declare global {
-  interface Window {
-    store: Store<AppState>;
-    router: Router
-  }
-}
-
-// TODO connect store
-// const initState: AppState = {
-//   error: null,
-//   user: null,
-//   isOpenDialogChat: false,
-//   chats: []
-// }
-// window.store = new Store<AppState>(initState);
-// window.router = new Router('#app');
-
 document.addEventListener('click', (e : MouseEvent) => {
   const page = (e.target as HTMLInputElement).getAttribute('page');
   if (page) {
@@ -148,3 +130,31 @@ document.addEventListener('click', (e : MouseEvent) => {
     e.stopImmediatePropagation();
   }
 });
+
+// #endregion
+
+declare global {
+  interface Window {
+    store: Store<AppState>;
+    router: Router
+  }
+}
+
+// TODO connect store and new app initialization
+// const initState: AppState = {
+//   error: null,
+//   user: null,
+//   isOpenDialogChat: false,
+//   selectedChat: null,
+//   chats: []
+// }
+// window.store = new Store<AppState>(initState);
+
+// window.router = new Router('#app');
+// router.use('/login', Pages.LoginPage)
+// .use('/cats', Pages.ListPage)
+// .use('*', Pages.Page404)
+// .start();
+
+
+// document.addEventListener('DOMContentLoaded', () => initApp());

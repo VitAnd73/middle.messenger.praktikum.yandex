@@ -35,8 +35,7 @@ export function connect(mapStateToProps: (state: AppState) => Partial<AppState>)
 
 
             componentWillUnmount() {
-                // TODO - check unmounting
-                // super.componentWillUnmount();
+                super.componentWillUnmount();
                 window.store.off(StoreEvents.Updated, this.onChangeStoreCallback);
             }
         }

@@ -87,6 +87,10 @@ export default class LoginPage extends Block {
           console.log(`Entered login form: ${JSON.stringify(this.props?.formState)}`);
           const errs = fields.reduce( (a, v) => ({...a, [v.name] : v.validator.validate( (this.props?.formState as LoginState)[v.name as keyof LoginState])}), {});
           console.log(`${button.label} clicked - errors = ${ JSON.stringify(errs)}`);
+
+          // TODO add router wiring for navigation
+          // this.props.router.go('/login');
+
           e.preventDefault();
         }
       })),
@@ -106,3 +110,6 @@ export default class LoginPage extends Block {
     `;
   }
 }
+
+// TODO - connect the page with the store
+// export default connect(({chats, user}) => ({chats, user}))(LoginPage)
