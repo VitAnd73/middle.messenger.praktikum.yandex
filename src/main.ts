@@ -8,6 +8,34 @@ import { Store } from './core/store/store';
 import avatarSample from './assets/imgs/img_avatar.png';
 import { render } from './core/renderDom';
 
+// #region Handlebars
+
+Handlebars.registerHelper({
+  eq: (v1: unknown, v2: unknown) => v1 === v2,
+  ne: (v1: unknown, v2: unknown) => v1 !== v2,
+  lt: (v1: string, v2: string) => v1 < v2,
+  gt: (v1, v2) => v1 > v2,
+  lte: (v1, v2) => v1 <= v2,
+  gte: (v1, v2) => v1 >= v2,
+  and(...args: unknown[]) {
+      return Array.prototype.every.call(args, Boolean);
+  },
+  or(...args: unknown[]) {
+      return Array.prototype.slice.call(args, 0, -1).some(Boolean);
+  }
+});
+
+Object.entries(Components).forEach(([ name, template ]) => {
+  if (typeof template === "function") {
+    return;
+  }
+  Handlebars.registerPartial(name, template);
+});
+
+// #endregion
+
+// #region old navigation
+
 const appTitle = 'Great chat app';
 const defaultPage = 'nav';
 
@@ -58,30 +86,6 @@ const pages = {
   'nav': new Pages.NavigatePage(),
 };
 
-Handlebars.registerHelper({
-  eq: (v1: unknown, v2: unknown) => v1 === v2,
-  ne: (v1: unknown, v2: unknown) => v1 !== v2,
-  lt: (v1: string, v2: string) => v1 < v2,
-  gt: (v1, v2) => v1 > v2,
-  lte: (v1, v2) => v1 <= v2,
-  gte: (v1, v2) => v1 >= v2,
-  and(...args: unknown[]) {
-      return Array.prototype.every.call(args, Boolean);
-  },
-  or(...args: unknown[]) {
-      return Array.prototype.slice.call(args, 0, -1).some(Boolean);
-  }
-});
-
-Object.entries(Components).forEach(([ name, template ]) => {
-  if (typeof template === "function") {
-    return;
-  }
-  Handlebars.registerPartial(name, template);
-});
-
-
-// #region old navigation
 function navigate(page:  keyof typeof pages) {
   render('#app', pages[page]);
 }
@@ -141,6 +145,7 @@ declare global {
 }
 
 // TODO connect store and new app initialization
+// // #region new routing stuff
 // const initState: AppState = {
 //   error: null,
 //   user: null,
@@ -150,11 +155,14 @@ declare global {
 // }
 // window.store = new Store<AppState>(initState);
 
-// window.router = new Router('#app');
+// const router = new Router('#app');
+// window.router = router;
 // router.use('/login', Pages.LoginPage)
-// .use('/cats', Pages.ListPage)
-// .use('*', Pages.Page404)
 // .start();
+// // .use('/cats', Pages.ListPage)
+// // .use('*', Pages.Page404)
 
 
-// document.addEventListener('DOMContentLoaded', () => initApp());
+// // document.addEventListener('DOMContentLoaded', () => initApp());
+
+// // #endregion
