@@ -3,6 +3,7 @@ import { loginValidator, passwordValidator } from "../../utils/validators";
 
 import { Button } from "../../components";
 import { InputField } from "../../components/input";
+import { connect } from "../../core/store/connect";
 
 const loginStateInitial = {
   login: "",
@@ -40,7 +41,7 @@ const buttons = [
 
 ]
 
-export default class LoginPage extends Block {
+class LoginPage extends Block {
   constructor(props?: PropsWithChildrenType) {
     super("main", {
       ...props,
@@ -112,4 +113,4 @@ export default class LoginPage extends Block {
 }
 
 // TODO - connect the page with the store
-// export default connect(({chats, user}) => ({chats, user}))(LoginPage)
+export default connect(({chats, user}) => ({chats, user}))(LoginPage)

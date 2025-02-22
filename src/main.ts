@@ -8,6 +8,19 @@ import { Store } from './core/store/store';
 import avatarSample from './assets/imgs/img_avatar.png';
 import { render } from './core/renderDom';
 
+// TODO connect store and new app initialization
+// #region new routing stuff
+const initState: AppState = {
+  error: null,
+  user: null,
+  isOpenDialogChat: false,
+  selectedChat: null,
+  chats: []
+}
+window.store = new Store<AppState>(initState);
+
+// #endregion
+
 // #region Handlebars
 
 Handlebars.registerHelper({
@@ -145,15 +158,7 @@ declare global {
 }
 
 // TODO connect store and new app initialization
-// // #region new routing stuff
-// const initState: AppState = {
-//   error: null,
-//   user: null,
-//   isOpenDialogChat: false,
-//   selectedChat: null,
-//   chats: []
-// }
-// window.store = new Store<AppState>(initState);
+// #region new routing stuff
 
 // const router = new Router('#app');
 // window.router = router;
@@ -165,4 +170,4 @@ declare global {
 
 // // document.addEventListener('DOMContentLoaded', () => initApp());
 
-// // #endregion
+// #endregion
