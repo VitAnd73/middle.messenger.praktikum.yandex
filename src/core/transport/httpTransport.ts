@@ -28,7 +28,6 @@ function queryStringify(data : object) {
   }, '?');
 }
 
-
 export type HttpResult<R> = {
   status: number;
   data: R

@@ -1,10 +1,13 @@
 import Block, { PropsWithChildrenType } from "../../core/block";
+import { updatePassword, updateProfile } from "../../services/users";
 
 import { AvatarImg } from "../../components/avatar-image";
 import { Button } from "../../components";
+import { ChangePasswordInput } from "../../api/types";
 import { InputField } from "../../components/input";
 import { RouteStrs } from "../../constants";
 import { Router } from "../../core/routing/router";
+import { User } from "../../types";
 import { fieldsProfile } from "../signup/signup";
 import { logout } from "../../services/auth";
 import { makeCamelFromSnake } from "../../utils/utils";
@@ -69,6 +72,7 @@ export default class ProfilePage extends Block {
     super("main", {
       ...props,
       user: curUser,
+      formState: curUser,
 
       ProfileInputFields: fieldsProfile.map(inputField => new InputField({
         label: inputField.label,
@@ -89,11 +93,11 @@ export default class ProfilePage extends Block {
                 ...this.props,
                 formState: {
                   ...(this.props.formState as object),
-                  [inputField.name]: value,
+                  [makeCamelFromSnake(inputField.name)]: value,
                 },
                 errors: {
                   ...(this.props.errors as object),
-                  [inputField.name]: error,
+                  [makeCamelFromSnake(inputField.name)]: error,
                 }
               });
             }
@@ -184,6 +188,33 @@ export default class ProfilePage extends Block {
           const errs = currentFields.reduce( (a, v) => ({...a, [v.name] : v.validator.validate( (this.props?.formState as ProfileFormState)[v.name as keyof ProfileFormState])}), {});
           console.log(`ProfilePage clicked - errors = ${ JSON.stringify(errs)}`);
           e.preventDefault();
+
+          if (this.props.status === "changing-data") {
+            const data = this.props?.formState as User;
+            if (data) {
+              updateProfile(data)
+                  .then(() => this.setProps({
+                    ...this.props,
+                    status: "display",
+                  }))
+                  .catch((error) => console.log('error in updating profile:', error));
+            }
+          }
+          if (this.props.status === "changing-pwd") {
+            const data = {
+              oldPassword: this.props?.formState!['oldPassword' as keyof ProfileFormState],
+              newPassword: this.props?.formState!['newPassword' as keyof ProfileFormState],
+            } as ChangePasswordInput;
+
+            if (data) {
+              updatePassword(data)
+                  .then(() => this.setProps({
+                    ...this.props,
+                    status: "display",
+                  }))
+                  .catch((error) => alert(`Чтото пошло не так! Ошибка - ${error}`));
+            }
+          }
         }
       }),
 
