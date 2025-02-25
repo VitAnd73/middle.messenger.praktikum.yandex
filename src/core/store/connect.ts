@@ -8,10 +8,10 @@ export function connect(mapStateToProps: (state: AppState) => Partial<AppState>)
     return function<P extends object>(Component: Class<Block>) {
         return class extends Component{
             private onChangeStoreCallback: () => void;
-            constructor(props: P) {
+            constructor(props?: P) {
                 const store = window.store;
                 // сохраняем начальное состояние
-                let state = mapStateToProps(store.getState());
+                let state = store ? mapStateToProps(store.getState()) : {};
 
                 super({...props, ...state});
 
@@ -30,7 +30,9 @@ export function connect(mapStateToProps: (state: AppState) => Partial<AppState>)
                 }
 
                 // подписываемся на событие
-                store.on(StoreEvents.Updated, this.onChangeStoreCallback);
+                if (store) {
+                    store.on(StoreEvents.Updated, this.onChangeStoreCallback);
+                }
             }
 
 
