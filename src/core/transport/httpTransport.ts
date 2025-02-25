@@ -1,4 +1,4 @@
-import constants from "../constants";
+import { HOST } from "../../constants";
 
 const METHODS = {
   GET: 'GET',
@@ -28,12 +28,18 @@ function queryStringify(data : object) {
   }, '?');
 }
 
-type HTTPMethod = <R=unknown>(url: string, options?: RequestOptions, timeout?: number) => Promise<R>
+
+export type HttpResult<R> = {
+  status: number;
+  data: R
+}
+
+type HTTPMethod =<R=unknown>(url: string, options?: RequestOptions, timeout?: number) => Promise<HttpResult<R>>
 
 export default  class HTTPTransport {
   private apiUrl: string = ''
   constructor(apiPath: string) {
-      this.apiUrl = `${constants.HOST}${apiPath}`;
+      this.apiUrl = `${HOST}${apiPath}`;
   }
 
   get : HTTPMethod = (url, options = {}) => {
@@ -49,18 +55,19 @@ export default  class HTTPTransport {
     return this.request(`${this.apiUrl}${url}`, {...options, method: METHODS.DELETE}, options.timeout);
   };
 
-  request : HTTPMethod = (url, options = {}, timeout = 5000) => {
+  request<R=unknown>(url: string, options = {} as RequestOptions, timeout = 5000) : Promise<HttpResult<R>> {
     const {headers = {}, method, data} = options;
-    return new Promise(function(resolve, reject) {
+    return new Promise<HttpResult<R>>(function(resolve, reject) {
       if (!method) {
         reject('No method');
         return;
       }
       const xhr = new XMLHttpRequest();
+      xhr.withCredentials = true;
       const isGet = method === METHODS.GET;
       xhr.open(
         method,
-        isGet && !!data
+        isGet && !!data && !(data instanceof FormData)
         ? `${url}${queryStringify(data)}`
         : url,
       );
@@ -68,7 +75,17 @@ export default  class HTTPTransport {
         xhr.setRequestHeader(key, headers[key]);
       });
       xhr.onload = function() {
-        resolve(xhr.response);
+        if (xhr.getResponseHeader('content-type')?.includes('application/json')) {
+          resolve({
+              status: xhr.status,
+              data: JSON.parse(xhr.responseText) as R
+          });
+        } else {
+            resolve({
+                status: xhr.status,
+                data: xhr.responseText as R,
+            });
+        }
       };
       xhr.onabort = reject;
       xhr.onerror = reject;
@@ -76,8 +93,10 @@ export default  class HTTPTransport {
       xhr.ontimeout = reject;
       if (isGet || !data) {
         xhr.send();
-      } else {
+      } else if (data instanceof FormData) {
         xhr.send(data as RequestDataType);
+      } else {
+        xhr.send(JSON.stringify(data));
       }
     });
   };

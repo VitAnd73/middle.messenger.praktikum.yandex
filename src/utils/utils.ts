@@ -5,6 +5,11 @@ export default function trim(str: string, chars: string = " ") : string {
     return str.replace(regex, "");
 }
 
+export function makeCamelFromSnake(snakeStr: string) : string {
+    const curStr = snakeStr.split("_").map( (v, i) => (i===0 ? v : `${v.charAt(0).toUpperCase()}${v.slice(1)}`)).join("");
+    return curStr;
+}
+
 export function isEqualStrs(lhs: string, rhs: string) {
     return lhs === rhs;
 }

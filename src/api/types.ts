@@ -17,7 +17,7 @@ export type UserDTO = {
     email: string;
 };
 
-export type CreateUser = Omit<UserDTO, 'avatar' | 'display_name' | 'id'>  & {
+export type SignUpUser = Omit<UserDTO, 'avatar' | 'display_name' | 'id'>  & {
     password: string
 }
 

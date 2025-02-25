@@ -1,14 +1,13 @@
 import { Chat, User } from "../types";
 import { ChatDTO, UserDTO } from "../api/types";
 
-import constants from "../constants";
+import {HOST} from "../constants";
 
 const buildPathToResource = (resource: string | null) => {
     if(!resource) {
         return null;
     }
-
-    return `${constants.HOST}/resources/${resource}`
+    return `${HOST}/resources/${resource}`
 }
 
 export const transformUser = (data: UserDTO): User => {
@@ -24,9 +23,8 @@ export const transformUser = (data: UserDTO): User => {
     };
 };
 
-
 export const transformChats = (data: ChatDTO[]): Chat[] => {
-    return data.map(chat => ({
+    return data.length>0 ? data.map(chat => ({
         avatar: buildPathToResource(chat.avatar),
         id: chat.id,
         title: chat.title,
@@ -45,5 +43,5 @@ export const transformChats = (data: ChatDTO[]): Chat[] => {
             email: chat.last_message.user.email,
         }
         } : null
-    }));
+    })) : [] as Chat[];
 }

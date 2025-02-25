@@ -32,7 +32,7 @@ export default class EventBus<E extends string = string, M extends { [K in E]: u
       this.listeners[event].forEach(l => l(...args));
     }
     else {
-      throw new Error(`Нет события: ${event}`);
+      console.log(`No event =  ${event}`);
     }
   }
 }

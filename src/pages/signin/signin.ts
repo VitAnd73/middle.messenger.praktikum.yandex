@@ -3,13 +3,17 @@ import { loginValidator, passwordValidator } from "../../utils/validators";
 
 import { Button } from "../../components";
 import { InputField } from "../../components/input";
+import { LoginRequestData } from "../../api/types";
+import { RouteStrs } from "../../constants";
+import { Router } from "../../core/routing/router";
+import { signin } from "../../services/auth";
 
-const loginStateInitial = {
+const signinStateInitial = {
   login: "",
   password: ""
 }
 
-type LoginState = typeof loginStateInitial;
+type SigninState = typeof signinStateInitial;
 
 const fields = [
   {
@@ -27,30 +31,17 @@ const fields = [
   },
 ];
 
-const buttons = [
-  {
-    className: "button button__primary",
-    label: "Sign in",
-    color: "primary"
-  },
-  {
-    className: "button",
-    label: "Sign up",
-  },
-
-]
-
-export default class LoginPage extends Block {
+export default class SigninPage extends Block {
   constructor(props?: PropsWithChildrenType) {
     super("main", {
       ...props,
-      formState: loginStateInitial,
-      errors: loginStateInitial,
+      formState: signinStateInitial,
+      errors: signinStateInitial,
       className: "main__login",
 
       InputFields: fields.map(inputField => new InputField({
         label: inputField.label,
-        error: (props?.errors && (props?.errors as LoginState)[inputField.name as keyof LoginState]) ?? "",
+        error: (props?.errors && (props?.errors as SigninState)[inputField.name as keyof SigninState]) ?? "",
         inputValidator: inputField.validator,
         inputProps: {
           className: "input__element",
@@ -79,21 +70,39 @@ export default class LoginPage extends Block {
         }
       })),
 
-      Buttons: buttons.map(button =>new Button({
-        className: button.className,
-        label: button.label,
-        color: button.color,
+      ButtonSignIn: new Button({
+        className: "button button__primary",
+        label: "Войти",
+        color: "primary",
         onClick: (e: MouseEvent) => {
-          console.log(`Entered login form: ${JSON.stringify(this.props?.formState)}`);
-          const errs = fields.reduce( (a, v) => ({...a, [v.name] : v.validator.validate( (this.props?.formState as LoginState)[v.name as keyof LoginState])}), {});
-          console.log(`${button.label} clicked - errors = ${ JSON.stringify(errs)}`);
-
-          // TODO add router wiring for navigation
-          // this.props.router.go('/login');
-
           e.preventDefault();
+          const data = this.props?.formState as LoginRequestData;
+          if (Object.values(data).findIndex(value => value === null) === -1) {
+            console.log(`loging = ${JSON.stringify(data)}`);
+            signin(data)
+              .then(() => {
+                Router.getRouter().go(RouteStrs.Messenger)
+              })
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
+              .catch((_error : Error) => {
+                const inputBlocks = (this.children.InputFields as Block[]);
+                inputBlocks.forEach( ib => ib.setProps({
+                  ...ib.props,
+                  error: "Чтото пошло не так. Убедитесь что логин / пароль верные!",
+                }));
+              });
+          }
+        },
+      }),
+
+      ButtonSignUp: new Button({
+        className: "button",
+        label: "Зарегистрироваться",
+        onClick: (e: MouseEvent) => {
+          e.preventDefault();
+          Router.getRouter().go(RouteStrs.Signup);
         }
-      })),
+      }),
     });
   }
   public render(): string {
@@ -103,13 +112,11 @@ export default class LoginPage extends Block {
         {{#each InputFields}}
           {{{this}}}
         {{/each}}
-        {{#each Buttons}}
-          {{{this}}}
-        {{/each}}
+
+        {{{ButtonSignIn}}}
+        {{{ButtonSignUp}}}
+
       </form>
     `;
   }
 }
-
-// TODO - connect the page with the store
-// export default connect(({chats, user}) => ({chats, user}))(LoginPage)

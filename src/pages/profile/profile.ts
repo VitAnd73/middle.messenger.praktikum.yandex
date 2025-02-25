@@ -3,7 +3,11 @@ import Block, { PropsWithChildrenType } from "../../core/block";
 import { AvatarImg } from "../../components/avatar-image";
 import { Button } from "../../components";
 import { InputField } from "../../components/input";
-import { fieldsProfile } from "../register/register";
+import { RouteStrs } from "../../constants";
+import { Router } from "../../core/routing/router";
+import { fieldsProfile } from "../signup/signup";
+import { logout } from "../../services/auth";
+import { makeCamelFromSnake } from "../../utils/utils";
 import { passwordValidator } from "../../utils/validators";
 
 const profileFormStatuses =  ["display", "changing-avatar", "changing-data", "changing-pwd"] as const;
@@ -60,17 +64,20 @@ type ProfilePageFormState = {
 
 export default class ProfilePage extends Block {
   constructor(props?: ProfilePageFormState & PropsWithChildrenType) {
+    console.log(`props?.status = ${props?.status}`)
+    const curUser = window.store.getState().user;
     super("main", {
       ...props,
+      user: curUser,
 
       ProfileInputFields: fieldsProfile.map(inputField => new InputField({
         label: inputField.label,
-        // error: (props?.errors && (props?.errors as LoginState)[inputField.name as keyof LoginState]) ?? "",
         inputValidator: inputField.validator,
         inputProps: {
           className: "input__element",
           attrs: {
             name: inputField.name,
+            value: curUser![makeCamelFromSnake(inputField.name) as keyof typeof curUser],
             type: inputField.type,
             placeholder: props?.formState ?  props?.formState[inputField.name as keyof ProfileFormState] : inputField.placeholder,
           },
@@ -158,8 +165,12 @@ export default class ProfilePage extends Block {
           className: "button button__link button__danger",
           label: "Выйти",
           onClick: (e: MouseEvent) => {
-            window.location.href = '/';
             e.preventDefault();
+            logout()
+              .then(() => {
+                  Router.getRouter().go(RouteStrs.Signin)
+              })
+              .catch((error) => console.log(`Err happened while logout: ${error}`));
           }
         })
       ],

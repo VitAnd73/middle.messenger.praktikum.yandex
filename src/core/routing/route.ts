@@ -7,6 +7,7 @@ export interface IRoute {
     render: () => void;
     match: (path: string) => boolean;
     leave: () => void;
+    pathname: string;
 }
 
 export default class Route implements IRoute {
@@ -19,6 +20,10 @@ export default class Route implements IRoute {
         this._blockClass = view;
         this._block = null;
         this._props = props;
+    }
+
+    public get pathname() {
+        return this._pathname
     }
 
     navigate(pathname: string) {
@@ -46,10 +51,10 @@ export default class Route implements IRoute {
 
     render() {
         if (!this._block) {
-            this._block = new this._blockClass({});
+            this._block = new this._blockClass(this._props);
         }
 
-        // this._block.show();
+        this._block.show();
         this._renderDom((this._props.rootQuery as string), this._block);
         this._block.componentDidMount();
     }

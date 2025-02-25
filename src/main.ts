@@ -1,15 +1,15 @@
 import * as Components from './components';
 import * as Pages from './pages';
 
+import { APP_QUERY_SELECTOR, RouteStrs } from './constants';
+
 import { AppState } from './types';
 import Handlebars from 'handlebars';
 import { Router } from './core/routing/router';
 import { Store } from './core/store/store';
 import avatarSample from './assets/imgs/img_avatar.png';
-import { render } from './core/renderDom';
 
 // #region Handlebars
-
 Handlebars.registerHelper({
   eq: (v1: unknown, v2: unknown) => v1 === v2,
   ne: (v1: unknown, v2: unknown) => v1 !== v2,
@@ -33,110 +33,6 @@ Object.entries(Components).forEach(([ name, template ]) => {
 });
 
 // #endregion
-
-// #region old navigation
-
-const appTitle = 'Great chat app';
-const defaultPage = 'nav';
-
-const profileMock = {
-  email: "ivanov@gmail.com",
-  login: "ivanov",
-  first_name: "Ivan",
-  second_name: "Ivanov",
-  phone: "89999998888",
-}
-
-const pages = {
-  'login': new Pages.LoginPage(),
-  'register': new Pages.RegisterPage(),
-  'profile': new Pages.ProfilePage({
-    avatar: avatarSample,
-    status: 'display',
-    formState: profileMock
-  }),
-  'profile-new-avatar': new Pages.ProfilePage ({
-    avatar: avatarSample,
-    status: 'changing-avatar',
-    formState: profileMock,
-  }),
-  'profile-change-data': new Pages.ProfilePage ({
-    avatar: avatarSample,
-    status: 'changing-data',
-    formState: profileMock,
-  }),
-  'profile-change-pwd': new Pages.ProfilePage ({
-    avatar: avatarSample,
-    status: 'changing-pwd',
-  }),
-
-  'chats': new Pages.ChatsPage(),
-  
-  '500': new Pages.InfoPage({
-    title: '500',
-    text: 'Мы уже фиксим',
-    buttonLabel: 'Назад к чатам',
-  }),
-  '404': new Pages.InfoPage({
-    title: '404',
-    text: 'Не туда попали',
-    buttonLabel: 'Назад к чатам',
-  }),
-
-  'nav': new Pages.NavigatePage(),
-};
-
-function navigate(page:  keyof typeof pages) {
-  render('#app', pages[page]);
-}
-
-function navigateToPath() {
-  const {pathname} = window.location;
-  if (pathname.length > 1) {
-    const navTo = pathname.substring(1);
-    if (navTo in pages) {
-      navigate(navTo as keyof typeof pages);
-    }
-    else {
-      navigate(defaultPage);
-    }
-  }
-  else {
-    navigate(defaultPage);
-  }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  const {pathname} = window.location;
-  if (pathname.length>1) {
-    const navTo = pathname.substring(1);
-    if (navTo in pages) {
-      navigate(navTo as keyof typeof pages);
-    }
-    else {
-      navigate(defaultPage);
-    }
-  }
-  else {
-    navigate(defaultPage);
-  }
-});
-window.addEventListener('popstate', () => navigateToPath());
-
-document.addEventListener('click', (e : MouseEvent) => {
-  const page = (e.target as HTMLInputElement).getAttribute('page');
-  if (page) {
-    const {origin} = window.location;
-    navigate(page as keyof typeof pages);
-    window.history.pushState({}, '', `${origin}/${page}`);
-    window.history.replaceState({}, appTitle, `${origin}/${page}`);
-    e.preventDefault();
-    e.stopImmediatePropagation();
-  }
-});
-
-// #endregion
-
 declare global {
   interface Window {
     store: Store<AppState>;
@@ -144,25 +40,35 @@ declare global {
   }
 }
 
-// TODO connect store and new app initialization
-// // #region new routing stuff
-// const initState: AppState = {
-//   error: null,
-//   user: null,
-//   isOpenDialogChat: false,
-//   selectedChat: null,
-//   chats: []
-// }
-// window.store = new Store<AppState>(initState);
+// #region routing stuff
+const initState: AppState = {
+  error: null,
+  user: null,
+  isOpenDialogChat: false,
+  selectedChat: null,
+  chats: []
+}
+window.store = new Store<AppState>(initState);
 
-// const router = new Router('#app');
-// window.router = router;
-// router.use('/login', Pages.LoginPage)
-// .start();
-// // .use('/cats', Pages.ListPage)
-// // .use('*', Pages.Page404)
-
-
-// // document.addEventListener('DOMContentLoaded', () => initApp());
-
-// // #endregion
+const router = new Router(APP_QUERY_SELECTOR);
+window.router = router;
+router.use(RouteStrs.Nav, Pages.NavigatePage)
+router.use(RouteStrs.Signin, Pages.SigninPage)
+router.use(RouteStrs.Signup, Pages.RegisterPage)
+router.use(RouteStrs.Messenger, Pages.ChatsPage)
+router.use(RouteStrs.Settings, Pages.ProfilePage, {
+  avatar: avatarSample,
+  status: "display",
+})
+router.use(RouteStrs.Page500, Pages.InfoPage, {
+  title: '500',
+  text: 'Мы уже фиксим',
+  buttonLabel: 'Назад к чатам',
+})
+router.use(RouteStrs.Page404, Pages.InfoPage, {
+  title: '404',
+  text: 'Не туда попали',
+  buttonLabel: 'Назад к чатам',
+})
+.start();
+// #endregion

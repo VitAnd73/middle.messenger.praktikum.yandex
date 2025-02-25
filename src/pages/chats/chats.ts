@@ -165,7 +165,7 @@ export default class ChatsPage extends Block {
           </div>
 
         </div>
-        ${(this.props.chatState as ChatStateType).isPopupOpen ? '{{{PopupAttach}}}' : ''}
+        ${(this.props.chatState as ChatStateType)?.isPopupOpen ? '{{{PopupAttach}}}' : ''}
         <div class="chat__footer">
           {{{ButtonAttach}}}
           <div>

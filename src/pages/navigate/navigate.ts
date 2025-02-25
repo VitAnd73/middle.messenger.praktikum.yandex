@@ -11,15 +11,12 @@ export default class NavigatePage extends Block {
       <main>
         <nav>
             <ul>
-                <li><a href="#" page="login">Авторизация</a></li>
-                <li><a href="#" page="register">Регистрация</a></li>
-                <li><a href="#" page="profile">Профиль</a></li>
-                <li><a href="#" page="profile-new-avatar">Новый аватар</a></li>
-                <li><a href="#" page="profile-change-data">Изменить данные</a></li>
-                <li><a href="#" page="profile-change-pwd">Изменить пароль</a></li>
-                <li><a href="#" page="chats">Чат</a></li>
-                <li><a href="#" page="500">500</a></li>
-                <li><a href="#" page="404">404</a></li>
+                <li><a href="./signin" page="signin">Авторизация</a></li>
+                <li><a href="./signup" page="signup">Регистрация</a></li>
+                <li><a href="./settings" page="profile">Профиль</a></li>
+                <li><a href="./messenger" page="chats">Чат</a></li>
+                <li><a href="./500" page="500">500</a></li>
+                <li><a href="./404" page="404">404</a></li>
             </ul>
         </nav>
     </main>

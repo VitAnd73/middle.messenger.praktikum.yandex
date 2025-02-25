@@ -1,7 +1,10 @@
 import Block, { PropsWithChildrenType } from "../block";
+import { ProtectedRoutes, RouteStrs } from "../../constants";
 import Route, { IRoute } from "./route";
 
 import { Class } from "../../types";
+import { getChats } from "../../services/chat";
+import { getUser } from "../../services/auth";
 
 export class Router {
     static __instance: Router;
@@ -22,19 +25,41 @@ export class Router {
         Router.__instance = this;
     }
 
+    public static getRouter(){
+        return this.__instance;
+    }
+
     use(pathname: string, block: Class<Block>, params?: PropsWithChildrenType) {
-        const curParams = params ?? {rootQuery: this._rootQuery};
+        const curParams = {...params, rootQuery: this._rootQuery};
         const route = new Route(pathname, block, curParams);
         this.routes.push(route);
         return this;
     }
 
-    start() {
+    async start() {
         window.onpopstate = () => {
             this._onRoute(window.location?.pathname);
         };
 
-        this._onRoute(window.location.pathname);
+        const curPath = window.location.pathname as RouteStrs;
+        if (curPath && ProtectedRoutes.includes(curPath)) {
+            let me = null;
+            try {
+                me = await getUser();
+            } catch (error) {
+                this.go(RouteStrs.Signin);
+                return;
+            }
+            const chats = await getChats();
+            window.store.set({user: me, chats});
+            this.go(curPath);
+        }
+        else if (Object.values(RouteStrs).includes(curPath)) {
+            this.go(curPath);
+        }
+        else {
+            this.go(RouteStrs.Signin);
+        }
     }
 
     _onRoute(pathname: string) {
@@ -66,5 +91,9 @@ export class Router {
 
     getRoute(pathname: string) {
         return this.routes.find(route => route.match(pathname));
+    }
+
+    public currentRoutePathName() {
+        return this._currentRoute ? this._currentRoute.pathname : null;
     }
 }

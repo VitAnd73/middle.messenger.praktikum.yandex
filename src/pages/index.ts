@@ -1,5 +1,5 @@
-export {LoginPage} from './login'
-export {RegisterPage} from './register'
+export {SigninPage} from './signin'
+export {SignupPage as RegisterPage} from './signup'
 export {ChatsPage} from './chats'
 export {NavigatePage} from './navigate'
 export {InfoPage} from './info'

@@ -1,4 +1,5 @@
 import ChatApi from "../api/chat";
+import { ChatDTO } from "../api/types";
 import { apiHasError } from "../utils/apiHasError";
 import { transformChats } from "../utils/apiTransformers";
 
@@ -9,8 +10,7 @@ const getChats = async () => {
     if(apiHasError(responseChat)) {
         throw Error(responseChat.reason)
     }
-
-    return transformChats(responseChat);
+    return transformChats(responseChat as unknown as ChatDTO[]);
 }
 
 const createChat = async (title: string) => {
@@ -27,7 +27,6 @@ const createChat = async (title: string) => {
     const chats = await getChats();
     window.store.set({chats})
 }
-
 
 export {
     createChat,
