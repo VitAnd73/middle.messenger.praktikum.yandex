@@ -1,5 +1,5 @@
-import { ChangePasswordInput } from "../api/types";
-import { User } from "../types";
+import { ChangePasswordInput, User } from "../models/User";
+
 import UserApi from "../api/users";
 import { responseHasError } from "../api/utils";
 

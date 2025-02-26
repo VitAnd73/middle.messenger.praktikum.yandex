@@ -3,7 +3,7 @@ import * as Pages from './pages';
 
 import { APP_QUERY_SELECTOR, RouteStrs } from './constants';
 
-import { AppState } from './types';
+import { AppState } from './models/AppState';
 import Handlebars from 'handlebars';
 import { Router } from './core/routing/router';
 import { Store } from './core/store/store';
@@ -44,8 +44,7 @@ declare global {
 const initState: AppState = {
   error: null,
   user: null,
-  isOpenDialogChat: false,
-  selectedChat: null,
+  currentChatID: null,
   chats: []
 }
 window.store = new Store<AppState>(initState);

@@ -66,8 +66,8 @@ const chatPageStateProps = {
 type ChatPageStateType = typeof chatPageStateProps;
 
 export default class ChatsPage extends Block {
-  constructor(props: ChatPageStateType & PropsWithChildrenType = chatPageStateProps) {
-    super("main", {
+  constructor(props: ChatPageStateType & PropsWithChildrenType) {
+      super("main", {
       ...props,
       ChatList: new ChatList({
         className: "sidenav",
@@ -77,11 +77,12 @@ export default class ChatsPage extends Block {
       }),
       ButtonAttach: new ButtonAttach({
         onClick: () => {
+          const curPopUpState = (this.props?.chatState as ChatStateType) ?? {isPopupOpen : false,}
           this.setProps({
             ...this.props,
             chatState: {
-              ...(this.props.chatState as object),
-              isPopupOpen: !((this.props.chatState as ChatStateType).isPopupOpen),
+              ...curPopUpState,
+              isPopupOpen: !(curPopUpState.isPopupOpen),
             }
           });
         },

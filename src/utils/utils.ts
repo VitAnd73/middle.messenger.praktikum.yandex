@@ -1,3 +1,5 @@
+import { Indexed, PlainObject } from "./types";
+
 export default function trim(str: string, chars: string = " ") : string {
     if (!str) return str; // Return empty string if string is empty
     const escapedChars = chars.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -13,11 +15,6 @@ export function makeCamelFromSnake(snakeStr: string) : string {
 export function isEqualStrs(lhs: string, rhs: string) {
     return lhs === rhs;
 }
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type Indexed<T = any> = {
-    [k in (string | symbol)]: T;
-};
 
 export function merge(lhs: Indexed, rhs: Indexed): Indexed {
     for (const p in rhs) {
@@ -54,10 +51,6 @@ export function set(object: Indexed , path: string, value: unknown): Indexed | u
     return merge(object as Indexed, result);
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type PlainObject<T = any> = {
-    [k in string]: T;
-};
 
 function isPlainObject(value: unknown): value is PlainObject {
     return typeof value === 'object'

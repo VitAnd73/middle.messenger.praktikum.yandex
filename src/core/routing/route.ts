@@ -1,6 +1,6 @@
 import Block, { PropsWithChildrenType } from "../block";
 
-import { Class } from "../../types";
+import { Class } from "../../utils/types";
 import { isEqualStrs } from "../../utils/utils";
 
 export interface IRoute {

@@ -2,7 +2,7 @@ import Block, { PropsWithChildrenType } from "../block";
 import { ProtectedRoutes, RouteStrs } from "../../constants";
 import Route, { IRoute } from "./route";
 
-import { Class } from "../../types";
+import { Class } from "../../utils/types";
 import { getChats } from "../../services/chat";
 import { getUser } from "../../services/auth";
 
@@ -43,15 +43,15 @@ export class Router {
 
         const curPath = window.location.pathname as RouteStrs;
         if (curPath && ProtectedRoutes.includes(curPath)) {
-            let me = null;
             try {
-                me = await getUser();
+                await getUser();
             } catch (error) {
                 this.go(RouteStrs.Signin);
                 return;
             }
-            const chats = await getChats();
-            window.store.set({user: me, chats});
+
+            await getChats({});
+
             this.go(curPath);
         }
         else if (Object.values(RouteStrs).includes(curPath)) {

@@ -7,7 +7,7 @@ import { ChangePasswordInput } from "../../api/types";
 import { InputField } from "../../components/input";
 import { RouteStrs } from "../../constants";
 import { Router } from "../../core/routing/router";
-import { User } from "../../types";
+import { User } from "../../models/types";
 import { fieldsProfile } from "../signup/signup";
 import { logout } from "../../services/auth";
 import { makeCamelFromSnake } from "../../utils/utils";
@@ -67,7 +67,7 @@ type ProfilePageFormState = {
 
 export default class ProfilePage extends Block {
   constructor(props?: ProfilePageFormState & PropsWithChildrenType) {
-    console.log(`props?.status = ${props?.status}`)
+
     const curUser = window.store.getState().user;
     super("main", {
       ...props,

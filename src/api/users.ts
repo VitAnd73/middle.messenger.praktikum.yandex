@@ -1,12 +1,10 @@
-import { APIError, ChangePasswordInput } from "./types";
+import { ApiError, ChangePasswordInput, User } from "../models/User";
 import HTTPTransport, { HttpResult } from "../core/transport/httpTransport";
-
-import { User } from "../types";
 
 const userApi = new HTTPTransport('/user');
 
 export default class UserApi {
-    async updateProfile(data: User): Promise<HttpResult<User | APIError>> {
+    async updateProfile(data: User): Promise<HttpResult<User | ApiError>> {
         return userApi.put<User>('/profile', {
             headers: { "Content-Type": 'application/json'},
             data: data

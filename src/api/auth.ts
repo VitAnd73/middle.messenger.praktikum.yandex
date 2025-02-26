@@ -1,4 +1,4 @@
-import { APIError, LoginRequestData, SignUpResponse, SignUpUser, UserDTO } from "./types";
+import { ApiError, SignInInput, SignUpResponse, User } from "../models/User";
 import HTTPTransport, { HttpResult } from "../core/transport/httpTransport";
 
 export default class AuthApi {
@@ -7,25 +7,25 @@ export default class AuthApi {
         this._authApi = new HTTPTransport(apiPath);
     }
 
-    async signup(data: SignUpUser): Promise<HttpResult<SignUpResponse | APIError>> {
+    async signup(data: User): Promise<HttpResult<SignUpResponse | ApiError>> {
         return this._authApi.post<SignUpResponse>('/signup', {
             headers: { "Content-Type": 'application/json'},
             data: data
         })
     }
 
-    async login(data: LoginRequestData): Promise<HttpResult<void | APIError>> {
+    async signin(data: SignInInput): Promise<HttpResult<void | ApiError>> {
         return this._authApi.post<void>('/signin', {
             headers: { "Content-Type": 'application/json'},
             data: data
         });
     }
 
-    async me(): Promise<HttpResult<UserDTO | APIError>> {
+    async me(): Promise<HttpResult<User | ApiError>> {
         return this._authApi.get('/user');
     }
 
-    async logout(): Promise<HttpResult<void | APIError>> {
+    async logout(): Promise<HttpResult<void | ApiError>> {
         return this._authApi.post('/logout')
     }
 }
