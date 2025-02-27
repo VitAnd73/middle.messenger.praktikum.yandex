@@ -4,66 +4,13 @@ import { Button, Input } from "../../components";
 import { ButtonAttach } from "../../components/button-attach";
 import { ChatList } from "../../components/chat-list";
 import { PopupAttach } from "../../components/popup-attach";
+import { PopupChat } from "../../components/popup-chat";
 import { messageValidator } from "../../utils/validators";
 
-const authorSelfId = -1 //for the own messages
-const noRespondentSelectedIndex = -1; //for no selected respondents
-
-const respondentListInitial = [
-  {
-    id: 1,
-    name: "Ivan",
-    avatar: "src/assets/imgs/counterparty_img.jpg",
-  },
-  {
-    id: 2,
-    name: "Peter",
-    avatar: "src/assets/imgs/counterparty_img.jpg",
-  },
-  {
-    id: 3,
-    name: "Ted",
-    avatar: "src/assets/imgs/counterparty_img.jpg",
-  },
-] as const;
-
-const messageListInitial = [
-  {
-    id: 1,
-    authorId: 1,
-    date: new Date('2022-05-14T07:06:05.123'),
-    isRead: true,
-    textHtml: `<p>ASdfjkashdajksaasdasdasddaasdh</p>`
-  },
-  {
-    id: 1,
-    authorId: authorSelfId,
-    date: new Date('2022-05-14T07:06:05.123'),
-    isRead: true,
-    img: "src/assets/imgs/counterparty_img.jpg",
-  },
-] as const;
-
-// type RespondentType = typeof respondentListInitial[number];
-// type MessageType = typeof messageListInitial[number];
-
-const chatStateInitial = {
-  selectedRespondentId: noRespondentSelectedIndex, //means to resps are selected
-  isPopupOpen: false, //for status of the popup
-  searchStr: "",
-  messageStr: "",
-  messageErr: "",
-}
-
-type ChatStateType = typeof chatStateInitial;
-
-const chatPageStateProps = {
-  respondentList: respondentListInitial,
-  messageList: messageListInitial,
-  chatState: {...chatStateInitial},
-}
-
-type ChatPageStateType = typeof chatPageStateProps;
+type ChatPageStateType = {
+  isPopupChatOpen: boolean,
+  isPopupAttachOpen: boolean,
+};
 
 export default class ChatsPage extends Block {
   constructor(props: ChatPageStateType & PropsWithChildrenType) {
@@ -72,25 +19,37 @@ export default class ChatsPage extends Block {
       ChatList: new ChatList({
         className: "sidenav",
       }),
+      PopupChat: new PopupChat({
+        className: "popupChat",
+      }),
       PopupAttach: new PopupAttach({
         className: "popup",
       }),
-      ButtonAttach: new ButtonAttach({
+      ButtonChat: new Button({
+        className: "button-chat",
         onClick: () => {
-          const curPopUpState = (this.props?.chatState as ChatStateType) ?? {isPopupOpen : false,}
+          const curPopUpState = this.props?.isPopupChatOpen ?? true;
           this.setProps({
             ...this.props,
-            chatState: {
-              ...curPopUpState,
-              isPopupOpen: !(curPopUpState.isPopupOpen),
-            }
+            isPopupChatOpen: !curPopUpState,
+          });
+        }
+      }),
+      ButtonAttach: new ButtonAttach({
+        onClick: () => {
+          const curPopUpState = this.props?.isPopupAttachOpen ?? true;
+          this.setProps({
+            ...this.props,
+            isPopupAttachOpen: !(curPopUpState),
           });
         },
       }),
       InputMessage: new Input({
         className: "input__message",
-        placeholder: "Сообщение_sss",
-        name: "message",
+        attrs: {
+          placeholder: "Сообщение",
+          name: "message",
+        },
         events: {
             blur: (e: InputEvent) => {
                 const inputElement = e.target as HTMLInputElement;
@@ -116,10 +75,12 @@ export default class ChatsPage extends Block {
       ButtonSend: new Button({
         className: "button-send",
         onClick: () => {
-          console.log(`Current state: ${JSON.stringify({
-            message: (this.props.chatState as ChatStateType).messageStr,
-            err: (this.props.chatState as ChatStateType).messageErr,
-          })}`);
+          // TODO - add sending to the server
+          console.log('asdad');
+          // console.log(`Current state: ${JSON.stringify({
+          //   message: (this.props.chatState as ChatStateType).messageStr,
+          //   err: (this.props.chatState as ChatStateType).messageErr,
+          // })}`);
         }
       }),
     });
@@ -137,7 +98,9 @@ export default class ChatsPage extends Block {
           <div class="header__author">
             <b>Ivan</b>
           </div>
-          <div class="dots"></div>
+          <div class="dots__container">
+            {{{ButtonChat}}}
+          </div>
         </div>
 
         <div class="messages__container">
@@ -166,7 +129,7 @@ export default class ChatsPage extends Block {
           </div>
 
         </div>
-        ${(this.props.chatState as ChatStateType)?.isPopupOpen ? '{{{PopupAttach}}}' : ''}
+
         <div class="chat__footer">
           {{{ButtonAttach}}}
           <div>
@@ -176,6 +139,9 @@ export default class ChatsPage extends Block {
             {{{ButtonSend}}}
           </div>
         </div>
+
+        ${this.props.isPopupChatOpen ? '{{{PopupChat}}}' : ''}
+        ${this.props.isPopupAttachOpen ? '{{{PopupAttach}}}' : ''}
 
       </div>
     </main>

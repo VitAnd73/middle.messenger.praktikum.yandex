@@ -1,22 +1,54 @@
 import Block, { PropsWithChildrenType } from "../../core/block";
 
+import { Button } from "../button";
+import { PopupChatList } from "../popup-chat-list";
+
+type ChatListProps = {
+    isPopupChatListOpen?: boolean,
+}
+
 export default class ChatList extends Block {
-    constructor(props: PropsWithChildrenType) {
+    constructor(props: ChatListProps & PropsWithChildrenType) {
         super("div", {
             ...props,
-            events: {
-                click: props.onClick,
-            },
+            ButtonChatList: new Button({
+                className: "chatlist__search",
+                onClick: () => {
+                    const curPopUpState = this.props?.isPopupChatListOpen ?? false;
+                    this.setProps({
+                        ...this.props,
+                        isPopupChatListOpen: !curPopUpState,
+                    });
+                }
+                }),
+            PopupChatList: new PopupChatList({
+                className: "popupChatList",
+                onOkClick: () => {
+                    // TODO create a new chat
+                    
+                    const curPopUpState = this.props?.isPopupChatListOpen ?? false;
+                    this.setProps({
+                        ...this.props,
+                        isPopupChatListOpen: !curPopUpState,
+                    });
+                },
+                onCancelClick: () => {
+                    const curPopUpState = this.props?.isPopupChatListOpen ?? false;
+                    this.setProps({
+                        ...this.props,
+                        isPopupChatListOpen: !curPopUpState,
+                    });
+                },
+
+            }),
         });
     }
     public render(): string {
 
         return `
-            <div class="profile">Профиль ></div>
-            <div class="search__container">
-                <label class="input__container">
-                    <input type="text" class="input__search" value placeholder="Поиск" name="search">
-                </label>
+            <div class="chatlist__header">
+                <input type="text" class="input__search" value placeholder="Поиск" name="search">
+                {{{ButtonChatList}}}
             </div>
 
             <hr class="nav_divider">
@@ -81,6 +113,9 @@ export default class ChatList extends Block {
             </div>
 
             <hr class="nav_divider">
+
+
+            ${this.props.isPopupChatListOpen ? '{{{PopupChatList}}}' : ''}
         `
     }
 }

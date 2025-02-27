@@ -5,7 +5,7 @@ import { Button } from "../../components";
 import InputField from "../../components/input/inputField";
 import { RouteStrs } from "../../constants";
 import { Router } from "../../core/routing/router";
-import { SignUpUser } from "../../api/types";
+import { User } from "../../models/User";
 import { signup } from "../../services/auth";
 
 const registerStateInitial = {
@@ -122,7 +122,7 @@ export default class SignupPage extends Block  {
           if (data) {
             console.log(`Entered login data: ${JSON.stringify(data)}`);
             delete data['password1' as keyof typeof data];
-            signup(data as SignUpUser)
+            signup(data as User)
               .then(()=> {
                 Router.getRouter().go(RouteStrs.Messenger);
               });

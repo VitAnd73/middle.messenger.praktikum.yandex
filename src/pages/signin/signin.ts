@@ -3,9 +3,9 @@ import { loginValidator, passwordValidator } from "../../utils/validators";
 
 import { Button } from "../../components";
 import { InputField } from "../../components/input";
-import { LoginRequestData } from "../../api/types";
 import { RouteStrs } from "../../constants";
 import { Router } from "../../core/routing/router";
+import { SignInInput } from "../../models/User";
 import { signin } from "../../services/auth";
 
 const signinStateInitial = {
@@ -76,20 +76,24 @@ export default class SigninPage extends Block {
         color: "primary",
         onClick: (e: MouseEvent) => {
           e.preventDefault();
-          const data = this.props?.formState as LoginRequestData;
+          const data = this.props?.formState as SignInInput;
           if (Object.values(data).findIndex(value => value === null) === -1) {
             console.log(`loging = ${JSON.stringify(data)}`);
             signin(data)
               .then(() => {
                 Router.getRouter().go(RouteStrs.Messenger)
               })
-              // eslint-disable-next-line @typescript-eslint/no-unused-vars
-              .catch((_error : Error) => {
-                const inputBlocks = (this.children.InputFields as Block[]);
-                inputBlocks.forEach( ib => ib.setProps({
-                  ...ib.props,
-                  error: "Чтото пошло не так. Убедитесь что логин / пароль верные!",
-                }));
+              .catch((error : Error) => {
+                if (error.message === "User already in system") {
+                  Router.getRouter().go(RouteStrs.Messenger)
+                }
+                else {
+                  const inputBlocks = (this.children.InputFields as Block[]);
+                  inputBlocks.forEach( ib => ib.setProps({
+                    ...ib.props,
+                    error: "Чтото пошло не так. Убедитесь что логин / пароль верные!",
+                  }));
+                }
               });
           }
         },

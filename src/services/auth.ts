@@ -1,8 +1,6 @@
 import {SignInInput, User} from "../models/User.ts";
 
 import AuthApi from "../api/auth.ts";
-import { RouteStrs } from "../constants.ts";
-import { Router } from "../core/Router.ts";
 import { getChats } from "./chat.ts";
 import { responseHasError } from "../api/utils.ts";
 
@@ -20,10 +18,6 @@ const signup = async (data: User) => {
 const signin = async (data: SignInInput) => {
     const response = await authApi.signin(data);
     if (responseHasError(response)) {
-        if (response.data.reason === "User already in system") {
-            Router.getRouter().go(RouteStrs.Messenger);
-        }
-
         throw Error(response.data.reason)
     }
     await getUser();

@@ -14,23 +14,32 @@
     color: white;
 }
 
+.dots__container {
+    width: 100%;
+    text-align: right;
+    font-size: 1.5em;
+}
 .dots {
     width: 100%;
     text-align: right;
     font-size: 1.5em;
 }
 
-.dots::after {
-    content: "\22EE";
-    display: inline-block;
-    width: 1em;
-    height: 1em;
-    color: #638ae7;
-    background-color: #faf4f4;
+.button-chat {
+    background-color: var(--main-color);
+    height: 28px;
+    width: 28px;
     border-radius: 50%;
-    line-height: 1;
-    text-align: center;
+    border: none;
+    margin: auto;
 }
+
+.button-chat::before {
+    content: "\205E";
+    font-size: 15px;
+    color: white;
+}
+
 
 .chat__header {
     display: flex;
@@ -159,7 +168,7 @@
 }
 
 .button-send::before {
-    content: "\2192";
+    content: "\27A3";
     font-size: 15px;
     color: white;
 }

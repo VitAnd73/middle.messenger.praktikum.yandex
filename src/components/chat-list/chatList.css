@@ -24,6 +24,17 @@
   margin-right: 15px;
 }
 
+.chatlist__header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  padding: 15px;
+  border-bottom: 0.05rem solid grey;
+}
+
 .input__search {
   padding-left: 25px;
   background: url("src/assets/imgs/img_search_icon.png") no-repeat left;
@@ -32,6 +43,24 @@
   border-radius: 7px;
   background-color : #d1d1d1;
   line-height: 28px;
+  width: 165px;
+  vertical-align: middle;
+}
+
+.chatlist__search {
+  vertical-align: middle;
+  background-color: var(--main-color);
+  height: 28px;
+  width: 28px;
+  border-radius: 50%;
+  border: none;
+  margin-left: 10px;
+}
+
+.chatlist__search::before {
+  content: "\002B";
+  font-size: 15px;
+  color: white;
 }
 
 .chat__item {

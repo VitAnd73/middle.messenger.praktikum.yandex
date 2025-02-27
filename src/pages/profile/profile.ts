@@ -1,13 +1,12 @@
 import Block, { PropsWithChildrenType } from "../../core/block";
+import { ChangePasswordInput, User } from "../../models/User";
 import { updatePassword, updateProfile } from "../../services/users";
 
 import { AvatarImg } from "../../components/avatar-image";
 import { Button } from "../../components";
-import { ChangePasswordInput } from "../../api/types";
 import { InputField } from "../../components/input";
 import { RouteStrs } from "../../constants";
 import { Router } from "../../core/routing/router";
-import { User } from "../../models/types";
 import { fieldsProfile } from "../signup/signup";
 import { logout } from "../../services/auth";
 import { makeCamelFromSnake } from "../../utils/utils";
