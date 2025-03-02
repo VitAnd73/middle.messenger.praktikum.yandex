@@ -33,7 +33,7 @@ const getChats = async (data: GetChatInput) => {
                 return newChat
             }
         }
-    }))
+    }));
 
     window.store.set({chats: connectedChats });
 

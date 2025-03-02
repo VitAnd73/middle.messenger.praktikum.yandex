@@ -68,7 +68,7 @@ export default class PopupChatList extends Block {
 
         return `
             <div class="popupChatListTitle">
-                <p>Создать новый чат с title-ом:</З>
+                <p>Создать новый чат</З>
             </div>
             <div>
                 {{{ChatTitleField}}}
