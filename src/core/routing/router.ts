@@ -1,4 +1,4 @@
-import Block, { PropsWithChildrenType } from "../block";
+import Block, { IProps } from "../block";
 import { ProtectedRoutes, RouteStrs } from "../../constants";
 import Route, { IRoute } from "./route";
 
@@ -29,7 +29,7 @@ export class Router {
         return this.__instance;
     }
 
-    use(pathname: string, block: Class<Block>, params?: PropsWithChildrenType) {
+    use(pathname: string, block: Class<Block>, params?: IProps) {
         const curParams = {...params, rootQuery: this._rootQuery};
         const route = new Route(pathname, block, curParams);
         this.routes.push(route);

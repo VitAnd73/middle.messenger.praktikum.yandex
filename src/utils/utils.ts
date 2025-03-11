@@ -8,6 +8,7 @@ export default function trim(str: string, chars: string = " ") : string {
 }
 
 export function makeCamelFromSnake(snakeStr: string) : string {
+    if (snakeStr.indexOf("_")===-1) return snakeStr;
     const curStr = snakeStr.split("_").map( (v, i) => (i===0 ? v : `${v.charAt(0).toUpperCase()}${v.slice(1)}`)).join("");
     return curStr;
 }
@@ -50,7 +51,6 @@ export function set(object: Indexed , path: string, value: unknown): Indexed | u
     }), value as any);
     return merge(object as Indexed, result);
 }
-
 
 function isPlainObject(value: unknown): value is PlainObject {
     return typeof value === 'object'
@@ -167,4 +167,9 @@ export function queryString(data: PlainObject) {
         throw new Error('input must be an object');
     }
     return getParams(data).map(arr => arr.join('=')).join('&');
+}
+
+export function strOptionalProp(prop: string, value?: string) {
+    return value ? `${prop}="${value}"` : '';
+
 }

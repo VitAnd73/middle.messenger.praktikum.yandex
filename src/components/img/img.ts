@@ -1,8 +1,11 @@
-import Block, { PropsWithChildrenType } from "../../core/block";
+import Block, { IProps } from "../../core/block";
 
-export default class Img extends Block {
-    constructor(props: PropsWithChildrenType) {
-        super("img", {
+interface IImgProps extends IProps {
+    onClick?: () => void,
+}
+export default class Img extends Block<IImgProps> {
+    constructor(props: IImgProps) {
+        super({
             ...props,
             events: {
                 click: props.onClick,
@@ -11,6 +14,7 @@ export default class Img extends Block {
     }
     public render(): string {
         return `
+            <img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">
         `
     }
 }

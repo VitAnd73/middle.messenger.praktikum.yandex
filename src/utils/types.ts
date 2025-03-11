@@ -11,3 +11,5 @@ export type Indexed<T = any> = {
 export type PlainObject<T = any> = {
     [k in string]: T;
 };
+
+export type PropsWithErrs<T> = { [P in keyof T & string as `${P}Error`]: T[P] };

@@ -1,38 +1,40 @@
-import Block, { PropsWithChildrenType } from "../../core/block";
+import Block, { IProps } from "../../core/block";
 
-import { Button } from "../button";
-
-type PopupChatProps = {
-    onAddClick: ()=> void,
-    onDeleteClick: ()=> void,
+interface IPopupChatProps extends IProps {
+    onAddUserToChatClick: ()=> void,
+    onDeleteChatClick: ()=> void,
 }
 
-export default class PopupChat extends Block {
-    constructor(props: PopupChatProps & PropsWithChildrenType) {
-        super("div", {
+export default class PopupChat extends Block<IPopupChatProps> {
+    constructor(props: IPopupChatProps) {
+        super({
             ...props,
-            ButtonAddUser: new Button({
-                className: "chat__add",
-                onClick: () => {
-                    props.onAddClick();
-                }
-            }),
-            ButtonDeleteChat: new Button({
-                className: "chat__add chat__delete",
-                onClick: () => {
-                    props.onDeleteClick();
-                }
-            }),
+            onAddUserToChatClick: ()=> {
+                props.onAddUserToChatClick();
+            },
+            onDeleteChatClick: ()=> {
+                props.onDeleteChatClick();
+            },
         });
     }
     public render(): string {
 
         return `
-            <div class="button_container">
-                {{{ButtonAddUser}}} Добавить пользователя
-            </div>
-            <div class="button_container">
-                {{{ButtonDeleteChat}}} Удалить чат
+            <div>
+                <div class="button_container">
+                    {{{Button
+                        className = "chat__add"
+                        onClick = onAddUserToChatClick
+                    }}}
+                    Добавить пользователя
+                </div>
+                <div class="button_container">
+                    {{{Button
+                        className = "chat__add chat__delete"
+                        onClick = onDeleteChatClick
+                    }}}
+                    Удалить чат
+                </div>
             </div>
         `
     }

@@ -1,8 +1,8 @@
-import Block, { PropsWithChildrenType } from "../../core/block";
+import Block, { IProps, RefsType } from "../../core/block";
 
-export default class NavigatePage extends Block {
-  constructor(props?: PropsWithChildrenType) {
-    super("main", {
+export default class NavigatePage extends Block<IProps, RefsType> {
+  constructor(props?: IProps) {
+    super({
       ...props,
     });
   }

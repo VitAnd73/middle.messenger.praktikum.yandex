@@ -1,76 +1,65 @@
-import Block, { PropsWithChildrenType } from "../../core/block";
+import Block, { IProps } from "../../core/block";
 
-import { Button } from "../button";
-import ChatListItem from "../chat-list-item/chatListItem";
-import { PopupChatList } from "../popup-chat-list";
-import { StoreEvents } from "../../core/store/store";
+import { Chat } from "../../models/Chat";
 
-// import { Chat } from "../../models/Chat";
+interface IChatListProps extends IProps {
+    chatList?: Chat[],
+    isPopupChatListOpen?: boolean,
+    onButtonChatListClick?: ()=> void;
+    onPopUpChatListOkClick?: ()=> void;
+    onPopUpChatListCancelClick?: ()=> void;
+    onOkClick?: ()=> void;
+}
 
-
-
-
-// type ChatListProps = {
-//     chatList?: Chat[],
-//     selectedChatId?: number,
-// }
-
-export default class ChatList extends Block {
-    constructor(props: PropsWithChildrenType) {
-        const chatListItems = window.store.getState().chats.map((chat) => new ChatListItem({
-            chat: chat,
-        }));
-        super("div", {
+export default class ChatList extends Block<IChatListProps> {
+    constructor(props: IChatListProps ) {
+        super({
             ...props,
-            ButtonChatList: new Button({
-                className: "chatlist__search",
-                onClick: () => {
-                    const curPopUpState = this.props?.isPopupChatListOpen ?? false;
-                    this.setProps({
-                        ...this.props,
-                        isPopupChatListOpen: !curPopUpState,
-                    });
-                }
-            }),
-            PopupChatList: new PopupChatList({
-                className: "popupChatList",
-                onOkClick: () => {
-                    const curPopUpState = this.props?.isPopupChatListOpen ?? false;
-                    this.setProps({
-                        ...this.props,
-                        isPopupChatListOpen: !curPopUpState,
-                        chatList: window.store.getState().chats,
-                    });
-                },
-                onCancelClick: () => {
-                    const curPopUpState = this.props?.isPopupChatListOpen ?? false;
-                    this.setProps({
-                        ...this.props,
-                        isPopupChatListOpen: !curPopUpState,
-                    });
-                },
-            }),
-
-            ChatListItems: chatListItems,
-        });
-
-        window.store.on(StoreEvents.Updated, () => this.setProps({
-            ...this.props,
             chatList: window.store.getState().chats,
-        }));
+            onButtonChatListClick: () => {
+                const curPopUpState = this.props?.isPopupChatListOpen ?? false;
+                this.setProps({
+                    ...this.props,
+                    isPopupChatListOpen: !curPopUpState,
+                });
+            },
+            onPopUpChatListOkClick: () => {
+                const curPopUpState = this.props?.isPopupChatListOpen ?? false;
+                this.setProps({
+                    ...this.props,
+                    isPopupChatListOpen: !curPopUpState,
+                });
+            },
+            onPopUpChatListCancelClick: () => {
+                const curPopUpState = this.props?.isPopupChatListOpen ?? false;
+                this.setProps({
+                    ...this.props,
+                    isPopupChatListOpen: !curPopUpState,
+                });
+            },
+        });
     }
 
     public render(): string {
-        return `
+        return `<div class="sidenav">
             <div class="chatlist__header">
                 <input type="text" class="input__search" value placeholder="Поиск" name="search">
-                {{{ButtonChatList}}}
+                {{{Button
+                    className = "chatlist__search"
+                    onClick = onButtonChatListClick
+                }}}
             </div>
             <hr class="nav_divider">
-            {{#each ChatListItems}}
-                {{{this}}}
+            {{#each chatList  as |chat|}}
+                {{{ ChatListItem chat=chat }}}
             {{/each}}
-            ${this.props.isPopupChatListOpen ? '{{{PopupChatList}}}' : ''}
-        `
+            ${this.props.isPopupChatListOpen ?
+                `{{{PopupChatList
+                    className = "popupChatList"
+                    onOkClick = onPopUpChatListOkClick
+                    onCancelClick = onPopUpChatListCancelClick
+                }}}`
+                : ''}
+        </div>`
     }
 }

@@ -1,21 +1,13 @@
-import Block, { PropsWithChildrenType } from "../../core/block";
+import Block, { IProps } from "../../core/block";
+import { SignInInput, SignInInputErrors } from "../../models/User";
 import { loginValidator, passwordValidator } from "../../utils/validators";
 
-import { Button } from "../../components";
-import { InputField } from "../../components/input";
 import { RouteStrs } from "../../constants";
 import { Router } from "../../core/routing/router";
-import { SignInInput } from "../../models/User";
 import { signin } from "../../services/auth";
+import { strOptionalProp } from "../../utils/utils";
 
-const signinStateInitial = {
-  login: "",
-  password: ""
-}
-
-type SigninState = typeof signinStateInitial;
-
-const fields = [
+const fieldsSignIn = [
   {
     name: 'login',
     label: 'Login',
@@ -31,96 +23,114 @@ const fields = [
   },
 ];
 
-export default class SigninPage extends Block {
-  constructor(props?: PropsWithChildrenType) {
-    super("main", {
-      ...props,
-      formState: signinStateInitial,
-      errors: signinStateInitial,
-      className: "main__login",
+type InputArray = typeof fieldsSignIn;
+type InputFields = InputArray[number];
 
-      InputFields: fields.map(inputField => new InputField({
-        label: inputField.label,
-        error: (props?.errors && (props?.errors as SigninState)[inputField.name as keyof SigninState]) ?? "",
-        inputValidator: inputField.validator,
-        inputProps: {
-          className: "input__element",
-          attrs: {
-            name: inputField.name,
-            type: inputField.type,
-            placeholder: inputField.placeholder,
-          },
-          events: {
-            blur: (e: InputEvent) => {
-              const value = (e.target as HTMLInputElement).value;
-              const error = inputField.validator.validate(value);
+interface ISigninProps extends IProps {
+  signInFormValuesState: SignInInput;
+  signInFormErrsState: SignInInputErrors;
+  onSignIn: (e: Event) => void;
+  onSignUp: (e: Event) => void;
+  inputFields: InputFields[];
+  onFieldChange: (e: Event) => void;
+}
+
+
+export default class SigninPage extends Block<ISigninProps> {
+  constructor() {
+    super({
+      className: "main__login",
+      signInFormValuesState: {
+        login: '',
+        password: '',
+      },
+      signInFormErrsState: {
+        loginError: '',
+        passwordError: '',
+      },
+
+      onSignIn: (e: Event) => {
+        const data = this.props?.signInFormValuesState as SignInInput;
+        if (Object.values(data).findIndex(value => value === null) === -1) {
+          signin(data)
+          .then(() => {
+            Router.getRouter().go(RouteStrs.Messenger)
+          })
+          .catch((error : Error) => {
+            if (error.message === "User already in system") {
+              Router.getRouter().go(RouteStrs.Messenger)
+            }
+            else {
+              const errorStr = "Чтото пошло не так. Убедитесь что логин / пароль верные!";
               this.setProps({
                 ...this.props,
-                formState: {
-                  ...(this.props.formState as object),
-                  [inputField.name]: value,
-                },
-                errors: {
-                  ...(this.props.errors as object),
-                  [inputField.name]: error,
-                }
+                signInFormErrsState: {
+                  loginError: errorStr,
+                  passwordError: errorStr,
+                } as SignInInputErrors
               });
             }
-          }
+          });
         }
-      })),
+        e.preventDefault();
+      },
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      onSignUp: (_e: Event) => {
+        Router.getRouter().go(RouteStrs.Signup);
+      },
+      inputFields: fieldsSignIn as unknown as InputFields[],
 
-      ButtonSignIn: new Button({
-        className: "button button__primary",
-        label: "Войти",
-        color: "primary",
-        onClick: (e: MouseEvent) => {
-          e.preventDefault();
-          const data = this.props?.formState as SignInInput;
-          if (Object.values(data).findIndex(value => value === null) === -1) {
-            console.log(`loging = ${JSON.stringify(data)}`);
-            signin(data)
-              .then(() => {
-                Router.getRouter().go(RouteStrs.Messenger)
-              })
-              .catch((error : Error) => {
-                if (error.message === "User already in system") {
-                  Router.getRouter().go(RouteStrs.Messenger)
-                }
-                else {
-                  const inputBlocks = (this.children.InputFields as Block[]);
-                  inputBlocks.forEach( ib => ib.setProps({
-                    ...ib.props,
-                    error: "Чтото пошло не так. Убедитесь что логин / пароль верные!",
-                  }));
-                }
-              });
-          }
-        },
-      }),
-
-      ButtonSignUp: new Button({
-        className: "button",
-        label: "Зарегистрироваться",
-        onClick: (e: MouseEvent) => {
-          e.preventDefault();
-          Router.getRouter().go(RouteStrs.Signup);
-        }
-      }),
+      onFieldChange: (e: Event) => this.onFieldChange(e),
     });
   }
+
+  private onFieldChange(e: Event) {
+    this.handleField(e);
+  }
+
+
+  private handleField(e: Event) {
+    const elem = (e.target as HTMLInputElement);
+    const value = elem.value;
+    const name = elem.name;
+    const fieldSetUp = this.props.inputFields.find( (i) => i.name === name);
+    const error = fieldSetUp?.validator.validate(value);
+    this.setProps({
+      ...this.props,
+      signInFormValuesState: {
+        ...(this.props.signInFormValuesState as object),
+        [name]: value,
+      } as SignInInput,
+      signInFormErrsState: {
+        ...(this.props.signInFormErrsState as object),
+        [name+"Error"]: error,
+      } as SignInInputErrors
+    });
+  }
+
   public render(): string {
+    const curFields = this.props.inputFields.map(f => `
+      {{{ InputField
+        name="${f.name}"
+        ${ strOptionalProp("type", f.type)}
+        inputClassName="input__element"
+        label="${f.label}"
+        ${ strOptionalProp("placeholder", f.placeholder)}
+        value="${this.props.signInFormValuesState[f.name as keyof SignInInput]}"
+        onChange = onFieldChange
+        error = "${this.props.signInFormErrsState[f.name+"Error" as keyof SignInInputErrors]}"
+      }}}
+    `).join(" ");
+
     return `
-      <form class="login-form">
-        <h1 class="login__title">Вход</h1>
-        {{#each InputFields}}
-          {{{this}}}
-        {{/each}}
-
-        {{{ButtonSignIn}}}
-        {{{ButtonSignUp}}}
-
-      </form>
+      <main>
+        <form class="login-form">
+          <h1 class="login__title">Вход</h1>
+          ${curFields}
+          {{{Button className="button button__primary" label="Войти" onClick = onSignIn }}}
+          {{{Button className="button" label="Зарегистрироваться" onClick = onSignUp }}}
+        </form>
+      </main>
     `;
   }
 }

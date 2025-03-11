@@ -1,84 +1,77 @@
-import Block, { PropsWithChildrenType } from "../../core/block";
+import Block, { IProps } from "../../core/block";
 import { createChat, getChats } from "../../services/chat";
 
-import { Button } from "../button";
-import InputField from "../input/inputField";
-
-type PopupChatListProps = {
-    onOkClick: ()=> void,
-    onCancelClick: ()=> void,
-    chatTitle?: string
+interface IPopupChatListProps extends IProps {
+    chatTitle?: string;
+    onOkClick: ()=> void;
+    onCancelClick: ()=> void;
+    onTitleChange?: (e: Event) => void;
 }
 
-export default class PopupChatList extends Block {
-    constructor(props: PopupChatListProps & PropsWithChildrenType) {
-        super("div", {
+export default class PopupChatList extends Block<IPopupChatListProps> {
+    constructor(props: IPopupChatListProps) {
+        super({
             ...props,
             chatTitle: "",
-            ChatTitleField: new InputField({
-                label: "Title нового чата",
-                inputProps: {
-                    className: "input__element",
-                    attrs: {
-                        name: "chatTitle",
-                        placeholder: "",
-                    },
-                    events: {
-                        blur: (e: InputEvent) => {
-                            const value = (e.target as HTMLInputElement).value;
-                            this.setProps({
-                                ...this.props,
-                                chatTitle: value,
-                            });
-                        }
-                    }
+
+            onTitleChange: (e: Event) => {
+                const value = (e.target as HTMLInputElement).value;
+                this.setProps({
+                    ...this.props,
+                    chatTitle: value,
+                });
+            },
+            onOkClick: () => {
+                const title = this.props.chatTitle as string;
+                if (title !== null) {
+                    createChat(title)
+                        .then(() => {
+                            getChats({})
+                                .then()
+                                .catch((error) => console.log('create chat:', error));
+                        })
+                        .catch((error) => {
+                            alert(`error in creating a chat: ${error}`);
+                            console.log('create chat error:', error)
+                        });
                 }
-            }),
-            ButtonAddChat: new Button({
-                className: "button-addchat",
-                label: "Создать чат",
-                onClick: () => {
-                    console.log(`chat created with props.chatTitle=${this.props.chatTitle}`);
-                    const title = this.props.chatTitle as string;
-                    if (title !== null) {
-                        createChat(title)
-                            .then(() => {
-                                getChats({})
-                                    .then()
-                                    .catch((error) => console.log('create chat:', error));
-                            })
-                            .catch((error) => {
-                                alert(`error in creating a chat: ${error}`);
-                                console.log('create chat:', error)
-                            });
-                    }
-                    props.onOkClick();
-                }
-            }),
-            ButtonCancel: new Button({
-                className: "button-cancel",
-                label: "Отменить",
-                onClick: () => {
-                    props.onCancelClick();
-                }
-            }),
+                props.onOkClick();
+            },
+            onCancelClick: ()=> {
+                props.onCancelClick();
+            }
         });
     }
-    public render(): string {
 
-        return `
+    public render(): string {
+        return `<div >
             <div class="popupChatListTitle">
-                <p>Создать новый чат</З>
+                <p>Создать новый чат</p>
             </div>
             <div>
-                {{{ChatTitleField}}}
+                {{{InputField
+                    label = "Title нового чата"
+                    inputClassName = "input__element"
+                    name = "chatTitle"
+                    placeholder = " "
+                    value = chatTitle
+                    onChange = onTitleChange
+                }}}
             </div>
             <div>
-                {{{ButtonAddChat}}}
+                {{{Button
+                    className = "button-addchat"
+                    label = "Создать чат"
+                    onClick = onOkClick
+                }}}
             </div>
             <div>
-                {{{ButtonCancel}}}
+                {{{Button
+                    className = "button-cancel"
+                    label = "Отменить"
+                    onClick = onCancelClick
+                }}}
             </div>
-        `
+        </div>`;
     }
 }

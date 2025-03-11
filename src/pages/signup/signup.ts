@@ -1,24 +1,12 @@
 import { Block, PropsWithChildrenType } from "../../core";
+import { SignUpInput, SignUpInputErrors, User } from "../../models/User";
 import { emailValidator, first_nameValidator, loginValidator, passwordValidator, phoneValidator, second_nameValidator } from "../../utils/validators";
 
-import { Button } from "../../components";
-import InputField from "../../components/input/inputField";
+import { IProps } from "../../core/block";
 import { RouteStrs } from "../../constants";
 import { Router } from "../../core/routing/router";
-import { User } from "../../models/User";
 import { signup } from "../../services/auth";
-
-const registerStateInitial = {
-  email: "",
-  login: "",
-  first_name: "",
-  second_name: "",
-  phone: "",
-  password: "",
-  password1: "",
-}
-
-type SignUpState = typeof registerStateInitial;
+import { strOptionalProp } from "../../utils/utils";
 
 export const fieldsProfile = [
   {
@@ -56,7 +44,6 @@ export const fieldsProfile = [
     placeholder: "",
   }
 ];
-
 export const fieldsPassword = [
   {
     name: 'password',
@@ -75,84 +62,103 @@ export const fieldsPassword = [
 ]
 
 const fields = fieldsProfile.concat(fieldsPassword);
+type InputArray = typeof fields;
+type InputFields = InputArray[number];
 
-export default class SignupPage extends Block  {
+interface ISignUpProps extends IProps {
+  signUpFormValuesState: SignUpInput;
+  signUpFormErrsState: SignUpInputErrors;
+  inputFields: InputFields[];
+  onSignUp: (e: Event) => void;
+  onSignIn: (e: Event) => void;
+  onFieldChange: (e: Event) => void;
+}
+
+export default class SignupPage extends Block<ISignUpProps> {
   constructor(props?: PropsWithChildrenType) {
-    super("main", {
+    super({
       ...props,
-      formState: registerStateInitial,
-      errors: registerStateInitial,
-
-      InputFields: fields.map(inputField => new InputField({
-        label: inputField.label,
-        error: (props?.errors && (props?.errors as SignUpState)[inputField.name as keyof SignUpState]) ?? "",
-        inputValidator: inputField.validator,
-        inputProps: {
-          className: "input__element",
-          attrs: {
-            name: inputField.name,
-            type: inputField.type,
-            placeholder: inputField.placeholder,
-          },
-          events: {
-            blur: (e: InputEvent) => {
-              const value = (e.target as HTMLInputElement).value;
-              const error = inputField.validator.validate(value);
-              this.setProps({
-                ...this.props,
-                formState: {
-                  ...(this.props.formState as object),
-                  [inputField.name]: value,
-                },
-                errors: {
-                  ...(this.props.errors as object),
-                  [inputField.name]: error,
-                }
-              });
-            }
-          }
+      signUpFormValuesState: {
+        login: '',
+        password: '',
+      },
+      signUpFormErrsState: {
+        loginError: '',
+        passwordError: '',
+      },
+      inputFields: fields,
+      onSignUp: (e: Event) => {
+        const data = this.props?.signUpFormValuesState;
+        if (data) {
+          console.log(`Entered signup data: ${JSON.stringify(data)}`);
+          delete data['password1' as keyof typeof data];
+          signup(data as User)
+          .then(()=> {
+            Router.getRouter().go(RouteStrs.Messenger);
+          });
         }
-      })),
-
-      ButtonSignUp: new Button({
-        className: "button button__primary",
-        label: "Зарегистрироваться",
-        onClick: (e: MouseEvent) => {
-          const data = this.props?.formState;
-          if (data) {
-            console.log(`Entered login data: ${JSON.stringify(data)}`);
-            delete data['password1' as keyof typeof data];
-            signup(data as User)
-              .then(()=> {
-                Router.getRouter().go(RouteStrs.Messenger);
-              });
-          }
-          e.preventDefault();
-        }
-      }),
-      ButtonSignIn: new Button({
-        className: "button",
-        label: "Войти",
-        type: "link",
-        onClick: (e: MouseEvent) => {
-          e.preventDefault();
-          Router.getRouter().go(RouteStrs.Signin);
-        }
-      }),
-
+        e.preventDefault();
+      },
+      onSignIn: (e: Event) => {
+        e.preventDefault();
+        Router.getRouter().go(RouteStrs.Signin);
+      },
+      onFieldChange: (e: Event) => this.onFieldChange(e),
     });
   }
+  private onFieldChange(e: Event) {
+    this.handleField(e);
+  }
 
+  private handleField(e: Event) {
+    const elem = (e.target as HTMLInputElement);
+    const value = elem.value;
+    const name = elem.name;
+    const fieldSetUp = this.props.inputFields.find( (i) => i.name === name);
+    const error = fieldSetUp?.validator.validate(value);
+    this.setProps({
+      ...this.props,
+      signUpFormValuesState: {
+        ...(this.props.signUpFormValuesState as object),
+        [name]: value,
+      } as SignUpInput,
+      signUpFormErrsState: {
+        ...(this.props.signUpFormErrsState as object),
+        [name+"Error"]: error,
+      } as SignUpInputErrors
+    });
+  }
   public render(): string {
+
+    const curFields = this.props.inputFields.map(f => `
+          {{{ InputField
+            name="${f.name}"
+            ${ strOptionalProp("type", f.type)}
+            inputClassName="input__element"
+            label="${f.label}"
+            ${ strOptionalProp("placeholder", f.placeholder)}
+            value="${this.props.signUpFormValuesState[f.name as keyof SignUpInput] ?? ''}"
+            onChange = onFieldChange
+            error = "${this.props.signUpFormErrsState[f.name+"Error" as keyof SignUpInputErrors]  ?? ''}"
+          }}}
+        `).join(" ");
+
     return `
       <main class="main__register">
         <form class="register-form">
             <h1 class="register__title">Регистрация</h1>
-            {{#each InputFields}}
-              {{{this}}}
-            {{/each}}
-            {{{ButtonSignUp}}}
-            {{{ButtonSignIn}}}
+            ${curFields}
+            {{{ Button
+              className = "button button__primary"
+              label = "Зарегистрироваться"
+              onClick = onSignUp
+            }}}
+            {{{ Button
+              className = "button"
+              label = "Войти"
+              type = "link"
+              onClick = onSignIn
+            }}}
         </form>
       </main>
     `;

@@ -131,7 +131,8 @@
     margin-top: auto;
     display: flex;
     border-top: 0.05rem solid grey;
-    padding-top: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
 .attach_svg {
@@ -153,9 +154,8 @@
     line-height: 28px;
 }
 
-.button_container {
-    width: 100%;
-    text-align: center;
+.input__message_error {
+    border: 3px solid red;
 }
 
 .button-send {
@@ -164,7 +164,7 @@
     width: 28px;
     border-radius: 50%;
     border: none;
-    margin: auto;
+    margin-left: 10px;
 }
 
 .button-send::before {

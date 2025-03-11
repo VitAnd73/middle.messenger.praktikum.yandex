@@ -1,52 +1,49 @@
-import Block, { PropsWithChildrenType } from "../../core/block";
-import Input, {InputProps} from "./input";
+import Block, { IProps } from "../../core/block";
 
+import { HTMLInputType } from "../../constants";
 import Validator from "../../utils/validator";
 
-type InputFieldProps<T> = {
+export interface IInputFieldProps extends IProps {
+    name: string;
     label: string;
-    inputProps: InputProps;
-    inputValidator?: Validator<T>
-} & PropsWithChildrenType;
+    placeholder: string;
+    type: HTMLInputType,
 
-export default class InputField<T> extends Block {
-    constructor(props: InputFieldProps<T>) {
-        super("div", {
+    inputValidator?: Validator<string>;
+    error?: string;
+    value?: string;
+    onChange?: (e: Event) => void;
+    onBlur?: (e: Event) => void;
+    inputClassName?: string;
+} ;
+
+export default class InputField extends Block<IInputFieldProps> {
+    constructor(props: IInputFieldProps) {
+        super({
             ...props,
-            className: "input",
-            Input: new Input({...props.inputProps,
-                events: {
-                    blur: (e: InputEvent) => {
-                        const inputElement = e.target as HTMLInputElement;
-                        const value = inputElement.value as T;
-                        const validator = props?.inputValidator;
-                        const cur_error = validator?.validate(value);
-                        if (cur_error) {
-                            inputElement.classList.add("input__error");
-                        }
-                        else {
-                            inputElement.classList.remove("input__error");
-                        }
-                        this.setProps({
-                            ...this.props,
-                            error: cur_error
-                        });
-                        const curBlur = props.inputProps?.events?.blur;
-                        if (curBlur){
-                            curBlur(e);
-                        }
-                    }
-                }
-            }),
         });
     }
+
     render(): string {
         return `
-            <label class="input__container">
-                {{{Input}}}
-                <span class="input__label {{#if error}} input__error {{/if}}">{{label}}</span>
-            </label>
-            {{#if error}}<div class="input__error ">{{error}}</div>{{/if}}
+            <div>
+                <label class="input__container">
+                    {{{Input
+                        onChange=onChange
+                        onBlur=onBlur
+                        name=name
+                        className=inputClassName
+                        type=type
+                        placeholder = placeholder
+                        value = value
+                    }}}
+                    <span class="input__label {{#if error}} input__error {{/if}}">{{label}}</span>
+                </label>
+                {{#if error}}<div class="input__error ">{{error}}</div>{{/if}}
+            </div>
         `
     }
 }
+
+// <p>cur value=${this._props.value}</p>
+

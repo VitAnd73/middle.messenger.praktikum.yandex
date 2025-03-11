@@ -1,37 +1,29 @@
 import './info.css'
 
-import Block, { PropsWithChildrenType } from "../../core/block";
+import Block, { IProps } from "../../core/block";
 
-import { Button } from '../../components';
-
-type InfoPageProps = {
+export interface InfoPageProps extends IProps {
     title: string;
     text?: string;
-    buttonLabel: string
+    buttonLabel: string;
+    btnClick?: (e: MouseEvent) => void;
 }
 
-export default class InfoPage extends Block {
-    constructor(props: InfoPageProps & PropsWithChildrenType) {
-        super("main", {
+export default class InfoPage extends Block<InfoPageProps> {
+    constructor(props: InfoPageProps) {
+        super({
             ...props,
-            Button: new Button({
-                className: "button button__link",
-                label: props.buttonLabel,
-
-                onClick: (e: MouseEvent) => {
-                    window.location.href = '/';
-                    e.preventDefault();
-                }
-            }),
         });
     }
     public render(): string {
         return `
+        <main>
             <div class="info__container">
                 <h1 class="info__title">${this.props.title}</h1>
                 <p class="info__text">${this.props.text}</p>
-                {{{ Button }}}
+                {{{ Button label=buttonLabel className="button button__link" onClick=btnClick}}}
             </div>
+        </main>
         `
     }
 }

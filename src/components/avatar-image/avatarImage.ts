@@ -1,8 +1,13 @@
-import Block, { PropsWithChildrenType } from "../../core/block";
+import Block, { IProps } from "../../core/block";
 
-export default class AvatarImg extends Block {
-    constructor(props: PropsWithChildrenType) {
-        super("div", {
+interface IAvatarProps extends IProps {
+    avatarSrc: string,
+    onClick?: () => void,
+}
+
+export default class AvatarImg extends Block<IAvatarProps> {
+    constructor(props: IAvatarProps) {
+        super({
             ...props,
             events: {
                 click: props.onClick,
@@ -10,9 +15,10 @@ export default class AvatarImg extends Block {
         });
     }
     public render(): string {
+        const { avatarSrc } = this.props;
         return `
             <div class="avatar__container">
-                <img src="{{{avatarSrc}}}" alt="Avatar" class="avatar">
+                <img src="${avatarSrc}" alt="Avatar" class="avatar">
                 <div class="avatar__overlay">
                     <div class="avatar__text">Поменять аватар</div>
                 </div>

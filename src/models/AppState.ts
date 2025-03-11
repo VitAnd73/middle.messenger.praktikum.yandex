@@ -5,5 +5,5 @@ export type AppState = {
     error: string | null,
     user: User | null,
     chats: Chat[],
-    currentChatID: number | null,
+    currentChatID: number | undefined,
 }
