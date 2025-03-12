@@ -8,6 +8,7 @@ import { messageValidator } from "../../utils/validators";
 interface IChatPageProps extends IProps {
   isPopupChatOpen?: boolean;
   isPopupAttachOpen?: boolean;
+  isPopupUserOpen?: boolean;
   currentChatID?: number;
   chatList?: Chat[];
   message?: string;
@@ -64,9 +65,11 @@ export default class ChatsPage extends Block<IChatPageProps> {
         });
       },
       onAddUserToChatClick: ()=> {
-        // TODO add handling of adding user to the chat
-        console.log(`onAddUserToChatClick`);
-        this.closeChatPopup();
+        this.setProps({
+          ...this.props,
+          isPopupChatOpen: false,
+          isPopupUserOpen: true,
+        });
       },
       onDeleteChatClick: ()=> {
         const curChatId = window.store.getState().currentChatID;
@@ -103,6 +106,9 @@ export default class ChatsPage extends Block<IChatPageProps> {
     const curChatId = curState.currentChatID as number;
     const curChat = curState.chats?.find(c => c.id===curChatId);
     const avatarSource = curChat?.avatar ?? "src/assets/imgs/img_avatar.png";
+
+    console.log("Chats");
+    
 
     return `
     <main>
@@ -187,6 +193,11 @@ export default class ChatsPage extends Block<IChatPageProps> {
         ${this.props.isPopupAttachOpen ?
         `{{{PopupAttach
           className = "popup"
+        }}}` : ''}
+        ${this.props.isPopupUserOpen ?
+        `{{{PopupUser
+          className = "popupUser"
+          popupTitle = "Add user"
         }}}` : ''}
       </div>
     </main>

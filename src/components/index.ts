@@ -8,5 +8,6 @@ export { Input } from './input'
 export { InputField } from './input'
 export { PopupAttach } from './popup-attach'
 export { PopupChat } from './popup-chat'
-export { PopupChatList } from './popup-chat-list'
+export { PopupAddChat } from './popup-add-chat'
+export { PopupUser } from './popup-user'
 

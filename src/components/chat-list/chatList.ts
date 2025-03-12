@@ -4,7 +4,7 @@ import { Chat } from "../../models/Chat";
 
 interface IChatListProps extends IProps {
     chatList?: Chat[],
-    isPopupChatListOpen?: boolean,
+    isPopupAddChatOpen?: boolean,
     onButtonChatListClick?: ()=> void;
     onPopUpChatListOkClick?: ()=> void;
     onPopUpChatListCancelClick?: ()=> void;
@@ -17,24 +17,24 @@ export default class ChatList extends Block<IChatListProps> {
             ...props,
             chatList: window.store.getState().chats,
             onButtonChatListClick: () => {
-                const curPopUpState = this.props?.isPopupChatListOpen ?? false;
+                const curPopUpState = this.props?.isPopupAddChatOpen ?? false;
                 this.setProps({
                     ...this.props,
-                    isPopupChatListOpen: !curPopUpState,
+                    isPopupAddChatOpen: !curPopUpState,
                 });
             },
             onPopUpChatListOkClick: () => {
-                const curPopUpState = this.props?.isPopupChatListOpen ?? false;
+                const curPopUpState = this.props?.isPopupAddChatOpen ?? false;
                 this.setProps({
                     ...this.props,
-                    isPopupChatListOpen: !curPopUpState,
+                    isPopupAddChatOpen: !curPopUpState,
                 });
             },
             onPopUpChatListCancelClick: () => {
-                const curPopUpState = this.props?.isPopupChatListOpen ?? false;
+                const curPopUpState = this.props?.isPopupAddChatOpen ?? false;
                 this.setProps({
                     ...this.props,
-                    isPopupChatListOpen: !curPopUpState,
+                    isPopupAddChatOpen: !curPopUpState,
                 });
             },
         });
@@ -53,9 +53,9 @@ export default class ChatList extends Block<IChatListProps> {
             {{#each chatList  as |chat|}}
                 {{{ ChatListItem chat=chat }}}
             {{/each}}
-            ${this.props.isPopupChatListOpen ?
-                `{{{PopupChatList
-                    className = "popupChatList"
+            ${this.props.isPopupAddChatOpen ?
+                `{{{PopupAddChat
+                    className = "popupAddChat"
                     onOkClick = onPopUpChatListOkClick
                     onCancelClick = onPopUpChatListCancelClick
                 }}}`

@@ -1,28 +1,29 @@
 import Block, { IProps } from "../../core/block";
 import { createChat, getChats } from "../../services/chat";
 
-interface IPopupChatListProps extends IProps {
-    chatTitle?: string;
+interface IPopupUserProps extends IProps {
+    popupTitle: string;
+    inputField?: string;
     onOkClick: ()=> void;
     onCancelClick: ()=> void;
-    onTitleChange?: (e: Event) => void;
+    onInputFieldChange?: (e: Event) => void;
 }
 
-export default class PopupChatList extends Block<IPopupChatListProps> {
-    constructor(props: IPopupChatListProps) {
+export default class PopupUser extends Block<IPopupUserProps> {
+    constructor(props: IPopupUserProps) {
         super({
             ...props,
-            chatTitle: "",
+            inputField: "",
 
-            onTitleChange: (e: Event) => {
+            onInputFieldChange: (e: Event) => {
                 const value = (e.target as HTMLInputElement).value;
                 this.setProps({
                     ...this.props,
-                    chatTitle: value,
+                    inputField: value,
                 });
             },
             onOkClick: () => {
-                const title = this.props.chatTitle as string;
+                const title = this.props.inputField as string;
                 if (title !== null) {
                     createChat(title)
                         .then(() => {
@@ -45,8 +46,8 @@ export default class PopupChatList extends Block<IPopupChatListProps> {
 
     public render(): string {
         return `<div >
-            <div class="popupChatListTitle">
-                <p>Создать новый чат</p>
+            <div class="popupUserTitle">
+                <p>{{popupTitle}}</p>
             </div>
             <div>
                 {{{InputField
@@ -61,7 +62,7 @@ export default class PopupChatList extends Block<IPopupChatListProps> {
             <div>
                 {{{Button
                     className = "button-addchat"
-                    label = "Создать чат"
+                    label = "OK"
                     onClick = onOkClick
                 }}}
             </div>
