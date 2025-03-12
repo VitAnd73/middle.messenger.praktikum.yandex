@@ -1,19 +1,20 @@
 import Block, { IProps } from "../../core/block";
 
 interface IPopupChatProps extends IProps {
-    onAddUserToChatClick: ()=> void,
-    onDeleteChatClick: ()=> void,
+    onAddUserToChatItemClick: ()=> void,
+    onDeleteChatItemClick: ()=> void,
+    onRemoveUserFromChatItemClick: ()=> void,
 }
 
 export default class PopupChat extends Block<IPopupChatProps> {
     constructor(props: IPopupChatProps) {
         super({
             ...props,
-            onAddUserToChatClick: ()=> {
-                props.onAddUserToChatClick();
+            onAddUserToChatItemClick: ()=> {
+                props.onAddUserToChatItemClick();
             },
-            onDeleteChatClick: ()=> {
-                props.onDeleteChatClick();
+            onDeleteChatItemClick: ()=> {
+                props.onDeleteChatItemClick();
             },
         });
     }
@@ -24,14 +25,21 @@ export default class PopupChat extends Block<IPopupChatProps> {
                 <div class="button_container">
                     {{{Button
                         className = "chat__add"
-                        onClick = onAddUserToChatClick
+                        onClick = onAddUserToChatItemClick
                     }}}
                     Добавить пользователя
                 </div>
                 <div class="button_container">
                     {{{Button
                         className = "chat__add chat__delete"
-                        onClick = onDeleteChatClick
+                        onClick = onRemoveUserFromChatItemClick
+                    }}}
+                    Удалить пользователя
+                </div>
+                <div class="button_container">
+                    {{{Button
+                        className = "chat__add chat__delete"
+                        onClick = onDeleteChatItemClick
                     }}}
                     Удалить чат
                 </div>

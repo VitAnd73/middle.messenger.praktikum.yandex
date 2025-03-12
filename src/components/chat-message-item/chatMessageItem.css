@@ -1,0 +1,67 @@
+.message__date {
+  text-align: center;
+  align-self: center;
+}
+
+
+.message__counterparty__text {
+  border-radius: 0 10px 10px;
+  background: #e6dbdb;
+  margin: 10px 0;
+  padding: 10px;
+  max-width: 370px;
+}
+
+.message__time {
+  text-align: right;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+
+.message__user .message__time,
+.message__user__img .message__time
+{
+  color: blue;
+}
+
+
+.message__counterparty__img {
+  border-radius: 10px;
+  margin: 10px 0;
+  padding: 10px;
+  max-width: 370px;
+  border: 0.05rem solid grey;
+}
+
+.message_img {
+  width: 100%;
+  max-width: 600px;
+}
+
+.message__user {
+  background: #bce8f9;
+  padding: 10px;
+  border-radius: 10px 10px 0;
+  margin: 10px 0;
+  align-self: end;
+  max-width: 370px;
+}
+
+
+.message__user__img {
+  border-radius: 10px;
+  margin: 10px 0;
+  padding: 10px;
+  max-width: 370px;
+  border: 0.05rem solid grey;
+  align-self: end;
+}
+
+.reading_status {
+  display: inline;
+  width: 10px;
+  height: 10px;
+  vertical-align: center;
+  color: blue;
+}

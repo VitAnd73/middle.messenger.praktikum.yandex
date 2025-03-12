@@ -1,4 +1,4 @@
-import { AddDeleteUserInput, Chat, CreateChatResponse, GetChatInput, GetTokenResponse } from "../models/Chat";
+import { AddRemoveUserInput, Chat, CreateChatResponse, GetChatInput, GetTokenResponse } from "../models/Chat";
 import { ApiError, User } from "../models/User";
 import HTTPTransport, { HttpResult } from "../core/transport/httpTransport";
 
@@ -25,14 +25,14 @@ export default class ChatApi {
         );
     }
 
-    async addUsersToChat(data: AddDeleteUserInput) {
+    async addUsersToChat(data: AddRemoveUserInput) {
         return chatApi.put('/users', {
             headers: { "Content-Type": 'application/json'},
             data: data
         });
     }
 
-    async deleteUsersFromChat(data: AddDeleteUserInput) {
+    async removeUsersFromChat(data: AddRemoveUserInput) {
         return chatApi.delete('/users', {
             headers: { "Content-Type": 'application/json'},
             data: data

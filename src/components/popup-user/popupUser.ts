@@ -1,42 +1,29 @@
 import Block, { IProps } from "../../core/block";
-import { createChat, getChats } from "../../services/chat";
 
 interface IPopupUserProps extends IProps {
     popupTitle: string;
-    inputField?: string;
-    onOkClick: ()=> void;
+    inputFieldLabel?: string;
+    inputFieldValue?: string;
+    onOkClick: (inputFieldValue?: string)=> void;
     onCancelClick: ()=> void;
-    onInputFieldChange?: (e: Event) => void;
+    onInputFieldValueChange?: (e: Event) => void;
 }
 
 export default class PopupUser extends Block<IPopupUserProps> {
     constructor(props: IPopupUserProps) {
         super({
             ...props,
-            inputField: "",
+            inputFieldValue: props?.inputFieldValue ?? "",
 
-            onInputFieldChange: (e: Event) => {
+            onInputFieldValueChange: (e: Event) => {
                 const value = (e.target as HTMLInputElement).value;
                 this.setProps({
                     ...this.props,
-                    inputField: value,
+                    inputFieldValue: value,
                 });
             },
             onOkClick: () => {
-                const title = this.props.inputField as string;
-                if (title !== null) {
-                    createChat(title)
-                        .then(() => {
-                            getChats({})
-                                .then()
-                                .catch((error) => console.log('create chat:', error));
-                        })
-                        .catch((error) => {
-                            alert(`error in creating a chat: ${error}`);
-                            console.log('create chat error:', error)
-                        });
-                }
-                props.onOkClick();
+                props.onOkClick(this.props.inputFieldValue);
             },
             onCancelClick: ()=> {
                 props.onCancelClick();
@@ -51,12 +38,12 @@ export default class PopupUser extends Block<IPopupUserProps> {
             </div>
             <div>
                 {{{InputField
-                    label = "Title нового чата"
+                    label = inputFieldLabel
                     inputClassName = "input__element"
                     name = "chatTitle"
                     placeholder = " "
-                    value = chatTitle
-                    onChange = onTitleChange
+                    value = inputFieldValue
+                    onChange = onInputFieldValueChange
                 }}}
             </div>
             <div>

@@ -1,24 +1,39 @@
+import { AddRemoveUserInput, Chat } from "../../models/Chat";
 import Block, { IProps } from "../../core/block";
-import { deleteChat, getChats } from "../../services/chat";
+import { addUserToChat, deleteChat, getChats, removeUsersFromChat } from "../../services/chat";
 
-import { Chat } from "../../models/Chat";
 import { StoreEvents } from "../../core/store/store";
 import { messageValidator } from "../../utils/validators";
+import { openConnectMessages } from "../../services/message";
+import { searchUserByLogin } from "../../services/users";
 
 interface IChatPageProps extends IProps {
   isPopupChatOpen?: boolean;
   isPopupAttachOpen?: boolean;
-  isPopupUserOpen?: boolean;
+  isPopupAddUserOpen?: boolean;
+  isPopupRemoveUserOpen?: boolean;
   currentChatID?: number;
   chatList?: Chat[];
+
   message?: string;
   messageError?: string;
   onMessageChange?: (e: InputEvent)=> void;
-  onBtnChatClick?: ()=> void;
-  onAddUserToChatClick?: () => void;
-  onDeleteChatClick?: () => void;
-  onBtnAttachClick?: ()=> void;
   onBtnSendMessageClick?: ()=> void;
+
+  onBtnChatClick?: ()=> void;
+
+  chatPopupMenuItemHandlers: {
+    onAddUserToChatItemClick?: () => void;
+    onRemoveUserFromChatItemClick?: () => void;
+    onDeleteChatItemClick?: () => void;
+  };
+  userPopupHandlers: {
+    onAddUserToChat?: (userLogin?: string)=> void;
+    onRemoveUserFromChat?: (inputFieldValue?: string)=> void;
+    onCancelUserPopupClick?: ()=>void;
+  }
+
+  onBtnAttachClick?: ()=> void;
 };
 
 export default class ChatsPage extends Block<IChatPageProps> {
@@ -43,12 +58,18 @@ export default class ChatsPage extends Block<IChatPageProps> {
         });
       },
       onBtnSendMessageClick: () => {
-        // TODO - add sending to the server
-          console.log(`send with ${JSON.stringify(this.props)}`);
-          // console.log(`Current state: ${JSON.stringify({
-          //   message: (this.props.chatState as ChatStateType).messageStr,
-          //   err: (this.props.chatState as ChatStateType).messageErr,
-          // })}`);
+        const currentChatID = window.store.getState().currentChatID;
+        const chat = window.store.getState().chats.find((chat) => chat.id == currentChatID )
+        const user= window.store.getState().user;
+        if (!chat) {
+            throw Error('Select Chat!');
+        }
+        if (chat.connection && chat.connection.getState() === 'OPEN') {
+            chat.connection.sendMessage(this.props.message!);
+        } else if (user) {
+            openConnectMessages(chat, user)
+        }
+
       },
       onBtnAttachClick: () => {
           const curPopUpState = this.props?.isPopupAttachOpen ?? true;
@@ -64,27 +85,94 @@ export default class ChatsPage extends Block<IChatPageProps> {
           isPopupChatOpen: !curPopUpState,
         });
       },
-      onAddUserToChatClick: ()=> {
-        this.setProps({
-          ...this.props,
-          isPopupChatOpen: false,
-          isPopupUserOpen: true,
-        });
+      chatPopupMenuItemHandlers: {
+        onAddUserToChatItemClick: ()=> {
+          this.setProps({
+            ...this.props,
+            isPopupChatOpen: false,
+            isPopupAddUserOpen: true,
+          });
+        },
+        onRemoveUserFromChatItemClick: ()=> {
+          this.setProps({
+            ...this.props,
+            isPopupChatOpen: false,
+            isPopupRemoveUserOpen: true,
+          });
+        },
+        onDeleteChatItemClick: ()=> {
+          const curChatId = window.store.getState().currentChatID;
+          if (curChatId) {
+            deleteChat(curChatId)
+            .then(() => {
+                getChats({})
+                .then()
+                .catch((error) => console.warn('delete chat:', error));
+            })
+            .catch((error) => console.warn('delete chat:', error));
+          }
+          this.closeChatPopup();
+          window.store.set({currentChatID: undefined });
+        },
       },
-      onDeleteChatClick: ()=> {
-        const curChatId = window.store.getState().currentChatID;
-        if (curChatId) {
-          deleteChat(curChatId)
-          .then(() => {
-              getChats({})
-              .then()
-              .catch((error) => console.warn('delete chat:', error));
-          })
-          .catch((error) => console.warn('delete chat:', error));
-        }
-        this.closeChatPopup();
-        window.store.set({currentChatID: undefined });
+
+      userPopupHandlers: {
+        onAddUserToChat: (login?: string)=> {
+          console.log(`onAddUserToChat userLogin=${login}`);
+          if (login) {
+            searchUserByLogin(login)
+            .then(users => {
+              if (!users.length) {
+                alert("No users for the login are found. Change login to search users!");
+              } else {
+                const currentChatID = window.store.getState().currentChatID;
+                addUserToChat({
+                  users: users.map((u) => u.id),
+                  chatId: currentChatID
+                } as AddRemoveUserInput)
+                .then(() => this.closeUserPopup())
+                .catch((error) => {
+                  console.log('add users to chat:', error)
+                });
+              }
+            })
+            .catch((error) => {
+              alert("Something went wrong! Try again!");
+              console.log('search users:', error)
+            });
+          }
+
+        },
+        onRemoveUserFromChat: (login?: string)=> {
+          console.log(`onRemoveUserFromChat userLogin=${login}`);
+          if (login) {
+            searchUserByLogin(login)
+            .then(users => {
+              if (!users.length) {
+                alert("No users for the login are found. Change login to search users!");
+              } else {
+                const currentChatID = window.store.getState().currentChatID;
+                removeUsersFromChat({
+                  users: users.map((u) => u.id),
+                  chatId: currentChatID
+                } as AddRemoveUserInput)
+                .then(() => this.closeUserPopup())
+                .catch((error) => {
+                  console.log('remove users to chat:', error)
+                });
+              }
+            })
+            .catch((error) => {
+              alert("Something went wrong! Try again!");
+              console.log('onRemoveUserFromChat error:', error)
+            });
+          }
+        },
+        onCancelUserPopupClick: () => {
+          this.closeUserPopup();
+        },
       },
+
     });
     window.store.on(StoreEvents.Updated, () => this.handleStoreUpdate());
   }
@@ -92,6 +180,13 @@ export default class ChatsPage extends Block<IChatPageProps> {
     this.setProps({
       ...this.props,
       isPopupChatOpen: false,
+    });
+  }
+  private closeUserPopup() {
+    this.setProps({
+      ...this.props,
+      isPopupAddUserOpen: false,
+      isPopupRemoveUserOpen: false,
     });
   }
   private handleStoreUpdate() {
@@ -106,9 +201,6 @@ export default class ChatsPage extends Block<IChatPageProps> {
     const curChatId = curState.currentChatID as number;
     const curChat = curState.chats?.find(c => c.id===curChatId);
     const avatarSource = curChat?.avatar ?? "src/assets/imgs/img_avatar.png";
-
-    console.log("Chats");
-    
 
     return `
     <main>
@@ -136,33 +228,8 @@ export default class ChatsPage extends Block<IChatPageProps> {
         {{/unless}}
 
         {{#if currentChatID}}
-          <div class="messages__container">
-            <div class ="message__date">19 января</div>
-            <div class="message__counterparty__text">
-              <p>counterparty</p>
-              <p>counterparty</p>
-              <div class="message__time">
-                11:34
-              </div>
-            </div>
-
-            <div class="message__user">
-              message from the userx
-              <div class="message__time">
-                <svg class="reading_status" viewBox="0 0 512 512"><path fill="currentColor" d="M505 174.8l-39.6-39.6c-9.4-9.4-24.6-9.4-33.9 0L192 374.7 80.6 263.2c-9.4-9.4-24.6-9.4-33.9 0L7 302.9c-9.4 9.4-9.4 24.6 0 34L175 505c9.4 9.4 24.6 9.4 33.9 0l296-296.2c9.4-9.5 9.4-24.7 .1-34zm-324.3 106c6.2 6.3 16.4 6.3 22.6 0l208-208.2c6.2-6.3 6.2-16.4 0-22.6L366.1 4.7c-6.2-6.3-16.4-6.3-22.6 0L192 156.2l-55.4-55.5c-6.2-6.3-16.4-6.3-22.6 0L68.7 146c-6.2 6.3-6.2 16.4 0 22.6l112 112.2z"/></svg>
-                11:34
-              </div>
-            </div>
-
-            <div class="message__counterparty__img">
-              <img src="src/assets/imgs/counterparty_img.jpg" alt="Avatar" class="message_img">
-              <div class="message__time">
-                11:34
-              </div>
-            </div>
-            </div>
-
-            <div class="chat__footer">
+          {{{ChatMessages className = "messages__container"}}}
+          <div class="chat__footer">
               {{{ButtonAttach
                 onClick = onBtnAttachClick
               }}}
@@ -182,22 +249,34 @@ export default class ChatsPage extends Block<IChatPageProps> {
                 ${this.props.messageError ? "disabled = 'true'" : ""}
               }}}
             </div>
-          {{/if}}
-        </div>
+          </div>
+        {{/if}}
 
         ${this.props.isPopupChatOpen ? `{{{PopupChat
           className = "popupChat"
-          onAddUserToChatClick = onAddUserToChatClick
-          onDeleteChatClick = onDeleteChatClick
+          onAddUserToChatItemClick = chatPopupMenuItemHandlers.onAddUserToChatItemClick
+          onRemoveUserFromChatItemClick = chatPopupMenuItemHandlers.onRemoveUserFromChatItemClick
+          onDeleteChatItemClick = chatPopupMenuItemHandlers.onDeleteChatItemClick
+        }}}` : ''}
+        ${this.props.isPopupAddUserOpen ?
+        `{{{PopupUser
+          className = "popupUser"
+          popupTitle = "Add user"
+          inputFieldLabel = "User login"
+          onOkClick = userPopupHandlers.onAddUserToChat
+          onCancelClick = userPopupHandlers.onCancelUserPopupClick
+        }}}` : ''}
+        ${this.props.isPopupRemoveUserOpen ?
+        `{{{PopupUser
+          className = "popupUser"
+          popupTitle = "Remove user"
+          inputFieldLabel = "User login"
+          onOkClick = userPopupHandlers.onRemoveUserFromChat
+          onCancelClick = userPopupHandlers.onCancelUserPopupClick
         }}}` : ''}
         ${this.props.isPopupAttachOpen ?
         `{{{PopupAttach
           className = "popup"
-        }}}` : ''}
-        ${this.props.isPopupUserOpen ?
-        `{{{PopupUser
-          className = "popupUser"
-          popupTitle = "Add user"
         }}}` : ''}
       </div>
     </main>

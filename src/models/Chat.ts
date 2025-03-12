@@ -1,5 +1,3 @@
-// import SocketTransport from "../api/socket.ts";
-
 import {ChatMessage} from "./ChatMessage";
 import SocketTransport from "../core/transport/socketTransport";
 import { User } from "./User";
@@ -40,7 +38,7 @@ export type GetTokenResponse = {
 }
 
 
-export type AddDeleteUserInput = {
+export type AddRemoveUserInput = {
     users: number[]
     chatId: number
 }

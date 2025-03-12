@@ -1,4 +1,4 @@
-import { AddDeleteUserInput, Chat, CreateChatResponse, GetChatInput } from "../models/Chat";
+import { AddRemoveUserInput, Chat, CreateChatResponse, GetChatInput } from "../models/Chat";
 
 import ChatApi from "../api/chat";
 import { Indexed } from "../utils/types";
@@ -55,15 +55,15 @@ const deleteChat = async (id: number) => {
     }
 }
 
-const addUserToChat = async (data: AddDeleteUserInput) => {
+const addUserToChat = async (data: AddRemoveUserInput) => {
     const response = await chatApi.addUsersToChat(data)
     if (responseHasError(response)) {
         throw Error(response.data.reason)
     }
 }
 
-const deleteUsersFromChat = async (data: AddDeleteUserInput) => {
-    const response = await chatApi.deleteUsersFromChat(data)
+const removeUsersFromChat = async (data: AddRemoveUserInput) => {
+    const response = await chatApi.removeUsersFromChat(data)
     if (responseHasError(response)) {
         throw Error(response.data.reason)
     }
@@ -106,7 +106,7 @@ export {
     createChat,
     deleteChat,
     addUserToChat,
-    deleteUsersFromChat,
+    removeUsersFromChat,
     getChatUsers,
     updateChatAvatar,
     getChatToken,
