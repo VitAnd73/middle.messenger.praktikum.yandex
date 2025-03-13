@@ -1,4 +1,4 @@
-import Block, { PropsWithChildrenType } from "../block";
+import Block, { IProps } from "../block";
 
 import { Class } from "../../utils/types";
 import { isEqualStrs } from "../../utils/utils";
@@ -14,8 +14,8 @@ export default class Route implements IRoute {
     _pathname: string;
     _blockClass: Class<Block>;
     _block: null | Block;
-    _props: PropsWithChildrenType;
-    constructor(pathname : string, view : Class<Block>, props: PropsWithChildrenType) {
+    _props: IProps;
+    constructor(pathname : string, view : Class<Block>, props: IProps) {
         this._pathname = pathname;
         this._blockClass = view;
         this._block = null;
@@ -43,19 +43,11 @@ export default class Route implements IRoute {
         return isEqualStrs(pathname, this._pathname);
     }
 
-    _renderDom(query: string, block: Block) {
-        const root = document.querySelector(query);
-        root!.innerHTML = "";
-        root!.append(block.getContent());
-    }
-
     render() {
         if (!this._block) {
             this._block = new this._blockClass(this._props);
         }
 
         this._block.show();
-        this._renderDom((this._props.rootQuery as string), this._block);
-        this._block.componentDidMount();
     }
 }

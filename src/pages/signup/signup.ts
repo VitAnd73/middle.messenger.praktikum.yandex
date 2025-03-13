@@ -1,7 +1,7 @@
-import { Block, PropsWithChildrenType } from "../../core";
 import { SignUpInput, SignUpInputErrors, User } from "../../types/user";
 import { emailValidator, first_nameValidator, loginValidator, passwordValidator, phoneValidator, second_nameValidator } from "../../utils/validators";
 
+import { Block } from "../../core";
 import { IProps } from "../../core/block";
 import { RouteStrs } from "../../constants";
 import { Router } from "../../core/routing/router";
@@ -75,16 +75,26 @@ interface ISignUpProps extends IProps {
 }
 
 export default class SignupPage extends Block<ISignUpProps> {
-  constructor(props?: PropsWithChildrenType) {
+  constructor(props?: ISignUpProps) {
     super({
       ...props,
       signUpFormValuesState: {
         login: '',
         password: '',
+        email: '',
+        first_name: '',
+        second_name: '',
+        phone: '',
+        password1: '',
       },
       signUpFormErrsState: {
         loginError: '',
         passwordError: '',
+        emailError: '',
+        first_nameError: '',
+        second_nameError: '',
+        phoneError: '',
+        password1Error: '',
       },
       inputFields: fields,
       onSignUp: (e: Event) => {

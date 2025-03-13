@@ -10,7 +10,7 @@
     "dev": "vite",
     "lint": "npx eslint --fix && npx tsc --noEmit && npx stylelint --fix '**/*.{css,scss,sass,styl,less,pcss}'",
     "build": "tsc && vite build",
-    "start": "vite build && node server.cjs",
+    "start": "tsc && vite build && node ./server.cjs",
     "preview": "vite preview",
     "eslint": "eslint . "
   },
