@@ -1,13 +1,32 @@
-import globals from "globals";
-import pluginJs from "@eslint/js";
-import tseslint from "typescript-eslint";
+import eslintPluginImport from "eslint-plugin-import";
+import tseslint from "@typescript-eslint/eslint-plugin";
+import tsParser from "@typescript-eslint/parser";
+import prettier from "eslint-plugin-prettier";
+import configPrettier from "eslint-config-prettier";
 
-/** @type {import('eslint').Linter.Config[]} */
 export default [
-  {ignores: [".config/*", "server.cjs", "coverage/*"]},
-  {files: ["**/*.{js,mjs,cjs,ts}"]},
-  {files: ["**/*.js"], languageOptions: {sourceType: "script"}},
-  {languageOptions: { globals: globals.browser }},
-  pluginJs.configs.recommended,
-  ...tseslint.configs.recommended,
+  {
+    ignores: ["node_modules", "dist", ".vite"],
+  },
+  {
+    files: ["src/**/*.ts", "src/**/*.tsx"],
+    languageOptions: {
+      parser: tsParser,
+      sourceType: "module",
+    },
+    plugins: {
+      import: eslintPluginImport,
+      "@typescript-eslint": tseslint,
+      prettier,
+    },
+    rules: {
+      "prettier/prettier": "error",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        { argsIgnorePattern: "^_" },
+      ],
+      "import/order": ["error", { "newlines-between": "always" }],
+    },
+  },
+  configPrettier,
 ];
