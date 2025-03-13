@@ -1,29 +1,29 @@
-import EventBus from '../eventBus';
+import EventBus from "../eventBus";
 
 export enum StoreEvents {
-    Updated = 'Updated'
+  Updated = "Updated",
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export class Store<State extends Record<string, any>> extends EventBus {
-    private state: State = {} as State;
+  private state: State = {} as State;
 
-    constructor(defaultState: State) {
-        super();
+  constructor(defaultState: State) {
+    super();
 
-        this.state = defaultState;
-        this.set(defaultState);
-    }
+    this.state = defaultState;
+    this.set(defaultState);
+  }
 
-    public getState() {
-        return this.state;
-    }
+  public getState() {
+    return this.state;
+  }
 
-    public set(nextState: Partial<State>) {
-        const prevState = { ...this.state };
+  public set(nextState: Partial<State>) {
+    const prevState = { ...this.state };
 
-        this.state = { ...this.state, ...nextState };
+    this.state = { ...this.state, ...nextState };
 
-        this.emit(StoreEvents.Updated, prevState, nextState);
-    }
+    this.emit(StoreEvents.Updated, prevState, nextState);
+  }
 }

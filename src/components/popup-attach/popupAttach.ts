@@ -1,14 +1,13 @@
 import Block, { IProps } from "../../core/block";
 
 export default class PopupAttach extends Block {
-    constructor(props: IProps) {
-        super({
-            ...props
-        });
-    }
-    public render(): string {
-
-        return `
+  constructor(props: IProps) {
+    super({
+      ...props,
+    });
+  }
+  public render(): string {
+    return `
             <div>
                 <div>
                     <span class="popup__item__icon">
@@ -29,6 +28,6 @@ export default class PopupAttach extends Block {
                     <span class="popup__item__text">Локация</span>
                 </div>
             </div>
-        `
-    }
+        `;
+  }
 }

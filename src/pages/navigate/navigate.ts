@@ -1,6 +1,6 @@
-import Block, { IProps, RefsType } from "../../core/block";
+import Block, { IProps } from "../../core/block";
 
-export default class NavigatePage extends Block<IProps, RefsType> {
+export default class NavigatePage extends Block<IProps> {
   constructor(props?: IProps) {
     super({
       ...props,

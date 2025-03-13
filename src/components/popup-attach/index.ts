@@ -1,3 +1,3 @@
-import './popupAttach.css';
+import "./popupAttach.css";
 
-export {default as PopupAttach} from './popupAttach';
+export { default as PopupAttach } from "./popupAttach";

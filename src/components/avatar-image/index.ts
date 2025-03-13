@@ -1,3 +1,3 @@
-import './avatarImage.css'
+import "./avatarImage.css";
 
-export { default as AvatarImg } from './avatarImage';
+export { default as AvatarImg } from "./avatarImage";

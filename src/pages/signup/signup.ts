@@ -1,6 +1,12 @@
 import { SignUpInput, SignUpInputErrors, User } from "../../types/user";
-import { emailValidator, first_nameValidator, loginValidator, passwordValidator, phoneValidator, second_nameValidator } from "../../utils/validators";
-
+import {
+  emailValidator,
+  first_nameValidator,
+  loginValidator,
+  passwordValidator,
+  phoneValidator,
+  second_nameValidator,
+} from "../../utils/validators";
 import { Block } from "../../core";
 import { IProps } from "../../core/block";
 import { RouteStrs } from "../../constants";
@@ -10,56 +16,54 @@ import { strOptionalProp } from "../../utils/utils";
 
 export const fieldsProfile = [
   {
-    name: 'email',
-    type: 'email',
-    label: 'Почта',
+    name: "email",
+    type: "email",
+    label: "Почта",
     validator: emailValidator,
     placeholder: "",
-
   },
   {
-    name: 'login',
-    label: 'Login',
+    name: "login",
+    label: "Login",
     validator: loginValidator,
     placeholder: "",
-
   },
   {
-    name: 'first_name',
-    label: 'Имя',
+    name: "first_name",
+    label: "Имя",
     validator: first_nameValidator,
     placeholder: "",
   },
   {
-    name: 'second_name',
-    label: 'Фамилия',
+    name: "second_name",
+    label: "Фамилия",
     validator: second_nameValidator,
     placeholder: "",
   },
   {
-    name: 'phone',
-    label: 'Телефон',
-    type: 'tel',
+    name: "phone",
+    label: "Телефон",
+    type: "tel",
     validator: phoneValidator,
     placeholder: "",
-  }
+  },
 ];
 export const fieldsPassword = [
   {
-    name: 'password',
+    name: "password",
     type: "password",
-    label: 'Пароль',
+    label: "Пароль",
     validator: passwordValidator,
     placeholder: "",
   },
   {
-    name: 'password1',
+    name: "password1",
     type: "password",
-    label: 'Пароль (ещё раз)',
+    label: "Пароль (ещё раз)",
     validator: passwordValidator,
     placeholder: "",
   },
-]
+];
 
 const fields = fieldsProfile.concat(fieldsPassword);
 type InputArray = typeof fields;
@@ -79,30 +83,29 @@ export default class SignupPage extends Block<ISignUpProps> {
     super({
       ...props,
       signUpFormValuesState: {
-        login: '',
-        password: '',
-        email: '',
-        first_name: '',
-        second_name: '',
-        phone: '',
-        password1: '',
+        login: "",
+        password: "",
+        email: "",
+        first_name: "",
+        second_name: "",
+        phone: "",
+        password1: "",
       },
       signUpFormErrsState: {
-        loginError: '',
-        passwordError: '',
-        emailError: '',
-        first_nameError: '',
-        second_nameError: '',
-        phoneError: '',
-        password1Error: '',
+        loginError: "",
+        passwordError: "",
+        emailError: "",
+        first_nameError: "",
+        second_nameError: "",
+        phoneError: "",
+        password1Error: "",
       },
       inputFields: fields,
       onSignUp: (e: Event) => {
         const data = this.props?.signUpFormValuesState;
         if (data) {
-          delete data['password1' as keyof typeof data];
-          signup(data as User)
-          .then(()=> {
+          delete data["password1" as keyof typeof data];
+          signup(data as User).then(() => {
             Router.getRouter().go(RouteStrs.Messenger);
           });
         }
@@ -120,10 +123,10 @@ export default class SignupPage extends Block<ISignUpProps> {
   }
 
   private handleField(e: Event) {
-    const elem = (e.target as HTMLInputElement);
+    const elem = e.target as HTMLInputElement;
     const value = elem.value;
     const name = elem.name;
-    const fieldSetUp = this.props.inputFields.find( (i) => i.name === name);
+    const fieldSetUp = this.props.inputFields.find((i) => i.name === name);
     const error = fieldSetUp?.validator.validate(value);
     this.setProps({
       ...this.props,
@@ -133,24 +136,27 @@ export default class SignupPage extends Block<ISignUpProps> {
       } as SignUpInput,
       signUpFormErrsState: {
         ...(this.props.signUpFormErrsState as object),
-        [name+"Error"]: error,
-      } as SignUpInputErrors
+        [name + "Error"]: error,
+      } as SignUpInputErrors,
     });
   }
   public render(): string {
-
-    const curFields = this.props.inputFields.map(f => `
+    const curFields = this.props.inputFields
+      .map(
+        (f) => `
           {{{ InputField
             name="${f.name}"
-            ${ strOptionalProp("type", f.type)}
+            ${strOptionalProp("type", f.type)}
             inputClassName="input__element"
             label="${f.label}"
-            ${ strOptionalProp("placeholder", f.placeholder)}
-            value="${this.props.signUpFormValuesState[f.name as keyof SignUpInput] ?? ''}"
+            ${strOptionalProp("placeholder", f.placeholder)}
+            value="${this.props.signUpFormValuesState[f.name as keyof SignUpInput] ?? ""}"
             onChange = onFieldChange
-            error = "${this.props.signUpFormErrsState[f.name+"Error" as keyof SignUpInputErrors]  ?? ''}"
+            error = "${this.props.signUpFormErrsState[(f.name + "Error") as keyof SignUpInputErrors] ?? ""}"
           }}}
-        `).join(" ");
+        `,
+      )
+      .join(" ");
 
     return `
       <main class="main__register">

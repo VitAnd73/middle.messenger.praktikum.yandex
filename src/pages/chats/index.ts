@@ -1,3 +1,3 @@
-import './chats.css'
+import "./chats.css";
 
-export { default as ChatsPage } from './chats';
+export { default as ChatsPage } from "./chats";

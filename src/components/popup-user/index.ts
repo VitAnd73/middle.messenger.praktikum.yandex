@@ -1,3 +1,3 @@
-import './popupUser.css'
+import "./popupUser.css";
 
-export { default as PopupUser } from './popupUser';
+export { default as PopupUser } from "./popupUser";

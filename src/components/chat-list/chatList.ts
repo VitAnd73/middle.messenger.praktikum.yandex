@@ -1,47 +1,46 @@
 import Block, { IProps } from "../../core/block";
-
 import { Chat } from "../../types/chat";
 
 interface IChatListProps extends IProps {
-    chatList?: Chat[],
-    isPopupAddChatOpen?: boolean,
-    onButtonChatListClick?: ()=> void;
-    onPopUpChatListOkClick?: ()=> void;
-    onPopUpChatListCancelClick?: ()=> void;
-    onOkClick?: ()=> void;
+  chatList?: Chat[];
+  isPopupAddChatOpen?: boolean;
+  onButtonChatListClick?: () => void;
+  onPopUpChatListOkClick?: () => void;
+  onPopUpChatListCancelClick?: () => void;
+  onOkClick?: () => void;
 }
 
 export default class ChatList extends Block<IChatListProps> {
-    constructor(props: IChatListProps ) {
-        super({
-            ...props,
-            chatList: window.store.getState().chats,
-            onButtonChatListClick: () => {
-                const curPopUpState = this.props?.isPopupAddChatOpen ?? false;
-                this.setProps({
-                    ...this.props,
-                    isPopupAddChatOpen: !curPopUpState,
-                });
-            },
-            onPopUpChatListOkClick: () => {
-                const curPopUpState = this.props?.isPopupAddChatOpen ?? false;
-                this.setProps({
-                    ...this.props,
-                    isPopupAddChatOpen: !curPopUpState,
-                });
-            },
-            onPopUpChatListCancelClick: () => {
-                const curPopUpState = this.props?.isPopupAddChatOpen ?? false;
-                this.setProps({
-                    ...this.props,
-                    isPopupAddChatOpen: !curPopUpState,
-                });
-            },
+  constructor(props: IChatListProps) {
+    super({
+      ...props,
+      chatList: window.store.getState().chats,
+      onButtonChatListClick: () => {
+        const curPopUpState = this.props?.isPopupAddChatOpen ?? false;
+        this.setProps({
+          ...this.props,
+          isPopupAddChatOpen: !curPopUpState,
         });
-    }
+      },
+      onPopUpChatListOkClick: () => {
+        const curPopUpState = this.props?.isPopupAddChatOpen ?? false;
+        this.setProps({
+          ...this.props,
+          isPopupAddChatOpen: !curPopUpState,
+        });
+      },
+      onPopUpChatListCancelClick: () => {
+        const curPopUpState = this.props?.isPopupAddChatOpen ?? false;
+        this.setProps({
+          ...this.props,
+          isPopupAddChatOpen: !curPopUpState,
+        });
+      },
+    });
+  }
 
-    public render(): string {
-        return `<div class="sidenav">
+  public render(): string {
+    return `<div class="sidenav">
             <div class="chatlist__header">
                 <input type="text" class="input__search" value placeholder="Поиск" name="search">
                 {{{Button
@@ -53,13 +52,15 @@ export default class ChatList extends Block<IChatListProps> {
             {{#each chatList  as |chat|}}
                 {{{ ChatListItem chat=chat }}}
             {{/each}}
-            ${this.props.isPopupAddChatOpen ?
-                `{{{PopupAddChat
+            ${
+              this.props.isPopupAddChatOpen
+                ? `{{{PopupAddChat
                     className = "popupAddChat"
                     onOkClick = onPopUpChatListOkClick
                     onCancelClick = onPopUpChatListCancelClick
                 }}}`
-                : ''}
-        </div>`
-    }
+                : ""
+            }
+        </div>`;
+  }
 }

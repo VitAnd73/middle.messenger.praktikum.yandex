@@ -1,38 +1,38 @@
 import Block, { IProps } from "../../core/block";
 
 interface IPopupUserProps extends IProps {
-    popupTitle: string;
-    inputFieldLabel?: string;
-    inputFieldValue?: string;
-    onOkClick: (inputFieldValue?: string)=> void;
-    onCancelClick: ()=> void;
-    onInputFieldValueChange?: (e: Event) => void;
+  popupTitle: string;
+  inputFieldLabel?: string;
+  inputFieldValue?: string;
+  onOkClick: (inputFieldValue?: string) => void;
+  onCancelClick: () => void;
+  onInputFieldValueChange?: (e: Event) => void;
 }
 
 export default class PopupUser extends Block<IPopupUserProps> {
-    constructor(props: IPopupUserProps) {
-        super({
-            ...props,
-            inputFieldValue: props?.inputFieldValue ?? "",
+  constructor(props: IPopupUserProps) {
+    super({
+      ...props,
+      inputFieldValue: props?.inputFieldValue ?? "",
 
-            onInputFieldValueChange: (e: Event) => {
-                const value = (e.target as HTMLInputElement).value;
-                this.setProps({
-                    ...this.props,
-                    inputFieldValue: value,
-                });
-            },
-            onOkClick: () => {
-                props.onOkClick(this.props.inputFieldValue);
-            },
-            onCancelClick: ()=> {
-                props.onCancelClick();
-            }
+      onInputFieldValueChange: (e: Event) => {
+        const value = (e.target as HTMLInputElement).value;
+        this.setProps({
+          ...this.props,
+          inputFieldValue: value,
         });
-    }
+      },
+      onOkClick: () => {
+        props.onOkClick(this.props.inputFieldValue);
+      },
+      onCancelClick: () => {
+        props.onCancelClick();
+      },
+    });
+  }
 
-    public render(): string {
-        return `<div >
+  public render(): string {
+    return `<div >
             <div class="popupUserTitle">
                 <p>{{popupTitle}}</p>
             </div>
@@ -61,5 +61,5 @@ export default class PopupUser extends Block<IPopupUserProps> {
                 }}}
             </div>
         </div>`;
-    }
+  }
 }

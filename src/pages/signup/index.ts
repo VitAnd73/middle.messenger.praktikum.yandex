@@ -1,3 +1,3 @@
-import './signup.css'
+import "./signup.css";
 
-export { default as SignupPage } from './signup';
+export { default as SignupPage } from "./signup";

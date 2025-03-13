@@ -2,49 +2,49 @@ import Block, { IProps } from "../../core/block";
 import { GetChats, createChat } from "../../services/chat";
 
 interface IPopupAddChatProps extends IProps {
-    chatTitle?: string;
-    onOkClick: ()=> void;
-    onCancelClick: ()=> void;
-    onTitleChange?: (e: Event) => void;
+  chatTitle?: string;
+  onOkClick: () => void;
+  onCancelClick: () => void;
+  onTitleChange?: (e: Event) => void;
 }
 
 export default class PopupAddChat extends Block<IPopupAddChatProps> {
-    constructor(props: IPopupAddChatProps) {
-        super({
-            ...props,
-            chatTitle: "",
+  constructor(props: IPopupAddChatProps) {
+    super({
+      ...props,
+      chatTitle: "",
 
-            onTitleChange: (e: Event) => {
-                const value = (e.target as HTMLInputElement).value;
-                this.setProps({
-                    ...this.props,
-                    chatTitle: value,
-                });
-            },
-            onOkClick: () => {
-                const title = this.props.chatTitle as string;
-                if (title !== null) {
-                    createChat(title)
-                        .then(() => {
-                            GetChats({})
-                                .then()
-                                .catch((error) => console.log('create chat:', error));
-                        })
-                        .catch((error) => {
-                            alert(`error in creating a chat: ${error}`);
-                            console.log('create chat error:', error)
-                        });
-                }
-                props.onOkClick();
-            },
-            onCancelClick: ()=> {
-                props.onCancelClick();
-            }
+      onTitleChange: (e: Event) => {
+        const value = (e.target as HTMLInputElement).value;
+        this.setProps({
+          ...this.props,
+          chatTitle: value,
         });
-    }
+      },
+      onOkClick: () => {
+        const title = this.props.chatTitle as string;
+        if (title !== null) {
+          createChat(title)
+            .then(() => {
+              GetChats({})
+                .then()
+                .catch((error) => console.log("create chat:", error));
+            })
+            .catch((error) => {
+              alert(`error in creating a chat: ${error}`);
+              console.log("create chat error:", error);
+            });
+        }
+        props.onOkClick();
+      },
+      onCancelClick: () => {
+        props.onCancelClick();
+      },
+    });
+  }
 
-    public render(): string {
-        return `<div >
+  public render(): string {
+    return `<div >
             <div class="popupAddChatTitle">
                 <p>Создать новый чат</p>
             </div>
@@ -73,5 +73,5 @@ export default class PopupAddChat extends Block<IPopupAddChatProps> {
                 }}}
             </div>
         </div>`;
-    }
+  }
 }

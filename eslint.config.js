@@ -1,8 +1,8 @@
-import eslintPluginImport from "eslint-plugin-import";
-import tseslint from "@typescript-eslint/eslint-plugin";
-import tsParser from "@typescript-eslint/parser";
-import prettier from "eslint-plugin-prettier";
 import configPrettier from "eslint-config-prettier";
+import eslintPluginImport from "eslint-plugin-import";
+import prettier from "eslint-plugin-prettier";
+import tsParser from "@typescript-eslint/parser";
+import tseslint from "@typescript-eslint/eslint-plugin";
 
 export default [
   {
@@ -20,12 +20,25 @@ export default [
       prettier,
     },
     rules: {
-      "prettier/prettier": "error",
+      "prettier/prettier": [
+        "error",
+        {
+          "endOfLine": "auto"
+        },
+      ],
       "@typescript-eslint/no-unused-vars": [
         "error",
         { argsIgnorePattern: "^_" },
       ],
-      "import/order": ["error", { "newlines-between": "always" }],
+      "import/order": [
+        "error",
+        {
+          groups: [
+            ["builtin", "external"]
+          ],
+          "newlines-between": "always"
+        }
+      ],
     },
   },
   configPrettier,

@@ -1,3 +1,3 @@
-import './popupChat.css'
+import "./popupChat.css";
 
-export { default as PopupChat } from './popupChat';
+export { default as PopupChat } from "./popupChat";

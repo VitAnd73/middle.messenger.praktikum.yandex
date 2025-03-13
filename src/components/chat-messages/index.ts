@@ -1,3 +1,3 @@
-import './chatMessages.css';
+import "./chatMessages.css";
 
-export { default as ChatMessages } from './chatMessages';
+export { default as ChatMessages } from "./chatMessages";
