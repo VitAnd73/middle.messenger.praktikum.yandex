@@ -39,7 +39,7 @@
   max-width: 600px;
 }
 
-.message__user {
+.message__user__text {
   background: #bce8f9;
   padding: 10px;
   border-radius: 10px 10px 0;

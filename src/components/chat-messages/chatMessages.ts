@@ -19,12 +19,12 @@ export default class ChatMessages extends Block<IChatMessagesProps> {
     }
 
     public render(): string {
-      return `<div>
-        {{{ ChatMessageItem }}}
+      return `<div class = "messages__container">
+        {{#each messages  as |message|}}
+          {{{ ChatMessageItem message=message }}}
+        {{/each}}
       </div>`
     }
 }
 
-// {{#each messages  as |message|}}
-//                 {{{ ChatMessageItem message=message }}}
-//             {{/each}}
+

@@ -40,7 +40,6 @@ export default class ChatsPage extends Block<IChatPageProps> {
   constructor(props?: IChatPageProps ) {
     const chats = props?.chatList ?? window.store.getState().chats;
     const currentChatID = window.store.getState().currentChatID;
-    console.log(`ChatsPage constructor currentChatID = ${currentChatID}`);
     super({
       ...props,
       message: props?.message ?? "",
@@ -50,14 +49,19 @@ export default class ChatsPage extends Block<IChatPageProps> {
       onMessageChange: (e: InputEvent) => {
         const inputElement = e.target as HTMLInputElement;
         const value = inputElement.value;
-        const cur_error = messageValidator?.validate(value);
+        const curError = messageValidator?.validate(value);
         this.setProps({
             ...this.props,
             message: value,
-            messageError: cur_error,
+            messageError: curError,
         });
       },
       onBtnSendMessageClick: () => {
+        let curError = messageValidator?.validate(this.props.message!);
+        if(curError) {
+          alert(`Error! ${curError}`);
+          return;
+        }
         const currentChatID = window.store.getState().currentChatID;
         const chat = window.store.getState().chats.find((chat) => chat.id == currentChatID )
         const user= window.store.getState().user;
@@ -69,7 +73,12 @@ export default class ChatsPage extends Block<IChatPageProps> {
         } else if (user) {
             openConnectMessages(chat, user)
         }
-
+        curError = messageValidator?.validate("");
+        this.setProps({
+          ...this.props,
+          message: "",
+          messageError: curError,
+        })
       },
       onBtnAttachClick: () => {
           const curPopUpState = this.props?.isPopupAttachOpen ?? true;
@@ -118,7 +127,6 @@ export default class ChatsPage extends Block<IChatPageProps> {
 
       userPopupHandlers: {
         onAddUserToChat: (login?: string)=> {
-          console.log(`onAddUserToChat userLogin=${login}`);
           if (login) {
             searchUserByLogin(login)
             .then(users => {
@@ -144,7 +152,6 @@ export default class ChatsPage extends Block<IChatPageProps> {
 
         },
         onRemoveUserFromChat: (login?: string)=> {
-          console.log(`onRemoveUserFromChat userLogin=${login}`);
           if (login) {
             searchUserByLogin(login)
             .then(users => {
@@ -228,7 +235,9 @@ export default class ChatsPage extends Block<IChatPageProps> {
         {{/unless}}
 
         {{#if currentChatID}}
-          {{{ChatMessages className = "messages__container"}}}
+
+          {{{ ChatMessages }}}
+
           <div class="chat__footer">
               {{{ButtonAttach
                 onClick = onBtnAttachClick

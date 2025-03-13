@@ -90,7 +90,6 @@ export default class SignupPage extends Block<ISignUpProps> {
       onSignUp: (e: Event) => {
         const data = this.props?.signUpFormValuesState;
         if (data) {
-          console.log(`Entered signup data: ${JSON.stringify(data)}`);
           delete data['password1' as keyof typeof data];
           signup(data as User)
           .then(()=> {
