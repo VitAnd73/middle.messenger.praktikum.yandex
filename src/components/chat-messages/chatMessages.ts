@@ -26,5 +26,3 @@ export default class ChatMessages extends Block<IChatMessagesProps> {
       </div>`
     }
 }
-
-
