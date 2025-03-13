@@ -27,8 +27,7 @@ class Block<Props extends IProps = IProps, Refs extends RefsType = RefsType> {
     public id = nanoid(6);
     protected props: Props;
     protected refs = {} as Refs;
-    public children: Block<object>[] = [];//Record<string, Block<Props>>;
-    //private eventBus: () => EventBus;
+    public children: Block<object>[] = [];
     private eventBus: () => EventBus<string, Record<string, Props[]>>;
     private _element: HTMLElement | null = null;
 
@@ -62,7 +61,6 @@ class Block<Props extends IProps = IProps, Refs extends RefsType = RefsType> {
     }
 
     private _registerEvents(eventBus: EventBus<string, Record<string, Props[]>>) {
-     //private _registerEvents(eventBus: EventBus) {
         eventBus.on(Block.EVENTS.INIT, this._init.bind(this));
         eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
         eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
@@ -189,11 +187,7 @@ class Block<Props extends IProps = IProps, Refs extends RefsType = RefsType> {
             },
             set(target, prop, value) {
                 const oldTarget = {...target}
-
                 target[prop as keyof Props] = value;
-
-                // Запускаем обновление компоненты
-                // Плохой cloneDeep, в следующей итерации нужно заставлять добавлять cloneDeep им самим
                 self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);
                 return true;
             },

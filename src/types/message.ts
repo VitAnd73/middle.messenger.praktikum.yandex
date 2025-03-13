@@ -1,6 +1,6 @@
-import {File} from "./File";
+import {File} from "./file";
 
-export interface ChatMessage {
+export type Message = {
     id: number;
     user_id: number;
     chat_id: number;
@@ -9,5 +9,5 @@ export interface ChatMessage {
     content: number | string;
     file?: File;
     main?: boolean;
-    is_read?:boolean;
+    is_read?: boolean;
 }

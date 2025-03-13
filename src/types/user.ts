@@ -13,11 +13,11 @@ export type User = {
     password?: string;
     display_name?: string;
     avatar?: string;
-    id?:number
+    id?:number;
 }
 
 export type SignUpResponse = {
-    id: number
+    id: number;
 }
 
 export type SignInInput = {

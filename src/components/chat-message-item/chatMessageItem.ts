@@ -1,9 +1,9 @@
 import Block, { IProps } from "../../core/block";
 
-import { ChatMessage } from "../../models/ChatMessage";
+import { Message } from "../../types/message";
 
 interface IChatMessageItemProps extends IProps {
-    message: ChatMessage,
+    message: Message,
 }
 
 export default class ChatMessageItem extends Block<IChatMessageItemProps> {

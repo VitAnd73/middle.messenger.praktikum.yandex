@@ -1,6 +1,6 @@
 import Block, { IProps } from "../../core/block";
 
-import { Chat } from "../../models/Chat";
+import { Chat } from "../../types/chat";
 
 interface IChatListItemProps extends IProps {
     chat: Chat;

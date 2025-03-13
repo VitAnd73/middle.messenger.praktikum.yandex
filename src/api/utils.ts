@@ -1,4 +1,4 @@
-import { ApiError } from '../models/User.ts';
+import { ApiError } from '../types/user.ts';
 import { HttpResult } from './../core/transport/httpTransport';
 import { RouteStrs } from "../constants.ts";
 import { Router } from '../core/routing/router.ts';

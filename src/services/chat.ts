@@ -1,15 +1,15 @@
-import { AddRemoveUserInput, Chat, CreateChatResponse, GetChatInput } from "../models/Chat";
+import { Chat, CreateChatResponse, InputToAddRemoveUser, InputToGetChat } from "../types/chat";
 
 import ChatApi from "../api/chat";
 import { Indexed } from "../utils/types";
-import { User } from "../models/User";
+import { User } from "../types/user";
 import { merge } from "../utils/utils";
 import { openConnectMessages } from "./message";
 import { responseHasError } from "../api/utils";
 
 const chatApi = new ChatApi();
 
-const getChats = async (data: GetChatInput) => {
+export async function GetChats(data: InputToGetChat) {
     const responseChat = await chatApi.getChats(data);
     if(responseHasError(responseChat)) {
         throw Error(responseChat.data.reason)
@@ -22,7 +22,7 @@ const getChats = async (data: GetChatInput) => {
         if (oldChat) {
             oldChat.users = await getChatUsers(oldChat.id)
             return merge(oldChat as object as Indexed, newChat as object as Indexed) as object as Chat
-        } else { //if new chat was created
+        } else {
             const me = window.store.getState().user
             newChat.token = await getChatToken(newChat.id)
             newChat.users = await getChatUsers(newChat.id)
@@ -39,7 +39,7 @@ const getChats = async (data: GetChatInput) => {
 
 }
 
-const createChat = async (title: string) => {
+export async function createChat(title: string){
     const response = await chatApi.createChat(title)
     if (responseHasError(response)) {
         throw Error(response.data.reason)
@@ -48,31 +48,31 @@ const createChat = async (title: string) => {
     return response.data as CreateChatResponse
 }
 
-const deleteChat = async (id: number) => {
+export async function deleteChat(id: number){
     const response = await chatApi.deleteChat(id)
     if (responseHasError(response)) {
         throw Error(response.data.reason)
     }
 }
 
-const addUserToChat = async (data: AddRemoveUserInput) => {
+export async function addUserToChat(data: InputToAddRemoveUser){
     const response = await chatApi.addUsersToChat(data)
     if (responseHasError(response)) {
         throw Error(response.data.reason)
     }
 }
 
-const removeUsersFromChat = async (data: AddRemoveUserInput) => {
+export async function removeUsersFromChat(data: InputToAddRemoveUser){
     const response = await chatApi.removeUsersFromChat(data)
     if (responseHasError(response)) {
         throw Error(response.data.reason)
     }
 
-    await getChats({});
+    await GetChats({});
 
 }
 
-const getChatUsers = async (chatID: number) => {
+export async function getChatUsers(chatID: number){
     const response = await chatApi.getChatUsers(chatID)
     if (responseHasError(response)) {
         throw Error(response.data.reason)
@@ -81,33 +81,22 @@ const getChatUsers = async (chatID: number) => {
     return response.data as User[]
 }
 
-const updateChatAvatar = async (file: FormData, chatID: number) => {
+export async function updateChatAvatar(file: FormData, chatID: number){
     const response = await chatApi.updateChatAvatar(file, chatID)
     if (responseHasError(response)) {
         throw Error(response.data.reason)
     }
 
-    await getChats({});
+    await GetChats({});
 
     return response.data as User[]
 }
 
-const getChatToken = async (chatID: number) => {
-    const response = await chatApi.getChatToken(chatID)
+export async function getChatToken(chatID: number){
+    const response = await chatApi.requestChatToken(chatID)
     if (responseHasError(response)) {
         throw Error(response.data.reason)
     }
 
     return response.data.token
-}
-
-export {
-    getChats,
-    createChat,
-    deleteChat,
-    addUserToChat,
-    removeUsersFromChat,
-    getChatUsers,
-    updateChatAvatar,
-    getChatToken,
 }

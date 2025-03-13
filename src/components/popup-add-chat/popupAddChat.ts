@@ -1,5 +1,5 @@
 import Block, { IProps } from "../../core/block";
-import { createChat, getChats } from "../../services/chat";
+import { GetChats, createChat } from "../../services/chat";
 
 interface IPopupAddChatProps extends IProps {
     chatTitle?: string;
@@ -26,7 +26,7 @@ export default class PopupAddChat extends Block<IPopupAddChatProps> {
                 if (title !== null) {
                     createChat(title)
                         .then(() => {
-                            getChats({})
+                            GetChats({})
                                 .then()
                                 .catch((error) => console.log('create chat:', error));
                         })

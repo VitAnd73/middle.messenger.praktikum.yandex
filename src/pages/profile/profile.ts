@@ -1,5 +1,5 @@
 import Block, { IProps } from "../../core/block";
-import { ChangePasswordInput, User } from "../../models/User";
+import { ChangePasswordInput, User } from "../../types/user";
 import { updatePassword, updateProfile } from "../../services/users";
 
 import { PropsWithErrs } from "../../utils/types";

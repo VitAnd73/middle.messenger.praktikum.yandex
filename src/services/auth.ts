@@ -1,30 +1,29 @@
-import {SignInInput, User} from "../models/User.ts";
+import {SignInInput, User} from "../types/user.ts";
 
 import AuthApi from "../api/auth.ts";
-import { getChats } from "./chat.ts";
+import { GetChats } from "./chat.ts";
 import { responseHasError } from "../api/utils.ts";
 
 const authApi = new AuthApi();
 
-const signup = async (data: User) => {
+export async function signup(data: User){
     const response = await authApi.signup(data);
     if (responseHasError(response)) {
         throw Error(response.data.reason)
     }
-
     await getUser();
 }
 
-const signin = async (data: SignInInput) => {
+export async function signin(data: SignInInput){
     const response = await authApi.signin(data);
     if (responseHasError(response)) {
         throw Error(response.data.reason)
     }
     await getUser();
-    await getChats({});
+    await GetChats({});
 }
 
-const getUser = async () => {
+export async function getUser(){
     const response = await authApi.me();
     if (responseHasError(response)) {
         throw Error(response.data.reason)
@@ -33,7 +32,7 @@ const getUser = async () => {
     window.store.set({user:  response.data as User});
 }
 
-const logout = async () => {
+export async function logout(){
     const response = await authApi.logout();
     if (responseHasError(response)) {
         throw Error(response.data.reason)
@@ -42,9 +41,3 @@ const logout = async () => {
     window.store.set({user: null});
 }
 
-export {
-    signup,
-    signin,
-    getUser,
-    logout
-}

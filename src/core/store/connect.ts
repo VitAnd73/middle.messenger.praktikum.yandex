@@ -1,6 +1,6 @@
-import { AppState } from "../../models/types";
+import { AppState } from "../../types/types";
 import Block from "../block";
-import { Class } from "../../models/types";
+import { Class } from "../../types/types";
 import { StoreEvents } from "./store";
 import { isEqualPlainObjects } from "../../utils/utils";
 

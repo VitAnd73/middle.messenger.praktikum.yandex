@@ -39,6 +39,7 @@
   font-size: 15px;
   color: white;
 }
+
 .chat__delete::before {
   content: "\2212";
   font-size: 15px;

@@ -1,6 +1,6 @@
-import { AddRemoveUserInput, Chat } from "../../models/Chat";
 import Block, { IProps } from "../../core/block";
-import { addUserToChat, deleteChat, getChats, removeUsersFromChat } from "../../services/chat";
+import { Chat, InputToAddRemoveUser } from "../../types/chat";
+import { GetChats, addUserToChat, deleteChat, removeUsersFromChat } from "../../services/chat";
 
 import { StoreEvents } from "../../core/store/store";
 import { messageValidator } from "../../utils/validators";
@@ -114,7 +114,7 @@ export default class ChatsPage extends Block<IChatPageProps> {
           if (curChatId) {
             deleteChat(curChatId)
             .then(() => {
-                getChats({})
+                GetChats({})
                 .then()
                 .catch((error) => console.warn('delete chat:', error));
             })
@@ -137,7 +137,7 @@ export default class ChatsPage extends Block<IChatPageProps> {
                 addUserToChat({
                   users: users.map((u) => u.id),
                   chatId: currentChatID
-                } as AddRemoveUserInput)
+                } as InputToAddRemoveUser)
                 .then(() => this.closeUserPopup())
                 .catch((error) => {
                   console.log('add users to chat:', error)
@@ -162,7 +162,7 @@ export default class ChatsPage extends Block<IChatPageProps> {
                 removeUsersFromChat({
                   users: users.map((u) => u.id),
                   chatId: currentChatID
-                } as AddRemoveUserInput)
+                } as InputToAddRemoveUser)
                 .then(() => this.closeUserPopup())
                 .catch((error) => {
                   console.log('remove users to chat:', error)

@@ -1,5 +1,5 @@
 import { Block, PropsWithChildrenType } from "../../core";
-import { SignUpInput, SignUpInputErrors, User } from "../../models/User";
+import { SignUpInput, SignUpInputErrors, User } from "../../types/user";
 import { emailValidator, first_nameValidator, loginValidator, passwordValidator, phoneValidator, second_nameValidator } from "../../utils/validators";
 
 import { IProps } from "../../core/block";

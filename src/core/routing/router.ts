@@ -3,7 +3,7 @@ import { ProtectedRoutes, RouteStrs } from "../../constants";
 import Route, { IRoute } from "./route";
 
 import { Class } from "../../utils/types";
-import { getChats } from "../../services/chat";
+import { GetChats } from "../../services/chat";
 import { getUser } from "../../services/auth";
 
 export class Router {
@@ -50,7 +50,7 @@ export class Router {
                 return;
             }
 
-            await getChats({});
+            await GetChats({});
 
             this.go(curPath);
         }

@@ -1,5 +1,5 @@
-import {Chat} from "./Chat.ts";
-import {User} from "./User.ts";
+import {Chat} from "./chat.ts";
+import {User} from "./user.ts";
 
 export type AppState = {
     error: string | null,

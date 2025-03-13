@@ -1,35 +1,37 @@
-import { ApiError, ChangePasswordInput, User } from "../models/User";
+import { ApiError, ChangePasswordInput, User } from "../types/user";
 import HTTPTransport, { HttpResult } from "../core/transport/httpTransport";
 
-const userApi = new HTTPTransport('/user');
-
 export default class UserApi {
+    private readonly _authApi;
+    constructor(apiPath: string = '/user'){
+        this._authApi = new HTTPTransport(apiPath);
+    }
     async updateProfile(data: User): Promise<HttpResult<User | ApiError>> {
-        return userApi.put<User>('/profile', {
+        return this._authApi.put<User>('/profile', {
             headers: { "Content-Type": 'application/json'},
             data: data
         })
     }
 
     async updatePassword(data: ChangePasswordInput) {
-        return userApi.put<void>('/password', {
+        return this._authApi.put<void>('/password', {
             headers: { "Content-Type": 'application/json'},
             data: data
         })
     }
 
     async updateAvatar(file: FormData) {
-        return userApi.put<User>('/profile/avatar', {
+        return this._authApi.put<User>('/profile/avatar', {
             data: file
         })
     }
 
     async getUserByID(id: number) {
-        return userApi.get<User>(`/${id}`)
+        return this._authApi.get<User>(`/${id}`)
     }
 
     async searchUserByLogin(login: string) {
-        return userApi.post<User[]>('/search', {
+        return this._authApi.post<User[]>('/search', {
             headers: { "Content-Type": 'application/json'},
             data: { login }
         })

@@ -1,4 +1,4 @@
-import { ApiError, SignInInput, SignUpResponse, User } from "../models/User";
+import { ApiError, SignInInput, SignUpResponse, User } from "../types/user";
 import HTTPTransport, { HttpResult } from "../core/transport/httpTransport";
 
 export default class AuthApi {

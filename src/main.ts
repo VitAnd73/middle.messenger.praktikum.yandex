@@ -3,7 +3,7 @@ import * as Pages from './pages';
 
 import { APP_QUERY_SELECTOR, RouteStrs } from './constants';
 
-import { AppState } from './models/AppState';
+import { AppState } from './types/app-state';
 import { Block } from './core';
 import { Class } from './utils/types';
 import Handlebars from 'handlebars';

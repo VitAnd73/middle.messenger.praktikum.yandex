@@ -1,11 +1,11 @@
-import { Chat } from "../models/Chat";
-import { ChatMessage } from "../models/ChatMessage";
+import { Chat } from "../types/chat";
+import { GetChats } from "./chat";
+import { Message } from "../types/message";
 import { SOCKET_CHAT } from "../constants";
 import SocketTransport from "../core/transport/socketTransport";
-import { User } from "../models/User";
-import { getChats } from "./chat";
+import { User } from "../types/user";
 
-export const openConnectMessages = (chat: Chat, currentUser: User) => {
+export function openConnectMessages(chat: Chat, currentUser: User){
     if (!chat.id) return;
     if (!chat.users) return;
     if (!chat.token) return;
@@ -21,7 +21,7 @@ export const openConnectMessages = (chat: Chat, currentUser: User) => {
     })
 
     socket.message(async (event: MessageEvent) => {
-        let message: ChatMessage | null = null;
+        let message: Message | null = null;
         try {
             message = JSON.parse(event.data);
         } catch (e) {
@@ -45,7 +45,7 @@ export const openConnectMessages = (chat: Chat, currentUser: User) => {
                 chat.messages.push(message);
             }
 
-            await getChats({})
+            await GetChats({})
             window.store.set({chats: window.store.getState().chats});
 
         }
@@ -59,7 +59,7 @@ export const openConnectMessages = (chat: Chat, currentUser: User) => {
     return chat;
 }
 
-export const sendMessage = (message: string) => {
+export function sendMessage(message: string){
     const currentChatID = window.store.getState().currentChatID;
     const chat = window.store.getState().chats.find((chat: Chat) => chat.id == currentChatID )
 
@@ -75,7 +75,7 @@ export const sendMessage = (message: string) => {
     }
 }
 
-export const getAllNewMessage = (limit: number, chat: Chat | null) => {
+export function getAllNewMessage(limit: number, chat: Chat | null){
     if (!chat) {
         throw Error('Select Chat!');
     }

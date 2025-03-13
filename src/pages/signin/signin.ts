@@ -1,5 +1,5 @@
 import Block, { IProps } from "../../core/block";
-import { SignInInput, SignInInputErrors } from "../../models/User";
+import { SignInInput, SignInInputErrors } from "../../types/user";
 import { loginValidator, passwordValidator } from "../../utils/validators";
 
 import { RouteStrs } from "../../constants";

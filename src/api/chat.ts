@@ -1,54 +1,57 @@
-import { AddRemoveUserInput, Chat, CreateChatResponse, GetChatInput, GetTokenResponse } from "../models/Chat";
-import { ApiError, User } from "../models/User";
+import { ApiError, User } from "../types/user";
+import { Chat, CreateChatResponse, InputToAddRemoveUser, InputToGetChat, TokenRequestResponse } from "../types/chat";
 import HTTPTransport, { HttpResult } from "../core/transport/httpTransport";
 
-const chatApi = new HTTPTransport('/chats');
-
 export default class ChatApi {
-    async getChats(data: GetChatInput): Promise<HttpResult<Chat[] | ApiError>> {
-        return chatApi.get<Chat[]>('', {
+    private readonly _authApi : HTTPTransport;
+    constructor(apiPath: string = '/chats'){
+        this._authApi = new HTTPTransport(apiPath);
+    }
+
+    async getChats(data: InputToGetChat): Promise<HttpResult<Chat[] | ApiError>> {
+        return this._authApi.get<Chat[]>('', {
             data: data
         })
     }
 
     async createChat(title: string): Promise<HttpResult<CreateChatResponse | ApiError>> {
-        return chatApi.post<CreateChatResponse>('', {
+        return this._authApi.post<CreateChatResponse>('', {
             headers: { "Content-Type": 'application/json' },
             data: { title: title }
         });
     }
 
     async deleteChat(id: number): Promise<HttpResult<object | ApiError>> {
-        return chatApi.delete('', {
+        return this._authApi.delete('', {
             headers: { "Content-Type": 'application/json'},
             data: { chatId: id }}
         );
     }
 
-    async addUsersToChat(data: AddRemoveUserInput) {
-        return chatApi.put('/users', {
+    async addUsersToChat(data: InputToAddRemoveUser) {
+        return this._authApi.put('/users', {
             headers: { "Content-Type": 'application/json'},
             data: data
         });
     }
 
-    async removeUsersFromChat(data: AddRemoveUserInput) {
-        return chatApi.delete('/users', {
+    async removeUsersFromChat(data: InputToAddRemoveUser) {
+        return this._authApi.delete('/users', {
             headers: { "Content-Type": 'application/json'},
             data: data
         });
     }
 
     async getChatUsers(id: number) {
-        return chatApi.get<User[]>(`/${id}/users`);
+        return this._authApi.get<User[]>(`/${id}/users`);
     }
 
-    async getChatToken(id: number) {
-        return chatApi.post<GetTokenResponse>(`/token/${id}`);
+    async requestChatToken(id: number) {
+        return this._authApi.post<TokenRequestResponse>(`/token/${id}`);
     }
 
     async updateChatAvatar(file: FormData, chatId: number) {
         file.append('chatId', String(chatId));
-        return chatApi.put('/avatar', { data: file });
+        return this._authApi.put('/avatar', { data: file });
     }
 }
