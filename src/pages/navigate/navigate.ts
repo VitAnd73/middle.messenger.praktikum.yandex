@@ -12,7 +12,7 @@ export default class NavigatePage extends Block<IProps> {
         <nav>
             <ul>
                 <li><a href="./signin" page="signin">Авторизация</a></li>
-                <li><a href="./signup" page="signup">Регистрация</a></li>
+                <li><a href="./sign-up" page="signup">Регистрация</a></li>
                 <li><a href="./settings" page="profile">Профиль</a></li>
                 <li><a href="./messenger" page="chats">Чат</a></li>
                 <li><a href="./500" page="500">500</a></li>

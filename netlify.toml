@@ -15,7 +15,7 @@
   force = true
 
 [[redirects]]
-  from = "/signup"
+  from = "/sign-up"
   to = "/"
   status = 200
   force = true
