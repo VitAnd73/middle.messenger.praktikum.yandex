@@ -1,9 +1,10 @@
 import Block, { IProps } from "../block";
 import { ProtectedRoutes, RouteStrs } from "../../constants";
-import { Class } from "../../utils/types";
-import { GetChats } from "../../services/chat";
-import { getUser } from "../../services/auth";
 import Route, { IRoute } from "./route";
+
+import { Class } from "../../types/generics";
+import { ReceiveChats } from "../../api/chatServices";
+import { getUser } from "../../api/authServices";
 
 export class Router {
   static __instance: Router;
@@ -50,7 +51,7 @@ export class Router {
         return;
       }
 
-      await GetChats({});
+      await ReceiveChats({});
 
       this.go(curPath);
     } else if (Object.values(RouteStrs).includes(curPath)) {

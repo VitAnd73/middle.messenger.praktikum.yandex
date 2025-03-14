@@ -1,8 +1,7 @@
+import Block from "./block";
+import { Class } from "../types/generics";
 import Handlebars from "handlebars";
 import { HelperOptions } from "handlebars";
-
-import { Class } from "../utils/types";
-import Block from "./block";
 
 export interface IChildren<Props extends object> {
   component: Block<Props>;
@@ -23,10 +22,6 @@ export function registerComponent<Props extends object>(
       const component = new Component(hash);
 
       const dataAttribute = `data-id="${component.id}"`;
-
-      if ("ref" in hash) {
-        (data.root.__refs = data.root.__refs || {})[hash.ref] = component;
-      }
 
       (data.root.__children = data.root.__children || []).push({
         component,

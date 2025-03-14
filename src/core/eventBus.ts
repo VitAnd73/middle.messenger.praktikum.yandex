@@ -33,7 +33,7 @@ export default class EventBus<
     if (this.listeners[event]) {
       this.listeners[event].forEach((l) => l(...args));
     } else {
-      console.log(`No event =  ${event}`);
+      // console.log(`No event =  ${event}`);
     }
   }
 }

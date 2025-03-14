@@ -1,4 +1,4 @@
-import { SignUpInput, SignUpInputErrors, User } from "../../types/user";
+import { SignUpInput, SignUpInputErrors, User } from "../../types/domain/user";
 import {
   emailValidator,
   first_nameValidator,
@@ -7,12 +7,13 @@ import {
   phoneValidator,
   second_nameValidator,
 } from "../../utils/validators";
+
 import { Block } from "../../core";
 import { IProps } from "../../core/block";
 import { RouteStrs } from "../../constants";
 import { Router } from "../../core/routing/router";
-import { signup } from "../../services/auth";
-import { strOptionalProp } from "../../utils/utils";
+import { signup } from "../../api/authServices";
+import { strOptionalProp } from "../../utils/util-functions";
 
 export const fieldsProfile = [
   {

@@ -1,11 +1,11 @@
-import { ApiError, User } from "../types/user";
+import { ApiError, User } from "../types/domain/user";
 import {
   Chat,
   CreateChatResponse,
   InputToAddRemoveUser,
   InputToGetChat,
   TokenRequestResponse,
-} from "../types/chat";
+} from "../types/domain/chat";
 import HTTPTransport, { HttpResult } from "../core/transport/httpTransport";
 
 export default class ChatApi {

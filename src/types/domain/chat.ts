@@ -1,5 +1,5 @@
-import SocketTransport from "../core/transport/socketTransport";
 import { Message } from "./message";
+import SocketTransport from "../../core/transport/socketTransport";
 import { User } from "./user";
 
 export type Chat = {

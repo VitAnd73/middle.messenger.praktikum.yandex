@@ -3,48 +3,53 @@ import {
   CreateChatResponse,
   InputToAddRemoveUser,
   InputToGetChat,
-} from "../types/chat";
-import ChatApi from "../api/chat";
-import { Indexed } from "../utils/types";
-import { User } from "../types/user";
-import { merge } from "../utils/utils";
-import { responseHasError } from "../api/utils";
-import { openConnectMessages } from "./message";
+} from "../types/domain/chat";
+
+import ChatApi from "./chat";
+import { Indexed } from "../types/generics";
+import { User } from "../types/domain/user";
+import { connectChatMessages } from "./messageServices";
+import { merge } from "../utils/util-functions";
+import { responseHasError } from "./utils";
 
 const chatApi = new ChatApi();
 
-export async function GetChats(data: InputToGetChat) {
-  const responseChat = await chatApi.getChats(data);
-  if (responseHasError(responseChat)) {
-    throw Error(responseChat.data.reason);
+export async function ReceiveChats(data: InputToGetChat) {
+  const receivedChats = await chatApi.getChats(data);
+  if (responseHasError(receivedChats)) {
+    throw Error(receivedChats.data.reason);
   }
-  const oldChats = window.store.getState().chats;
-  const newChats = responseChat.data as unknown as Chat[];
+  const existingChats = window.store.getState().chats;
+  const newChats = receivedChats.data as unknown as Chat[];
 
-  const connectedChats = await Promise.all(
+  const chatsWithConnection = await Promise.all(
     newChats.map(async (newChat) => {
-      const oldChat = oldChats.find((oldChat) => newChat.id === oldChat.id);
-      if (oldChat) {
-        oldChat.users = await getChatUsers(oldChat.id);
+      const existingChat = existingChats.find(
+        (oldChat) => newChat.id === oldChat.id,
+      );
+      if (existingChat) {
+        existingChat.users = await getChatUsers(existingChat.id);
         return merge(
-          oldChat as object as Indexed,
+          existingChat as object as Indexed,
           newChat as object as Indexed,
         ) as object as Chat;
       } else {
-        const me = window.store.getState().user;
+        const currentUser = window.store.getState().user;
         newChat.token = await getChatToken(newChat.id);
         newChat.users = await getChatUsers(newChat.id);
-        if (me) {
-          const newConnectedChat = openConnectMessages(newChat, me);
-          return newConnectedChat ? newConnectedChat : newChat;
+        if (currentUser) {
+          const newChatWithConnection = connectChatMessages(
+            newChat,
+            currentUser,
+          );
+          return newChatWithConnection ? newChatWithConnection : newChat;
         } else {
           return newChat;
         }
       }
     }),
   );
-
-  window.store.set({ chats: connectedChats });
+  window.store.set({ chats: chatsWithConnection });
 }
 
 export async function createChat(title: string) {
@@ -76,7 +81,7 @@ export async function removeUsersFromChat(data: InputToAddRemoveUser) {
     throw Error(response.data.reason);
   }
 
-  await GetChats({});
+  await ReceiveChats({});
 }
 
 export async function getChatUsers(chatID: number) {
@@ -84,17 +89,6 @@ export async function getChatUsers(chatID: number) {
   if (responseHasError(response)) {
     throw Error(response.data.reason);
   }
-
-  return response.data as User[];
-}
-
-export async function updateChatAvatar(file: FormData, chatID: number) {
-  const response = await chatApi.updateChatAvatar(file, chatID);
-  if (responseHasError(response)) {
-    throw Error(response.data.reason);
-  }
-
-  await GetChats({});
 
   return response.data as User[];
 }

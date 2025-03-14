@@ -1,10 +1,11 @@
 import Block, { IProps } from "../../core/block";
-import { SignInInput, SignInInputErrors } from "../../types/user";
+import { SignInInput, SignInInputErrors } from "../../types/domain/user";
 import { loginValidator, passwordValidator } from "../../utils/validators";
+
 import { RouteStrs } from "../../constants";
 import { Router } from "../../core/routing/router";
-import { signin } from "../../services/auth";
-import { strOptionalProp } from "../../utils/utils";
+import { signin } from "../../api/authServices";
+import { strOptionalProp } from "../../utils/util-functions";
 
 const fieldsSignIn = [
   {

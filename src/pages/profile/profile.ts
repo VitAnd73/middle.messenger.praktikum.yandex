@@ -1,13 +1,14 @@
 import Block, { IProps } from "../../core/block";
-import { ChangePasswordInput, User } from "../../types/user";
-import { updatePassword, updateProfile } from "../../services/users";
-import { PropsWithErrs } from "../../utils/types";
+import { ChangePasswordInput, User } from "../../types/domain/user";
+import { updatePassword, updateProfile } from "../../api/usersServices";
+
+import { PropsWithErrs } from "../../types/generics";
 import { RouteStrs } from "../../constants";
 import { Router } from "../../core/routing/router";
 import { fieldsProfile } from "../signup/signup";
-import { logout } from "../../services/auth";
+import { logout } from "../../api/authServices";
 import { passwordValidator } from "../../utils/validators";
-import { strOptionalProp } from "../../utils/utils";
+import { strOptionalProp } from "../../utils/util-functions";
 
 type ProfileFormStatus =
   | "display"

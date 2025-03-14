@@ -1,4 +1,4 @@
-import { PropsWithErrs } from "../utils/types";
+import { PropsWithErrs } from "../generics";
 
 export type ApiError = {
   reason: string;

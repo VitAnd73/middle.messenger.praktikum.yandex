@@ -1,15 +1,16 @@
 import Block, { IProps } from "../../core/block";
-import { Chat, InputToAddRemoveUser } from "../../types/chat";
+import { Chat, InputToAddRemoveUser } from "../../types/domain/chat";
 import {
-  GetChats,
+  ReceiveChats,
   addUserToChat,
   deleteChat,
   removeUsersFromChat,
-} from "../../services/chat";
+} from "../../api/chatServices";
+
 import { StoreEvents } from "../../core/store/store";
+import { connectChatMessages } from "../../api/messageServices";
 import { messageValidator } from "../../utils/validators";
-import { openConnectMessages } from "../../services/message";
-import { searchUserByLogin } from "../../services/users";
+import { searchUserByLogin } from "../../api/usersServices";
 
 interface IChatPageProps extends IProps {
   isPopupChatOpen?: boolean;
@@ -77,7 +78,7 @@ export default class ChatsPage extends Block<IChatPageProps> {
         if (chat.connection && chat.connection.getState() === "OPEN") {
           chat.connection.sendMessage(this.props.message!);
         } else if (user) {
-          openConnectMessages(chat, user);
+          connectChatMessages(chat, user);
         }
         curError = messageValidator?.validate("");
         this.setProps({
@@ -120,7 +121,7 @@ export default class ChatsPage extends Block<IChatPageProps> {
           if (curChatId) {
             deleteChat(curChatId)
               .then(() => {
-                GetChats({})
+                ReceiveChats({})
                   .then()
                   .catch((error) => console.warn("delete chat:", error));
               })

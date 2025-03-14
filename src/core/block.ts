@@ -1,9 +1,8 @@
-import Handlebars from "handlebars";
-import { nanoid } from "nanoid";
-
-import { isEqualPlainObjects } from "../utils/utils.ts";
 import EventBus from "./eventBus";
+import Handlebars from "handlebars";
 import { IChildren } from "./registerComponent.ts";
+import { isEqualPlainObjects } from "../utils/util-functions.ts";
+import { nanoid } from "nanoid";
 
 type EventListType = { [key in keyof HTMLElementEventMap]: (e: Event) => void };
 
@@ -27,7 +26,6 @@ class Block<Props extends IProps = IProps> {
   private _element: HTMLElement | null = null;
 
   constructor(props: Props = {} as Props) {
-    //const eventBus = new EventBus();
     const eventBus = new EventBus<string, Record<string, Props[]>>();
 
     this.props = this._makePropsProxy(props, this);
@@ -154,13 +152,6 @@ class Block<Props extends IProps = IProps> {
     temp.innerHTML = html;
 
     const fragment = temp.content;
-
-    // this.refs = Array.from<HTMLElement>(fragment.querySelectorAll('[ref]')).reduce((list, element) => {
-    //     const key = element.getAttribute('ref')!;
-    //     (list as {[index: string] : unknown})[key] = element as HTMLElement;
-    //     element.removeAttribute('ref');
-    //     return list;
-    // }, contextAndStubs.__refs as Refs);
 
     contextAndStubs.__children?.forEach(({ embed }) => {
       embed(fragment);

@@ -1,16 +1,19 @@
-import { Chat } from "../types/chat";
-import { Message } from "../types/message";
+import { Chat } from "../types/domain/chat";
+import { Message } from "../types/domain/message";
+import { ReceiveChats } from "./chatServices";
 import { SOCKET_CHAT } from "../constants";
 import SocketTransport from "../core/transport/socketTransport";
-import { User } from "../types/user";
-import { GetChats } from "./chat";
+import { User } from "../types/domain/user";
 
-export function openConnectMessages(chat: Chat, currentUser: User) {
-  if (!chat.id) return;
-  if (!chat.users) return;
-  if (!chat.token) return;
-  if (chat.connection && chat.connection.getState() === "OPEN") return;
-  if (!currentUser.id) return;
+export function connectChatMessages(chat: Chat, currentUser: User) {
+  if (
+    !chat.id ||
+    !chat.users ||
+    !chat.token ||
+    (chat.connection && chat.connection.getState() === "OPEN") ||
+    !currentUser.id
+  )
+    return;
 
   const socket = new SocketTransport(
     SOCKET_CHAT,
@@ -19,7 +22,7 @@ export function openConnectMessages(chat: Chat, currentUser: User) {
     chat.token,
   );
   socket.open(() => {
-    getAllNewMessage(0, chat);
+    getAllNewMessages(0, chat);
     setInterval(() => {
       socket.ping();
     }, 15000);
@@ -54,7 +57,7 @@ export function openConnectMessages(chat: Chat, currentUser: User) {
         chat.messages.push(message);
       }
 
-      await GetChats({});
+      await ReceiveChats({});
       window.store.set({ chats: window.store.getState().chats });
     }
 
@@ -67,31 +70,12 @@ export function openConnectMessages(chat: Chat, currentUser: User) {
   return chat;
 }
 
-export function sendMessage(message: string) {
-  const currentChatID = window.store.getState().currentChatID;
-  const chat = window.store
-    .getState()
-    .chats.find((chat: Chat) => chat.id == currentChatID);
-
-  const user = window.store.getState().user;
+export function getAllNewMessages(limit: number, chat: Chat | null) {
   if (!chat) {
-    throw Error("Select Chat!");
+    throw Error("No chat to load messages!");
   }
-
-  if (chat.connection && chat.connection.getState() === "OPEN") {
-    chat.connection.sendMessage(message);
-  } else if (user) {
-    openConnectMessages(chat, user);
-  }
-}
-
-export function getAllNewMessage(limit: number, chat: Chat | null) {
-  if (!chat) {
-    throw Error("Select Chat!");
-  }
-
   if (chat.connection) {
-    chat.connection.sendRequestForgetMessage(limit);
+    chat.connection.sendRequestForOldMessages(limit);
     chat.unread_count = 0;
   }
 }

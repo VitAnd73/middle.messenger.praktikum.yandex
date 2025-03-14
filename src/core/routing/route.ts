@@ -1,6 +1,7 @@
 import Block, { IProps } from "../block";
-import { Class } from "../../utils/types";
-import { isEqualStrs } from "../../utils/utils";
+
+import { Class } from "../../types/generics";
+import { isEqualStrs } from "../../utils/util-functions";
 
 export interface IRoute {
   render: () => void;

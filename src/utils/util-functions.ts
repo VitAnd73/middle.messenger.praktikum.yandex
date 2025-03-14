@@ -1,4 +1,4 @@
-import { Indexed, PlainObject } from "./types";
+import { Indexed, PlainObject } from "../types/generics";
 
 export default function trim(str: string, chars: string = " "): string {
   if (!str) return str; // Return empty string if string is empty

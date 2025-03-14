@@ -1,6 +1,7 @@
-import { ChangePasswordInput, User } from "../types/user";
-import UserApi from "../api/users";
-import { responseHasError } from "../api/utils";
+import { ChangePasswordInput, User } from "../types/domain/user";
+
+import UserApi from "./users";
+import { responseHasError } from "./utils";
 
 const userApi = new UserApi();
 
@@ -18,15 +19,6 @@ export async function updatePassword(data: ChangePasswordInput) {
   if (responseHasError(response)) {
     throw Error(response.data.reason);
   }
-}
-
-export async function updateAvatar(data: FormData) {
-  const response = await userApi.updateAvatar(data);
-  if (responseHasError(response)) {
-    throw Error(response.data.reason);
-  }
-
-  window.store.set({ user: response.data });
 }
 
 export async function searchUserByLogin(login: string) {

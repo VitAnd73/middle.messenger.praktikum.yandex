@@ -1,4 +1,4 @@
-import { ApiError, ChangePasswordInput, User } from "../types/user";
+import { ApiError, ChangePasswordInput, User } from "../types/domain/user";
 import HTTPTransport, { HttpResult } from "../core/transport/httpTransport";
 
 export default class UserApi {
@@ -24,10 +24,6 @@ export default class UserApi {
     return this._authApi.put<User>("/profile/avatar", {
       data: file,
     });
-  }
-
-  async getUserByID(id: number) {
-    return this._authApi.get<User>(`/${id}`);
   }
 
   async searchUserByLogin(login: string) {

@@ -1,5 +1,5 @@
 import Block, { IProps } from "../../core/block";
-import { Message } from "../../types/message";
+import { Message } from "../../types/domain/message";
 
 interface IChatMessagesProps extends IProps {
   messages?: Message[];

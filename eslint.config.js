@@ -36,7 +36,8 @@ export default [
           groups: [
             ["builtin", "external"]
           ],
-          "newlines-between": "always"
+          "newlines-between": "ignore",
+          "ignoreDeclarationSort": true,
         }
       ],
     },

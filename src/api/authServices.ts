@@ -1,7 +1,8 @@
-import { SignInInput, User } from "../types/user.ts";
-import AuthApi from "../api/auth.ts";
-import { responseHasError } from "../api/utils.ts";
-import { GetChats } from "./chat.ts";
+import { SignInInput, User } from "../types/domain/user.ts";
+
+import AuthApi from "./auth.ts";
+import { ReceiveChats } from "./chatServices.ts";
+import { responseHasError } from "./utils.ts";
 
 const authApi = new AuthApi();
 
@@ -19,7 +20,7 @@ export async function signin(data: SignInInput) {
     throw Error(response.data.reason);
   }
   await getUser();
-  await GetChats({});
+  await ReceiveChats({});
 }
 
 export async function getUser() {

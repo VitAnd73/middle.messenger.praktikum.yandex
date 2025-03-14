@@ -1,7 +1,7 @@
-import { ApiError } from "../types/user.ts";
+import { ApiError } from "../types/domain/user.ts";
+import { HttpResult } from "./../core/transport/httpTransport";
 import { RouteStrs } from "../constants.ts";
 import { Router } from "../core/routing/router.ts";
-import { HttpResult } from "./../core/transport/httpTransport";
 
 export const responseHasError = (
   response: HttpResult<unknown>,

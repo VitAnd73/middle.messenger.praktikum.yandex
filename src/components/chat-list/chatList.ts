@@ -1,5 +1,5 @@
 import Block, { IProps } from "../../core/block";
-import { Chat } from "../../types/chat";
+import { Chat } from "../../types/domain/chat";
 
 interface IChatListProps extends IProps {
   chatList?: Chat[];
