@@ -1,0 +1,78 @@
+
+.parent {
+  display: flex;
+  justify-content: center;
+  width: 260px;
+}
+
+.parent__selected {
+  display: flex;
+  justify-content: center;
+  width: 260px;
+  background: #bce8f9;
+}
+
+.child {
+  display: flex;  
+  justify-content: center;
+  align-items: center;
+}
+
+.grand-child {
+  align-items: left;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  justify-content: top;
+  text-align: top;
+}
+
+.two {
+  inline-size: 150px;
+  overflow-wrap: break-word;
+  overflow: hidden;
+  max-height: 83px;
+  padding-left: 10px;
+}
+
+.three {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding-left: 10px;
+  padding-right: 15px;
+  width: 45px;
+}
+
+.grand-child-child {
+  text-align: midlle;
+  width: 80%;
+}
+
+.two > p {
+  text-align: left;
+  max-height: 4px;
+}
+
+.grand-child-child > p {
+  text-align: right;
+  max-height: 4px;
+  margin: 10px;
+}
+
+.numberCircle {
+  display: flex;
+  width: 3ch;
+  align-items: center;  
+  justify-content: center;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background: blue;
+  color: white;
+}
+
+.nav_divider {
+  margin-left: 15px;
+  margin-right: 10px;
+}

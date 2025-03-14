@@ -1,4 +1,4 @@
-import './info.css'
+import "./info.css";
 
 // export { default as InfoPage } from './info.hbs?raw';
-export { default as InfoPage } from './info';
+export { default as InfoPage } from "./info";

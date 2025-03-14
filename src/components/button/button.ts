@@ -1,17 +1,26 @@
-import Block, { PropsWithChildrenType } from "../../core/block";
+import Block, { IProps } from "../../core/block";
 
-export default class Button extends Block {
-    constructor(props: PropsWithChildrenType) {
-        super("button", {
-            ...props,
-            events: {
-                click: props.onClick,
-            },
-        });
-    }
-    public render(): string {
-        return `
-            {{label}}
-        `
-    }
+interface IButtonProps extends IProps {
+  label: string;
+  onClick?: (e: Event) => void;
+  disabled?: boolean;
+}
+
+export default class Button extends Block<IButtonProps> {
+  constructor(props: IButtonProps) {
+    super({
+      ...props,
+      events: {
+        click: props.onClick,
+      },
+    });
+  }
+  public render(): string {
+    const { label, disabled } = this.props;
+    return `
+            <button ${disabled ? "disabled" : ""}>
+                ${label ? label : ""}
+            </button>
+        `;
+  }
 }

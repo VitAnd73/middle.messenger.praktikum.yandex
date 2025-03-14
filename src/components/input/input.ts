@@ -1,17 +1,38 @@
-import Block, { PropsWithChildrenType } from "../../core/block";
+import Block, { IProps } from "../../core/block";
+import { HTMLInputType } from "../../constants";
 
-export type InputProps = {
-    attrs?: object;
-    events?: {
-        change?: (e: InputEvent) => void;
-        blur?: (e: InputEvent) => void;
-    };
-} & PropsWithChildrenType;
+interface IInputProps extends IProps {
+  name: string;
+  value: string;
+  type?: HTMLInputType;
+  alt?: string;
+  placeholder?: string;
 
-export default class Input extends Block {
-    constructor(props: InputProps) {
-        super("input", {
-            ...props,
-        });
-    }
+  onChange?: (e: Event) => void;
+  onBlur?: (e: Event) => void;
+}
+
+export default class Input extends Block<IInputProps> {
+  constructor(props: IInputProps) {
+    super({
+      ...props,
+      events: {
+        change: props.onChange,
+        blur: props.onBlur,
+      },
+    });
+  }
+  public render(): string {
+    const { className, name, value, type, placeholder, alt } = this.props;
+    return `
+            <input
+                ${className ? 'class="' + className : ""}"
+                name="${name}"
+                placeholder="${placeholder || ""}"
+                value="${value}"
+                ${type ? 'type="' + type : ""}"
+                alt="${alt}"
+            >
+        `;
+  }
 }
