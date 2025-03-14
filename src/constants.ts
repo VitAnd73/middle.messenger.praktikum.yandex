@@ -7,7 +7,7 @@ export const SOCKET_CHAT = "wss://ya-praktikum.tech/ws/chats/";
 export enum RouteStrs {
   Navigation = "/",
   Signin = "/signin",
-  Signup = "/signup",
+  Signup = "/sign-up",
   Messenger = "/messenger",
   Settings = "/settings",
   Page500 = "/500",
