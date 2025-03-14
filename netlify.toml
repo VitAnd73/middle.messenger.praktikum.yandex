@@ -11,5 +11,35 @@
 [[redirects]]
   from = "/signin"
   to = "/"
-  status = 301
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/signup"
+  to = "/"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/messenger"
+  to = "/"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/settings"
+  to = "/"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/500"
+  to = "/"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/404"
+  to = "/"
+  status = 200
   force = true
