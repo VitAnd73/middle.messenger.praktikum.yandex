@@ -1,4 +1,5 @@
 import Block, { IProps } from "../../core/block";
+
 import { HTMLInputType } from "../../constants";
 import Validator from "../../utils/validator";
 
@@ -43,5 +44,3 @@ export default class InputField extends Block<IInputFieldProps> {
         `;
   }
 }
-
-// <p>cur value=${this._props.value}</p>

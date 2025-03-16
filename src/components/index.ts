@@ -6,6 +6,7 @@ export { Img } from "./img";
 
 export { Input } from "./input";
 export { InputField } from "./input";
+export { InputFieldFile } from "./input";
 
 export { ChatList } from "./chat-list";
 export { ChatListItem } from "./chat-list-item";

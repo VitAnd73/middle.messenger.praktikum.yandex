@@ -5,8 +5,7 @@ export const HOST_RESOURCES = "https://ya-praktikum.tech/api/v2/resources/";
 export const SOCKET_CHAT = "wss://ya-praktikum.tech/ws/chats/";
 
 export enum RouteStrs {
-  Navigation = "/",
-  Signin = "/signin",
+  Signin = "/",
   Signup = "/sign-up",
   Messenger = "/messenger",
   Settings = "/settings",
@@ -15,4 +14,4 @@ export enum RouteStrs {
 }
 export const ProtectedRoutes = [RouteStrs.Messenger, RouteStrs.Settings];
 
-export type HTMLInputType = "text" | "password" | "email" | "tel" | "image";
+export type HTMLInputType = "text" | "password" | "email" | "tel" | "image" | "file";

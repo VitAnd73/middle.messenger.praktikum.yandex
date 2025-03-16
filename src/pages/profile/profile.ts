@@ -1,10 +1,11 @@
 import Block, { IProps } from "../../core/block";
 import { ChangePasswordInput, User } from "../../types/domain/user";
-import { updatePassword, updateProfile } from "../../api/usersServices";
+import { HOST_RESOURCES, RouteStrs } from "../../constants";
+import { updatePassword, updateProfile, updateUserAvatar } from "../../api/usersServices";
 
 import { PropsWithErrs } from "../../types/generics";
-import { RouteStrs } from "../../constants";
 import { Router } from "../../core/routing/router";
+import { StoreEvents } from "../../core/store/store";
 import { fieldsProfile } from "../signup/signup";
 import { logout } from "../../api/authServices";
 import { passwordValidator } from "../../utils/validators";
@@ -62,8 +63,11 @@ export interface IProfilePageProps extends IProps {
   pwdFormStateErrors: PwdFormStateErrors;
   onBtnBack?: (e: Event) => void;
   onAvatarClick?: (e: Event) => void;
-  onBtnAvatarUpload?: (e: Event) => void;
-  onBtnChangeAvatar?: (e: Event) => void;
+
+  onAvatarFileChange?: (e: Event) => void;
+  onBtnAvatarCancel?: (e: Event) => void;
+
+
   onBtnChangeData?: (e: Event) => void;
   onBtnChangePwd?: (e: Event) => void;
   onBtnLogout?: (e: Event) => void;
@@ -74,18 +78,20 @@ export interface IProfilePageProps extends IProps {
 
 export default class ProfilePage extends Block<IProfilePageProps> {
   constructor(props: IProfilePageProps) {
-    const curUser = window.store.getState().user!;
+    const curUser = window.store.getState().user;
+    const avatar = curUser?.avatar ? (HOST_RESOURCES + curUser.avatar) : "/assets/imgs/img_avatar.png";
 
     super({
       ...props,
       user: curUser!,
+      avatar,
       // #region initial set up of forms' data
       profileFormState: {
-        email: curUser?.email,
+        email: curUser?.email || '',
         login: curUser?.login,
-        first_name: curUser?.first_name,
-        second_name: curUser?.second_name,
-        phone: curUser?.phone,
+        first_name: curUser?.first_name  || '',
+        second_name: curUser?.second_name || '',
+        phone: curUser?.phone || '',
       },
       profileFormStateErrors: {
         emailError: "",
@@ -108,7 +114,7 @@ export default class ProfilePage extends Block<IProfilePageProps> {
 
       // #region button handlers
       onBtnBack: (e: Event) => {
-        Router.getRouter().go(RouteStrs.Navigation);
+        Router.getRouter().go(RouteStrs.Messenger);
         e.preventDefault();
       },
       onAvatarClick: (e: Event) => {
@@ -116,10 +122,6 @@ export default class ProfilePage extends Block<IProfilePageProps> {
           ...this.props,
           status: "changing-avatar",
         });
-        e.preventDefault();
-      },
-      onBtnAvatarUpload: (e: Event) => {
-        console.log(`Выбрать файл на компьютере`);
         e.preventDefault();
       },
       onBtnChangeData: (e: Event) => {
@@ -141,7 +143,11 @@ export default class ProfilePage extends Block<IProfilePageProps> {
           .then(() => {
             Router.getRouter().go(RouteStrs.Signin);
           })
-          .catch((error) => console.log(`Err happened while logout: ${error}`));
+          .catch((error) => {
+            console.log(`Err happened while logout: ${error}`);
+          });
+
+        // Router.getRouter().go(RouteStrs.Signin);
         e.preventDefault();
       },
       onBtnSave: (e: Event) => {
@@ -182,7 +188,7 @@ export default class ProfilePage extends Block<IProfilePageProps> {
         }
       },
 
-      onBtnChangeAvatar: (e: Event) => {
+      onBtnAvatarCancel: (e: Event) => {
         this.setProps({
           ...this.props,
           status: "display",
@@ -230,7 +236,37 @@ export default class ProfilePage extends Block<IProfilePageProps> {
         });
       },
 
+      onAvatarFileChange: (e: Event) => {
+        const files = (e.target as unknown as HTMLInputElement)?.files;
+        if(files) {
+          const file=files[0];
+          if (file) {
+            const formData = new FormData();
+            formData.append('avatar', file);
+            updateUserAvatar(formData)
+              .then(() => {
+                this.setProps({
+                  ...this.props,
+                  status: "display",
+                });
+              })
+              .catch((err) => console.warn('err while changing user avatar - err =', err));
+          }
+        }
+        e.preventDefault();
+      }
+
       // #endregion
+    });
+
+    window.store.on(StoreEvents.Updated, () => this.handleStoreUpdate());
+
+  }
+
+  private handleStoreUpdate() {
+    this.setProps({
+      ...this.props,
+      avatar: window.store.getState().user?.avatar ? (HOST_RESOURCES + window.store.getState().user!.avatar) : "/assets/imgs/img_avatar.png"
     });
   }
   public render(): string {
@@ -333,15 +369,17 @@ export default class ProfilePage extends Block<IProfilePageProps> {
             <div class="modal">
               <div class="modal-content">
                 <h1 class="modal__title">Загрузите файл</h1>
-                {{{ Button
-                    className="button button__link avatar_upload"
-                    label="Выбрать файл на компьютере"
-                    onClick=onBtnAvatarUpload
+
+                <img class="change-avatar-img__avatar" src='${this.props?.avatar ?? "/assets/imgs/img_avatar.png"}' alt="avatar image">
+
+                {{{ InputFieldFile
+                  label = "Выберите файл для аватара"
+                  onChange = onAvatarFileChange
                 }}}
                 {{{Button
-                  className = "button button__primary avatar_upload"
-                  label = "Поменять"
-                  onClick=onBtnChangeAvatar
+                  className = "button"
+                  label = "Отменить"
+                  onClick=onBtnAvatarCancel
                 }}}
               </div>
             </div>

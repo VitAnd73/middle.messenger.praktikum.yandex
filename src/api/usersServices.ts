@@ -29,3 +29,11 @@ export async function searchUserByLogin(login: string) {
 
   return response.data as User[];
 }
+
+export async function updateUserAvatar(data: FormData) {
+  const response = await userApi.updateAvatar(data);
+  if (responseHasError(response)) {
+      throw Error(response.data.reason)
+  }
+  window.store.set({user: response.data});
+}

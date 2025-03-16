@@ -32,7 +32,7 @@ export default class PopupUser extends Block<IPopupUserProps> {
   }
 
   public render(): string {
-    return `<div >
+    return `<form>
             <div class="popupUserTitle">
                 <p>{{popupTitle}}</p>
             </div>
@@ -60,6 +60,6 @@ export default class PopupUser extends Block<IPopupUserProps> {
                     onClick = onCancelClick
                 }}}
             </div>
-        </div>`;
+        </form>`;
   }
 }

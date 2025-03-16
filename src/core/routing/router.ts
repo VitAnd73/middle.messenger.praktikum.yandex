@@ -1,9 +1,9 @@
 import Block, { IProps } from "../block";
-import { ProtectedRoutes, RouteStrs } from "../../constants";
 import Route, { IRoute } from "./route";
 
 import { Class } from "../../types/generics";
 import { ReceiveChats } from "../../api/chatServices";
+import { RouteStrs } from "../../constants";
 import { getUser } from "../../api/authServices";
 
 export class Router {
@@ -42,22 +42,31 @@ export class Router {
     };
 
     const curPath = window.location.pathname as RouteStrs;
-    if (curPath && ProtectedRoutes.includes(curPath)) {
-      try {
-        await getUser();
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      } catch (error) {
-        this.go(RouteStrs.Signin);
-        return;
-      }
 
+    try {
+      await getUser();
       await ReceiveChats({});
-
-      this.go(curPath);
-    } else if (Object.values(RouteStrs).includes(curPath)) {
-      this.go(curPath);
-    } else {
-      this.go(RouteStrs.Signin);
+      if (curPath && (curPath===RouteStrs.Messenger)) {
+        this.go(RouteStrs.Messenger);
+      } else if (curPath && (curPath===RouteStrs.Signin || curPath===RouteStrs.Signup )) {
+        alert('You already signed-in! Going to the messenger!');
+        this.go(RouteStrs.Messenger);
+      } else if (curPath && curPath===RouteStrs.Settings ) {
+        this.go(RouteStrs.Settings);
+      }
+      else {
+        this.go(RouteStrs.Page500);
+      }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      if (curPath && curPath===RouteStrs.Signup) {
+        this.go(RouteStrs.Signup);
+      }
+      else {
+        if (curPath && (curPath!==RouteStrs.Signin)) alert('You are not signed-in! Signin first!');
+        this.go(RouteStrs.Signin);
+      }
+      return;
     }
   }
 
