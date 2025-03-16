@@ -10,7 +10,6 @@ import { IInfoPageProps } from "./pages/info/info";
 import { IProfilePageProps } from "./pages/profile/profile";
 import { Router } from "./core/routing/router";
 import { Store } from "./core/store/store";
-import avatarSample from "./assets/imgs/img_avatar.png";
 import { registerComponent } from "./core/registerComponent";
 
 // #region Handlebars
