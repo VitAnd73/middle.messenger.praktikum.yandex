@@ -216,7 +216,7 @@ export default class ChatsPage extends Block<IChatPageProps> {
     const curState = window.store.getState();
     const curChatId = curState.currentChatID as number;
     const curChat = curState.chats?.find((c) => c.id === curChatId);
-    const avatarSource = curChat?.avatar ?? "src/assets/imgs/img_avatar.png";
+    const avatarSource = curChat?.avatar ?? "/assets/imgs/img_avatar.png";
 
     return `
     <main>
@@ -247,27 +247,27 @@ export default class ChatsPage extends Block<IChatPageProps> {
 
           {{{ ChatMessages }}}
 
-          <div class="chat__footer">
-              {{{ButtonAttach
-                onClick = onBtnAttachClick
-              }}}
-            <div>
-              {{{Input
-                name = "message"
-                className = "${this.props.messageError ? "input__message input__message_error" : "input__message"}"
-                placeholder = "Сообщение"
-                onChange = onMessageChange
-                value = message
-              }}}
-            </div>
-            <div class="button_container">
-              {{{Button
-                className = "button-send"
-                onClick = onBtnSendMessageClick
-                ${this.props.messageError ? "disabled = 'true'" : ""}
-              }}}
-            </div>
-          </div>
+          <form class="chat__footer">
+            {{{ButtonAttach
+              onClick = onBtnAttachClick
+            }}}
+              <div>
+                {{{Input
+                  name = "message"
+                  className = "${this.props.messageError ? "input__message input__message_error" : "input__message"}"
+                  placeholder = "Сообщение"
+                  onChange = onMessageChange
+                  value = message
+                }}}
+              </div>
+              <div class="button_container">
+                {{{Button
+                  className = "button-send"
+                  onClick = onBtnSendMessageClick
+                  ${this.props.messageError ? "disabled = 'true'" : ""}
+                }}}
+              </div>
+          </form>
         {{/if}}
 
         ${

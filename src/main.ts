@@ -1,11 +1,11 @@
-import Handlebars from "handlebars";
-
 import * as Components from "./components";
 import * as Pages from "./pages";
+
 import { APP_QUERY_SELECTOR, RouteStrs } from "./constants";
+
 import { AppState } from "./types/domain/app-state";
 import { Block } from "./core";
-import { Class } from "./types/generics";
+import Handlebars from "handlebars";
 import { IInfoPageProps } from "./pages/info/info";
 import { IProfilePageProps } from "./pages/profile/profile";
 import { Router } from "./core/routing/router";
@@ -52,37 +52,35 @@ window.store = new Store<AppState>(initState);
 
 const router = new Router(APP_QUERY_SELECTOR);
 window.router = router;
-router.use(RouteStrs.Navigation, Pages.NavigatePage as unknown as Class<Block>);
-router.use(RouteStrs.Signin, Pages.SigninPage as unknown as Class<Block>);
-router.use(RouteStrs.Signup, Pages.SignupPage as unknown as Class<Block>);
-router.use(RouteStrs.Messenger, Pages.ChatsPage as unknown as Class<Block>);
+router.use(RouteStrs.Signin, Pages.SigninPage as typeof Block);
+router.use(RouteStrs.Signup, Pages.SignupPage as typeof Block);
+router.use(RouteStrs.Messenger, Pages.ChatsPage as typeof Block);
 router.use(
   RouteStrs.Settings,
-  Pages.ProfilePage as unknown as Class<Block>,
+  Pages.ProfilePage as typeof Block,
   {
-    avatar: avatarSample,
     status: "display",
   } as IProfilePageProps,
 );
 router.use(
   RouteStrs.Page500,
-  Pages.InfoPage as unknown as Class<Block>,
+  Pages.InfoPage as typeof Block,
   {
     title: "500",
     text: "Мы уже фиксим",
     buttonLabel: "Назад к чатам",
-    btnClick: () => Router.getRouter().go(RouteStrs.Navigation),
+    btnClick: () => Router.getRouter().go(RouteStrs.Messenger),
   } as IInfoPageProps,
 );
 router
   .use(
     RouteStrs.Page404,
-    Pages.InfoPage as unknown as Class<Block>,
+    Pages.InfoPage as typeof Block,
     {
       title: "404",
       text: "Не туда попали",
       buttonLabel: "Назад к чатам",
-      btnClick: () => Router.getRouter().go(RouteStrs.Navigation),
+      btnClick: () => Router.getRouter().go(RouteStrs.Messenger),
     } as IInfoPageProps,
   )
   .start();

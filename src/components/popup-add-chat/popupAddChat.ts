@@ -44,7 +44,7 @@ export default class PopupAddChat extends Block<IPopupAddChatProps> {
   }
 
   public render(): string {
-    return `<div >
+    return `<form>
             <div class="popupAddChatTitle">
                 <p>Создать новый чат</p>
             </div>
@@ -72,6 +72,6 @@ export default class PopupAddChat extends Block<IPopupAddChatProps> {
                     onClick = onCancelClick
                 }}}
             </div>
-        </div>`;
+        </form>`;
   }
 }
