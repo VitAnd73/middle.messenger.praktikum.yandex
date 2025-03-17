@@ -37,7 +37,6 @@ export default [
             ["builtin", "external"]
           ],
           "newlines-between": "ignore",
-          "ignoreDeclarationSort": true,
         }
       ],
     },

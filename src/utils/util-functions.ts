@@ -195,68 +195,68 @@ export function strOptionalProp(prop: string, value?: string) {
 const hasOwn = {}.hasOwnProperty;
 
 export function classNames(...args: any[]): string {
-    const classes = [];
+  const classes = [];
 
-    for (let i = 0; i < args.length; i++) {
-        const arg = args[i];
-        if (!arg) {
-            continue;
-        }
-
-        const argType = typeof arg;
-
-        if (argType === "string" || argType === "number") {
-            classes.push(arg);
-        } else if (Array.isArray(arg)) {
-            if (arg.length) {
-                const inner = classNames.apply(null, arg);
-
-                if (inner) {
-                    classes.push(inner);
-                }
-            }
-        } else if (argType === "object") {
-            if (arg.toString !== Object.prototype.toString) {
-                classes.push(arg.toString());
-            } else {
-                for (let key in (arg as any)) {
-                    if (hasOwn.call(arg, key) && arg[key]) {
-                        classes.push(key);
-                    }
-                }
-            }
-        }
+  for (let i = 0; i < args.length; i++) {
+    const arg = args[i];
+    if (!arg) {
+      continue;
     }
 
-    return classes.join(" ");
+    const argType = typeof arg;
+
+    if (argType === "string" || argType === "number") {
+      classes.push(arg);
+    } else if (Array.isArray(arg)) {
+      if (arg.length) {
+        const inner = classNames.apply(null, arg);
+
+        if (inner) {
+          classes.push(inner);
+        }
+      }
+    } else if (argType === "object") {
+      if (arg.toString !== Object.prototype.toString) {
+        classes.push(arg.toString());
+      } else {
+        for (let key in arg as any) {
+          if (hasOwn.call(arg, key) && arg[key]) {
+            classes.push(key);
+          }
+        }
+      }
+    }
+  }
+
+  return classes.join(" ");
 }
 
 class ValidationError extends Error {
   constructor(message: string) {
-      super(message);
-      this.name = 'ValidationError';
+    super(message);
+    this.name = "ValidationError";
   }
 }
 
 export function takeFromArray(list: number[], num: number = 1): number[] {
-  if (!Array.isArray(list) || typeof num !== 'number') {
-      throw new ValidationError('bad value');
+  if (!Array.isArray(list) || typeof num !== "number") {
+    throw new ValidationError("bad value");
   }
 
   return list.slice(0, num);
 }
 
-export function unzip(...args: (number[])[]): number[][] {
+export function unzip(...args: number[][]): number[][] {
   const maxLength = args.reduce((result, arg) => {
-      if (!Array.isArray(arg)) {
-          throw new Error(`${arg} is not array`);
-      }
+    if (!Array.isArray(arg)) {
+      throw new Error(`${arg} is not array`);
+    }
 
-      return Math.max(result, arg.length);
+    return Math.max(result, arg.length);
   }, 0);
 
-  // Можно range юзать или просто цикл сразу, чтобы было эффективнее
-  return [...Array(maxLength)].map((item, index) => {
-      return args.map(arg => arg[index]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  return [...Array(maxLength)].map((_item, index) => {
+    return args.map((arg) => arg[index]);
   });
 }

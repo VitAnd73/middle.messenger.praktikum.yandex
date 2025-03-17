@@ -1,7 +1,11 @@
 import Block, { IProps } from "../../core/block";
 import { ChangePasswordInput, User } from "../../types/domain/user";
 import { HOST_RESOURCES, RouteStrs } from "../../constants";
-import { updatePassword, updateProfile, updateUserAvatar } from "../../api/usersServices";
+import {
+  updatePassword,
+  updateProfile,
+  updateUserAvatar,
+} from "../../api/usersServices";
 
 import { PropsWithErrs } from "../../types/generics";
 import { Router } from "../../core/routing/router";
@@ -67,7 +71,6 @@ export interface IProfilePageProps extends IProps {
   onAvatarFileChange?: (e: Event) => void;
   onBtnAvatarCancel?: (e: Event) => void;
 
-
   onBtnChangeData?: (e: Event) => void;
   onBtnChangePwd?: (e: Event) => void;
   onBtnLogout?: (e: Event) => void;
@@ -79,7 +82,9 @@ export interface IProfilePageProps extends IProps {
 export default class ProfilePage extends Block<IProfilePageProps> {
   constructor(props: IProfilePageProps) {
     const curUser = window.store.getState().user;
-    const avatar = curUser?.avatar ? (HOST_RESOURCES + curUser.avatar) : "/assets/imgs/img_avatar.png";
+    const avatar = curUser?.avatar
+      ? HOST_RESOURCES + curUser.avatar
+      : "/assets/imgs/img_avatar.png";
 
     super({
       ...props,
@@ -87,11 +92,11 @@ export default class ProfilePage extends Block<IProfilePageProps> {
       avatar,
       // #region initial set up of forms' data
       profileFormState: {
-        email: curUser?.email || '',
+        email: curUser?.email || "",
         login: curUser?.login,
-        first_name: curUser?.first_name  || '',
-        second_name: curUser?.second_name || '',
-        phone: curUser?.phone || '',
+        first_name: curUser?.first_name || "",
+        second_name: curUser?.second_name || "",
+        phone: curUser?.phone || "",
       },
       profileFormStateErrors: {
         emailError: "",
@@ -238,11 +243,11 @@ export default class ProfilePage extends Block<IProfilePageProps> {
 
       onAvatarFileChange: (e: Event) => {
         const files = (e.target as unknown as HTMLInputElement)?.files;
-        if(files) {
-          const file=files[0];
+        if (files) {
+          const file = files[0];
           if (file) {
             const formData = new FormData();
-            formData.append('avatar', file);
+            formData.append("avatar", file);
             updateUserAvatar(formData)
               .then(() => {
                 this.setProps({
@@ -250,23 +255,26 @@ export default class ProfilePage extends Block<IProfilePageProps> {
                   status: "display",
                 });
               })
-              .catch((err) => console.warn('err while changing user avatar - err =', err));
+              .catch((err) =>
+                console.warn("err while changing user avatar - err =", err),
+              );
           }
         }
         e.preventDefault();
-      }
+      },
 
       // #endregion
     });
 
     window.store.on(StoreEvents.Updated, () => this.handleStoreUpdate());
-
   }
 
   private handleStoreUpdate() {
     this.setProps({
       ...this.props,
-      avatar: window.store.getState().user?.avatar ? (HOST_RESOURCES + window.store.getState().user!.avatar) : "/assets/imgs/img_avatar.png"
+      avatar: window.store.getState().user?.avatar
+        ? HOST_RESOURCES + window.store.getState().user!.avatar
+        : "/assets/imgs/img_avatar.png",
     });
   }
   public render(): string {
