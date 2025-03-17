@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "engines": {
-    "node": ">=16"
+    "node": "=16"
   },
   "scripts": {
     "dev": "vite",
@@ -17,10 +17,10 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",
-    "@types/chai": "^5.2.0",
-    "@types/jsdom": "^21.1.7",
-    "@types/mocha": "^10.0.10",
-    "@types/sinon": "^17.0.4",
+    "@types/chai": "^4.3.11",
+    "@types/jsdom": "^21.1.6",
+    "@types/mocha": "^10.0.6",
+    "@types/sinon": "^17.0.3",
     "@typescript-eslint/eslint-plugin": "^8.23.0",
     "@typescript-eslint/parser": "^8.23.0",
     "autoprefixer": "^10.4.20",
@@ -31,11 +31,11 @@
     "eslint-plugin-prettier": "^5.2.3",
     "globals": "^15.12.0",
     "husky": "^9.1.7",
-    "jsdom": "^26.0.0",
-    "mocha": "^11.1.0",
+    "jsdom": "^24.0.0",
+    "mocha": "^10.3.0",
     "postcss": "^8.4.47",
     "postcss-preset-env": "^10.0.9",
-    "sinon": "^19.0.2",
+    "sinon": "^17.0.1",
     "stylelint": "^16.10.0",
     "stylelint-config-standard": "^36.0.1",
     "ts-node": "^10.9.2",
