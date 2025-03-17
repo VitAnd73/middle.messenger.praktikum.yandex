@@ -28,22 +28,12 @@ Netlify: https://ymf-sprint1.netlify.app
 
 Макет со списком основных страниц: https://ymf-sprint1.netlify.app  
 
-Макеты отдельных страниц:
+### На отдельные страницы:
 
-Авторизация: https://ymf-sprint1.netlify.app/login  
+Авторизация: https://ymf-sprint1.netlify.app/  
 
-Регистрация: https://ymf-sprint1.netlify.app/register  
+Регистрация: https://ymf-sprint1.netlify.app/sign-up  
 
-Профиль: https://ymf-sprint1.netlify.app/profile  
+Профиль: https://ymf-sprint1.netlify.app/settings  
 
-Новый аватар: https://ymf-sprint1.netlify.app/profile-new-avatar  
-
-Изменить данные: https://ymf-sprint1.netlify.app/profile-change-data  
-
-Изменить пароль: https://ymf-sprint1.netlify.app/profile-change-pwd  
-
-Чат: https://ymf-sprint1.netlify.app/chats  
-
-500: https://ymf-sprint1.netlify.app/500  
-
-404: https://ymf-sprint1.netlify.app/404  
+Чат / messenger: https://ymf-sprint1.netlify.app/messenger  

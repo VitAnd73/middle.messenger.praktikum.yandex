@@ -67,6 +67,14 @@ section > div > .button__danger {
     margin: 50px auto;
 }
 
+.change-avatar-img__avatar {
+    height: 130px;
+    width: 130px;
+    border-radius: 50%;
+    display:block;
+    margin: 50px auto;
+}
+
 .avatar__container {
     position: relative;
     width: 50%;
@@ -117,7 +125,7 @@ section > div > .button__danger {
     padding: 20px;
     border: 1px solid;
     border-color: black;
-    width: 20%; /* Could be more or less, depending on screen size */
+    width: 40%; /* Could be more or less, depending on screen size */
 }
 
 .modal__title {
