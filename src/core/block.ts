@@ -1,8 +1,8 @@
-import Handlebars from "handlebars";
-import { nanoid } from "nanoid";
 import EventBus from "./eventBus";
+import Handlebars from "handlebars";
 import { IChildren } from "./registerComponent.ts";
 import { isEqualPlainObjects } from "../utils/util-functions.ts";
+import { nanoid } from "nanoid";
 
 type EventListType = { [key in keyof HTMLElementEventMap]: (e: Event) => void };
 

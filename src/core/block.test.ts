@@ -1,5 +1,6 @@
 import { expect } from "chai";
 import Block, { IProps } from "./block";
+import { SinonSpy, spy } from "sinon";
 
 interface ITestProps extends IProps {
   text?: string;
@@ -15,7 +16,7 @@ describe("Block", () => {
           ...props,
         });
       }
-      protected render(): string {
+      public render(): string {
         return `<div>
                     <p id="text-to-test">{{text}}</p>
                 </div>`;
@@ -29,6 +30,13 @@ describe("Block", () => {
     expect(pageComponent.getContent()).not.null;
   });
 
+  it("Public methods are run", () => {
+    const pageComponent = new Component({ text: "text" } as ITestProps);
+    let renderSpy: SinonSpy = spy(pageComponent, "componentDidMount");
+    pageComponent.componentDidMount();
+    expect(renderSpy.calledOnce).to.be.true;
+  });
+
   it("Constructor works as expected", () => {
     const text = "test text presence";
     const testComponent = new Component({ text } as ITestProps);
@@ -37,7 +45,7 @@ describe("Block", () => {
     expect(paraText).to.be.eq(text);
   });
 
-  it("Component must react/update to prop changes", () => {
+  it("Component must react/update with prop changes", () => {
     const text = "new text test value";
     const testComponent = new Component({ text: "Hello" } as ITestProps);
     testComponent.setProps({ text });
