@@ -8,7 +8,7 @@
 
 Макеты находятся по ссылке https://www.figma.com/design/DfjFcaFsHurkWNMo5GgGYh/Chat\_app?node-id=0-1&node-type=canvas
 
-## Установка
+## Сборка, тесты и пр. task-и
 
 Установить зависимости проекта: 'npm install'
 
@@ -17,6 +17,8 @@
 Запустить проект на localhost: 'npm run start'
 
 Запустить проект в режиме разработки: 'npm run dev'
+
+Запустить тесты проекта: 'npm run test'
 
 ## Ссылки:
 

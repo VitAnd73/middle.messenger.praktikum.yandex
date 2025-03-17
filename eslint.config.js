@@ -30,16 +30,6 @@ export default [
         "error",
         { argsIgnorePattern: "^_" },
       ],
-      "import/order": [
-        "error",
-        {
-          groups: [
-            ["builtin", "external"]
-          ],
-          "newlines-between": "ignore",
-          "ignoreDeclarationSort": true,
-        }
-      ],
     },
   },
   configPrettier,

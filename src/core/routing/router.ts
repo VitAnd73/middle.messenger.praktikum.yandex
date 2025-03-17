@@ -46,24 +46,26 @@ export class Router {
     try {
       await getUser();
       await ReceiveChats({});
-      if (curPath && (curPath===RouteStrs.Messenger)) {
+      if (curPath && curPath === RouteStrs.Messenger) {
         this.go(RouteStrs.Messenger);
-      } else if (curPath && (curPath===RouteStrs.Signin || curPath===RouteStrs.Signup )) {
-        alert('You already signed-in! Going to the messenger!');
+      } else if (
+        curPath &&
+        (curPath === RouteStrs.Signin || curPath === RouteStrs.Signup)
+      ) {
+        alert("You already signed-in! Going to the messenger!");
         this.go(RouteStrs.Messenger);
-      } else if (curPath && curPath===RouteStrs.Settings ) {
+      } else if (curPath && curPath === RouteStrs.Settings) {
         this.go(RouteStrs.Settings);
-      }
-      else {
+      } else {
         this.go(RouteStrs.Page500);
       }
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      if (curPath && curPath===RouteStrs.Signup) {
+      if (curPath && curPath === RouteStrs.Signup) {
         this.go(RouteStrs.Signup);
-      }
-      else {
-        if (curPath && (curPath!==RouteStrs.Signin)) alert('You are not signed-in! Signin first!');
+      } else {
+        if (curPath && curPath !== RouteStrs.Signin)
+          alert("You are not signed-in! Signin first!");
         this.go(RouteStrs.Signin);
       }
       return;

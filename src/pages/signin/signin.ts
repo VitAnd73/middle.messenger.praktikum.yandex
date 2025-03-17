@@ -57,8 +57,7 @@ export default class SigninPage extends Block<ISigninProps> {
             })
             .catch((error: Error) => {
               if (error.message === "User already in system") {
-                alert(`Вы уже авторизованы в системе!`)
-                // Router.getRouter().go(RouteStrs.Messenger);
+                alert(`Вы уже авторизованы в системе!`);
               } else {
                 const errorStr =
                   "Чтото пошло не так. Убедитесь что логин / пароль верные!";

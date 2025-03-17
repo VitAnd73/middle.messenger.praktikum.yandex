@@ -22,7 +22,7 @@ export default class InputFieldFile extends Block<IInputFieldFileProps> {
       ...props,
       onChange: (e: Event) => {
         if (props?.onChange) props?.onChange(e);
-      }
+      },
     });
   }
 

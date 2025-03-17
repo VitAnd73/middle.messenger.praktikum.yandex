@@ -1,3 +1,4 @@
+import Handlebars from "handlebars";
 import * as Components from "./components";
 import * as Pages from "./pages";
 
@@ -5,7 +6,6 @@ import { APP_QUERY_SELECTOR, RouteStrs } from "./constants";
 
 import { AppState } from "./types/domain/app-state";
 import { Block } from "./core";
-import Handlebars from "handlebars";
 import { IInfoPageProps } from "./pages/info/info";
 import { IProfilePageProps } from "./pages/profile/profile";
 import { Router } from "./core/routing/router";
