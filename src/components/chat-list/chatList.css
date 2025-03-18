@@ -108,12 +108,9 @@
 }
 
 .grand-child {
-  align-items: left;
   display: flex;
   flex-direction: column;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  justify-content: top;
-  text-align: top;
 }
 
 .two {
@@ -135,7 +132,6 @@
 }
 
 .grand-child-child {
-  text-align: midlle;
   width: 80%;
 }
 
@@ -153,4 +149,25 @@
 .nav_divider {
   margin-left: 15px;
   margin-right: 10px;
+}
+
+.chatlist__profile {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.button__profile {
+  border: none;
+  font-weight: 500;
+  display: block;
+  width: 70%;
+  padding: 7px;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: var(--main-color);
+  color: #ffffff;
+  font-size: 13px;
+  margin: 5px;
 }

@@ -73,7 +73,7 @@ export default class SigninPage extends Block<ISigninProps> {
         }
         e.preventDefault();
       },
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
       onSignUp: (_e: Event) => {
         Router.getRouter().go(RouteStrs.Signup);
       },
