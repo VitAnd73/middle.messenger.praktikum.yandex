@@ -56,7 +56,6 @@ export function set(
   const result = path.split(".").reduceRight<Indexed>(
     (acc, key) => ({
       [key]: acc,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     }),
     value as any,
   );
@@ -255,7 +254,6 @@ export function unzip(...args: number[][]): number[][] {
     return Math.max(result, arg.length);
   }, 0);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   return [...Array(maxLength)].map((_item, index) => {
     return args.map((arg) => arg[index]);
   });

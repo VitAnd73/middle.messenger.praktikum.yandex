@@ -19,12 +19,9 @@
 }
 
 .grand-child {
-  align-items: left;
   display: flex;
   flex-direction: column;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  justify-content: top;
-  text-align: top;
 }
 
 .two {
@@ -46,7 +43,6 @@
 }
 
 .grand-child-child {
-  text-align: midlle;
   width: 80%;
 }
 
