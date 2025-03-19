@@ -14,4 +14,10 @@ export enum RouteStrs {
 }
 export const ProtectedRoutes = [RouteStrs.Messenger, RouteStrs.Settings];
 
-export type HTMLInputType = "text" | "password" | "email" | "tel" | "image" | "file";
+export type HTMLInputType =
+  | "text"
+  | "password"
+  | "email"
+  | "tel"
+  | "image"
+  | "file";

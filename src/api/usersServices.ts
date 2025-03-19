@@ -33,7 +33,7 @@ export async function searchUserByLogin(login: string) {
 export async function updateUserAvatar(data: FormData) {
   const response = await userApi.updateAvatar(data);
   if (responseHasError(response)) {
-      throw Error(response.data.reason)
+    throw Error(response.data.reason);
   }
-  window.store.set({user: response.data});
+  window.store.set({ user: response.data });
 }

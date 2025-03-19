@@ -1,7 +1,7 @@
-import Block from "./block";
-import { Class } from "../types/generics";
 import Handlebars from "handlebars";
 import { HelperOptions } from "handlebars";
+import Block from "./block";
+import { Class } from "../types/generics";
 
 export interface IChildren<Props extends object> {
   component: Block<Props>;

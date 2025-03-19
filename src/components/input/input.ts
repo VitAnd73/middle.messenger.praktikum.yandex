@@ -9,7 +9,7 @@ interface IInputProps extends IProps {
   type?: HTMLInputType;
   alt?: string;
   placeholder?: string;
-  accept? : string;
+  accept?: string;
 
   onChange?: (e: Event) => void;
   onBlur?: (e: Event) => void;
@@ -26,7 +26,8 @@ export default class Input extends Block<IInputProps> {
     });
   }
   public render(): string {
-    const { className, name, value, type, placeholder, alt, id, accept } = this.props;
+    const { className, name, value, type, placeholder, alt, id, accept } =
+      this.props;
     return `
             <input
                 ${className ? 'class="' + className : ""}"

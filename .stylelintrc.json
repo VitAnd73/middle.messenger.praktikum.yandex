@@ -7,6 +7,8 @@
   },
   "ignoreFiles": [
     "build/*",
-    "coverage/**/*.css"
+    "coverage/**/*.css",
+    "dist/**/*"
+
   ]
 }
