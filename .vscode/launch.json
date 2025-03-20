@@ -11,5 +11,17 @@
             "url": "http://localhost:3000",
             "webRoot": "${workspaceFolder}"
         },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "TestLaunch via NPM",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run-script",
+                "test",
+                "--",
+                "--inspect-brk=9229"
+            ],
+        }
     ]
 }

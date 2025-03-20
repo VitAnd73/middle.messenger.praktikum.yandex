@@ -1,0 +1,10 @@
+{
+    "mochaExplorer.nodeArgv": [
+        "--loader=ts-node/esm",
+        "--no-warnings=ExperimentalWarning",
+        "--experimental-specifier-resolution=node"
+    ],
+    "mochaExplorer.configFile": ".mocharc.json",
+    "mochaExplorer.require": ["jsdom", "ts-node/esm",],
+    "mochaExplorer.files": "src/**/*.test.ts",
+}
