@@ -1,0 +1,45 @@
+# Global settings applied to the whole site.
+#
+# “base” is the directory to change to before starting build. If you set base:
+#        that is where we will look for package.json/.nvmrc/etc, not repo root!
+# “command” is your build command.
+# “publish” is the directory to publish (relative to the root of your repo).
+
+[build]
+  publish = "dist"
+
+[[redirects]]
+  from = "/signin"
+  to = "/"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/sign-up"
+  to = "/"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/messenger"
+  to = "/"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/settings"
+  to = "/"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/500"
+  to = "/"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/404"
+  to = "/"
+  status = 200
+  force = true

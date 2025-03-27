@@ -1,107 +1,86 @@
-import * as Components from './components';
-import * as Pages from './pages';
+import Handlebars from "handlebars";
+import * as Components from "./components";
+import * as Pages from "./pages";
 
-import Handlebars from 'handlebars';
-import avatarSample from './assets/imgs/img_avatar.png';
+import { APP_QUERY_SELECTOR, RouteStrs } from "./constants";
 
-const appTitle = 'Great chat app';
-const defaultPage = 'nav';
+import { AppState } from "./types/domain/app-state";
+import { Block } from "./core";
+import { IInfoPageProps } from "./pages/info/info";
+import { IProfilePageProps } from "./pages/profile/profile";
+import { Router } from "./core/routing/router";
+import { Store } from "./core/store/store";
+import { registerComponent } from "./core/registerComponent";
 
-
-const pages = {
-  'login': [ Pages.LoginPage ],
-  'register': [ Pages.RegisterPage ],
-  'profile': [ Pages.ProfilePage, {
-    avatar: avatarSample,
-    changingAvatar: false,
-    changingData: false,
-    changingPwd: false,
-  } ],
-  'profile-new-avatar': [ Pages.ProfilePage, {
-    avatar: avatarSample,
-    changingAvatar: true,
-    changingData: false,
-    changingPwd: false,
-  } ],
-  'profile-change-data': [ Pages.ProfilePage, {
-    avatar: avatarSample,
-    changingAvatar: false,
-    changingData: true,
-    changingPwd: false,
-  } ],
-  'profile-change-pwd': [ Pages.ProfilePage, {
-    avatar: avatarSample,
-    changingAvatar: false,
-    changingData: false,
-    changingPwd: true,
-  } ],
-  'chats': [ Pages.ChatsPage],
-  '500': [ Pages.InfoPage, {
-    title: '500',
-    text: 'Мы уже фиксим',
-    buttonLabel: 'Назад к чатам',
-  }],
-  '404': [ Pages.InfoPage, {
-    title: '404',
-    text: 'Не туда попали',
-    buttonLabel: 'Назад к чатам',
-  }],
-
-
-  'nav': [ Pages.NavigatePage ],
-};
-
+// #region Handlebars
 Handlebars.registerHelper({
-  eq: (v1, v2) => v1 === v2,
-  ne: (v1, v2) => v1 !== v2,
-  lt: (v1, v2) => v1 < v2,
+  eq: (v1: unknown, v2: unknown) => v1 === v2,
+  ne: (v1: unknown, v2: unknown) => v1 !== v2,
+  lt: (v1: string, v2: string) => v1 < v2,
   gt: (v1, v2) => v1 > v2,
   lte: (v1, v2) => v1 <= v2,
   gte: (v1, v2) => v1 >= v2,
-  and() {
-      return Array.prototype.every.call(arguments, Boolean);
+  and(...args: unknown[]) {
+    return Array.prototype.every.call(args, Boolean);
   },
-  or() {
-      return Array.prototype.slice.call(arguments, 0, -1).some(Boolean);
+  or(...args: unknown[]) {
+    return Array.prototype.slice.call(args, 0, -1).some(Boolean);
+  },
+});
+
+Object.entries(Components).forEach(([name, component]) => {
+  registerComponent(name, component as typeof Block);
+});
+
+// #endregion
+declare global {
+  interface Window {
+    store: Store<AppState>;
+    router: Router;
   }
-});
-
-Object.entries(Components).forEach(([ name, template ]) => {
-  Handlebars.registerPartial(name, template);
-});
-
-function navigate(page:  keyof typeof pages) {
-  const [ source, context ] = pages[page];
-  const container = document.getElementById('app')!;
-
-  const temlpatingFunction = Handlebars.compile(source);
-  container.innerHTML = temlpatingFunction(context);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  const {pathname} = window.location;
-  if (pathname.length>1) {
-    const navTo = pathname.substring(1);
-    if (navTo in pages) {
-      navigate(navTo as keyof typeof pages);
-    }
-    else {
-      navigate(defaultPage);
-    }
-  }
-  else {
-    navigate(defaultPage);
-  }
-});
+// #region routing stuff
+const initState: AppState = {
+  error: null,
+  user: null,
+  currentChatID: undefined,
+  chats: [],
+};
+window.store = new Store<AppState>(initState);
 
-document.addEventListener('click', (e : MouseEvent) => {
-  const page = (e.target as HTMLInputElement).getAttribute('page');
-  if (page) {
-    const {origin} = window.location;
-    navigate(page as keyof typeof pages);
-    window.history.pushState({}, '', `${origin}/${page}`);
-    window.history.replaceState({}, appTitle, `${origin}/${page}`);
-    e.preventDefault();
-    e.stopImmediatePropagation();
-  }
-});
+const router = new Router(APP_QUERY_SELECTOR);
+window.router = router;
+router.use(RouteStrs.Signin, Pages.SigninPage as typeof Block);
+router.use(RouteStrs.Signup, Pages.SignupPage as typeof Block);
+router.use(RouteStrs.Messenger, Pages.ChatsPage as typeof Block);
+router.use(
+  RouteStrs.Settings,
+  Pages.ProfilePage as typeof Block,
+  {
+    status: "display",
+  } as IProfilePageProps,
+);
+router.use(
+  RouteStrs.Page500,
+  Pages.InfoPage as typeof Block,
+  {
+    title: "500",
+    text: "Мы уже фиксим",
+    buttonLabel: "Назад к чатам",
+    btnClick: () => Router.getRouter().go(RouteStrs.Messenger),
+  } as IInfoPageProps,
+);
+router
+  .use(
+    RouteStrs.Page404,
+    Pages.InfoPage as typeof Block,
+    {
+      title: "404",
+      text: "Не туда попали",
+      buttonLabel: "Назад к чатам",
+      btnClick: () => Router.getRouter().go(RouteStrs.Messenger),
+    } as IInfoPageProps,
+  )
+  .start();
+// #endregion
