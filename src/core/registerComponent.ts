@@ -1,7 +1,7 @@
-import Handlebars from "handlebars";
-import { HelperOptions } from "handlebars";
 import Block from "./block";
 import { Class } from "../types/generics";
+import Handlebars from "handlebars";
+import { HelperOptions } from "handlebars";
 
 export interface IChildren<Props extends object> {
   component: Block<Props>;
@@ -44,3 +44,5 @@ export function registerComponent<Props extends object>(
     },
   );
 }
+
+// asdasdasd
